@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimeToNotion", "AnimeToNotion\AnimeToNotion.csproj", "{D7B47BB1-EC02-4726-85A6-6BB6B9EC07AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEBApi_AnimeToNotion", "WEBApi_AnimeToNotion\WEBApi_AnimeToNotion.csproj", "{3DAE89A5-DC33-489A-9A7B-FB4AC475CF60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business_AnimeToNotion", "Business_AnimeToNotion\Business_AnimeToNotion.csproj", "{B249A0E9-EC82-47A2-8392-D2F64CAC17D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D7B47BB1-EC02-4726-85A6-6BB6B9EC07AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7B47BB1-EC02-4726-85A6-6BB6B9EC07AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7B47BB1-EC02-4726-85A6-6BB6B9EC07AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7B47BB1-EC02-4726-85A6-6BB6B9EC07AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DAE89A5-DC33-489A-9A7B-FB4AC475CF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DAE89A5-DC33-489A-9A7B-FB4AC475CF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DAE89A5-DC33-489A-9A7B-FB4AC475CF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DAE89A5-DC33-489A-9A7B-FB4AC475CF60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B249A0E9-EC82-47A2-8392-D2F64CAC17D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B249A0E9-EC82-47A2-8392-D2F64CAC17D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B249A0E9-EC82-47A2-8392-D2F64CAC17D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B249A0E9-EC82-47A2-8392-D2F64CAC17D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
