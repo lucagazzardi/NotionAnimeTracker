@@ -26,12 +26,12 @@ namespace Business_AnimeToNotion.Main_Integration
             Configuration = configuration;
         }
 
-        public async Task<List<MAL_AnimeModel>> SearchMALAnimeAsync(string searchTerm)
+        public async Task<List<MAL_AnimeModel>> MAL_SearchAnimeAsync(string searchTerm)
         {
             // Add MAL Secret Api Key as header
-            StaticHttpClient.Client.DefaultRequestHeaders.Add("X-MAL-CLIENT-ID", Configuration["MAL_ApiConfig:MAL_ApiKey"]);
+            StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Add("X-MAL-CLIENT-ID", Configuration["MAL_ApiConfig:MAL_ApiKey"]);
 
-            var httpResponse = await StaticHttpClient.Client.GetStringAsync(BuildMALUrl_SearchByName(searchTerm));
+            var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchByName(searchTerm));
             MAL_ApiResponseModel malResponse = JsonSerializer.Deserialize<MAL_ApiResponseModel>(httpResponse);
 
             List<MAL_AnimeModel> result = malResponse.data.Select(x => x.node).ToList();

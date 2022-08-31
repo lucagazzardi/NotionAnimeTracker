@@ -1,4 +1,5 @@
 ﻿using Business_AnimeToNotion.Model;
+using Notion.Client;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Business_AnimeToNotion.Main_Integration.Interfaces
 {
-    public interface IMAL_Integration
+    public interface INotion_Integration
     {
-        public Task<List<MAL_AnimeModel>> MAL_SearchAnimeAsync(string searchTerm);
+        public Task<bool> Notion_CreateNewAnimeEntry(MAL_AnimeModel animeModel);
     }
 }

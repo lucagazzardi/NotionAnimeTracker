@@ -33,7 +33,8 @@ namespace WEBApi_AnimeToNotion
             #region DI
 
             services.AddScoped<IMAL_Integration, MAL_Integration>();
-                
+            services.AddScoped<INotion_Integration, Notion_Integration>();
+
             #endregion
         }
 

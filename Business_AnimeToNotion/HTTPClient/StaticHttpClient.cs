@@ -7,6 +7,6 @@ namespace Business_AnimeToNotion.HTTPClient
 {    
     public static class StaticHttpClient
     {
-        public static readonly HttpClient Client = new HttpClient();
+        public static readonly HttpClient MALHttpClient = new HttpClient();
     }
 }
