@@ -22,17 +22,35 @@ namespace WEBApi_AnimeToNotion.Controllers
             _notionIntegration = notionIntegration;
         }
 
-        [HttpGet("mal/search")]
+        [HttpGet("mal/search/name")]
         public async Task<IActionResult> MAL_SearchAnime([FromQuery] string searchTerm)
         {
-            var foundAnimeList = await _malIntegration.MAL_SearchAnimeAsync(searchTerm);
+            var foundAnimeList = await _malIntegration.MAL_SearchAnimeByNameAsync(searchTerm);
             return Ok(foundAnimeList);
         }
-        
+
+        [HttpGet("mal/search/{id}")]
+        public async Task<IActionResult> MAL_SearchAnimeById(int id)
+        {
+            var foundAnime = await _malIntegration.MAL_SearchAnimeByIdAsync(id);
+            return Ok(foundAnime);
+        }
+
         [HttpPost("notion/add")]
         public async Task<IActionResult> Notion_AddNew(MAL_AnimeModel animeModel)
         {
-            if (await _notionIntegration.Notion_CreateNewAnimeEntry(animeModel))
+            if (await _notionIntegration.Notion_CreateNewEntry(animeModel))
+                return Ok();
+            else
+                return BadRequest();
+        }
+
+        [HttpPost("notion/search/{id}/add")]
+        public async Task<IActionResult> Notion_SearchByIdAddNew(int id)
+        {
+            var foundAnime = await _malIntegration.MAL_SearchAnimeByIdAsync(id);
+
+            if (await _notionIntegration.Notion_CreateNewEntry(foundAnime))
                 return Ok();
             else
                 return BadRequest();

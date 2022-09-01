@@ -22,7 +22,7 @@ namespace Business_AnimeToNotion.Main_Integration
         //Main Properties
         public const string Name_English = "Name English";
         public const string Name_Original = "Name Original";
-        public const string MAL_Rating = "MAL_Rating";
+        public const string MAL_Rating = "MAL Rating";
         public const string Next_To_Watch = "Next To Watch";
         public const string Distributor = "Distributor";
         public const string Type = "Type";
@@ -49,7 +49,9 @@ namespace Business_AnimeToNotion.Main_Integration
 
         #endregion
 
-        public NotionClient Client { get; set; }
+        private NotionClient Client { get; set; }
+        private string DataBaseId { get; set; } = null;
+
         public Notion_Integration(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -60,13 +62,9 @@ namespace Business_AnimeToNotion.Main_Integration
             });
         }
 
-        public async Task<bool> Notion_CreateNewAnimeEntry(MAL_AnimeModel animeModel)
+        public async Task<bool> Notion_CreateNewEntry(MAL_AnimeModel animeModel)
         {
-            var database = await Client.Search.SearchAsync(new SearchParameters()
-            {
-                Filter = new SearchFilter() { Value = SearchObjectType.Database },
-                Query = Configuration["Notion_ApiConfig:Notion_DatabaseName"]
-            });
+            await Notion_GetDataBaseId();
 
             //If a page with the same show title already exists, nothing is done
             var checkAnimeDuplicate = await Client.Search.SearchAsync(new SearchParameters()
@@ -77,8 +75,8 @@ namespace Business_AnimeToNotion.Main_Integration
 
             if (checkAnimeDuplicate.Results.Count == 0)
             {
-                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(animeModel, database.Results[0].Id);
-                Notion_CreateNewEntry(pagesCreateParameters);
+                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(animeModel, DataBaseId);
+                await Notion_CreateNewEntry(pagesCreateParameters);
                 return true;
             }
             else
@@ -90,7 +88,20 @@ namespace Business_AnimeToNotion.Main_Integration
 
         #region Private
 
-        private async void Notion_CreateNewEntry(PagesCreateParameters pagesCreateParameters)
+        private async Task Notion_GetDataBaseId()
+        {
+            if (string.IsNullOrEmpty(DataBaseId))
+            {
+                var database = await Client.Search.SearchAsync(new SearchParameters()
+                {
+                    Filter = new SearchFilter() { Value = SearchObjectType.Database },
+                    Query = Configuration["Notion_ApiConfig:Notion_DatabaseName"]
+                });
+                DataBaseId = database.Results[0].Id;
+            }
+        }
+
+        private async Task Notion_CreateNewEntry(PagesCreateParameters pagesCreateParameters)
         {
             await Client.Pages.CreateAsync(pagesCreateParameters);
         }
@@ -104,14 +115,14 @@ namespace Business_AnimeToNotion.Main_Integration
             //Name English
             TitlePropertyValue Name_English = new TitlePropertyValue()
             {
-                Title = new List<RichTextBase>() { new RichTextBase() { Type = RichTextType.Text, PlainText = animeModel.alternative_titles.en } }
+                Title = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = animeModel.alternative_titles.en } } }
             };
             properties.Add(Notion_Properites_Mapping.Name_English, Name_English);
 
             //Name Original
             RichTextPropertyValue Name_Original = new RichTextPropertyValue()
             {
-                RichText = new List<RichTextBase>() { new RichTextBase() { Type = RichTextType.Text, PlainText = animeModel.title } }
+                RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = animeModel.title } } }
             };
             properties.Add(Notion_Properites_Mapping.Name_Original, Name_Original);
 

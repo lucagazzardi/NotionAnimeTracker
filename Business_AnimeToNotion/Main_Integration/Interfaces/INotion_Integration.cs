@@ -9,6 +9,6 @@ namespace Business_AnimeToNotion.Main_Integration.Interfaces
 {
     public interface INotion_Integration
     {
-        public Task<bool> Notion_CreateNewAnimeEntry(MAL_AnimeModel animeModel);
+        public Task<bool> Notion_CreateNewEntry(MAL_AnimeModel animeModel);
     }
 }

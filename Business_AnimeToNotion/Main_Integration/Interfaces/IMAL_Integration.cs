@@ -8,6 +8,8 @@ namespace Business_AnimeToNotion.Main_Integration.Interfaces
 {
     public interface IMAL_Integration
     {
-        public Task<List<MAL_AnimeModel>> MAL_SearchAnimeAsync(string searchTerm);
+        public Task<List<MAL_AnimeModel>> MAL_SearchAnimeByNameAsync(string searchTerm);
+
+        public Task<MAL_AnimeModel> MAL_SearchAnimeByIdAsync(int id);
     }
 }
