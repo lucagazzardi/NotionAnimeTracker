@@ -1,4 +1,5 @@
 ﻿using Business_AnimeToNotion.Main_Integration;
+using Business_AnimeToNotion.Main_Integration.Exceptions;
 using Business_AnimeToNotion.Main_Integration.Interfaces;
 using Business_AnimeToNotion.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -39,10 +40,8 @@ namespace WEBApi_AnimeToNotion.Controllers
         [HttpPost("notion/add")]
         public async Task<IActionResult> Notion_AddNew(MAL_AnimeModel animeModel)
         {
-            if (await _notionIntegration.Notion_CreateNewEntry(animeModel))
-                return Ok();
-            else
-                return BadRequest();
+            await _notionIntegration.Notion_CreateNewEntry(animeModel);
+            return Ok();            
         }
 
         [HttpPost("notion/search/{id}/add")]
@@ -50,10 +49,16 @@ namespace WEBApi_AnimeToNotion.Controllers
         {
             var foundAnime = await _malIntegration.MAL_SearchAnimeByIdAsync(id);
 
-            if (await _notionIntegration.Notion_CreateNewEntry(foundAnime))
+            try 
+            {
+                await _notionIntegration.Notion_CreateNewEntry(foundAnime);
                 return Ok();
-            else
-                return BadRequest();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
     }
 }

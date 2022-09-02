@@ -1,4 +1,5 @@
-﻿using Business_AnimeToNotion.Main_Integration.Interfaces;
+﻿using Business_AnimeToNotion.Main_Integration.Exceptions;
+using Business_AnimeToNotion.Main_Integration.Interfaces;
 using Business_AnimeToNotion.Model;
 using Microsoft.Extensions.Configuration;
 using Notion.Client;
@@ -41,6 +42,11 @@ namespace Business_AnimeToNotion.Main_Integration
         public const string External = "external";
     }
 
+    internal class Notion_ExceptionMessages
+    {
+        public const string CreateNewEntryException = "Error: \"[title]\" is already present in the Notion Database";
+    }
+
     public class Notion_Integration : INotion_Integration
     {
         #region fields
@@ -62,7 +68,7 @@ namespace Business_AnimeToNotion.Main_Integration
             });
         }
 
-        public async Task<bool> Notion_CreateNewEntry(MAL_AnimeModel animeModel)
+        public async Task Notion_CreateNewEntry(MAL_AnimeModel animeModel)
         {
             await Notion_GetDataBaseId();
 
@@ -75,13 +81,19 @@ namespace Business_AnimeToNotion.Main_Integration
 
             if (checkAnimeDuplicate.Results.Count == 0)
             {
-                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(animeModel, DataBaseId);
-                await Notion_CreateNewEntry(pagesCreateParameters);
-                return true;
-            }
+                try
+                {
+                    PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(animeModel, DataBaseId);
+                    await Notion_CreateNewEntry(pagesCreateParameters);
+                }
+                catch(Exception ex)
+                {
+                    throw new Notion_Exception("Error: " + ex.Message);
+                }
+            }  
             else
             {
-                return false;
+                throw new Notion_Exception(Notion_ExceptionMessages.CreateNewEntryException.Replace("[title]", animeModel.alternative_titles.en));
             }
 
         }
