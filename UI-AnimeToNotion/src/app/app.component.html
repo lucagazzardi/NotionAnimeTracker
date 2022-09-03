@@ -47,30 +47,30 @@
     font-weight: 600;
   }
 
-  .toolbar img {
-    margin: 0 16px;
-  }
+    .toolbar img {
+      margin: 0 16px;
+    }
 
-  .toolbar #twitter-logo {
-    height: 40px;
-    margin: 0 8px;
-  }
+    .toolbar #twitter-logo {
+      height: 40px;
+      margin: 0 8px;
+    }
 
-  .toolbar #youtube-logo {
-    height: 40px;
-    margin: 0 16px;
-  }
+    .toolbar #youtube-logo {
+      height: 40px;
+      margin: 0 16px;
+    }
 
-  .toolbar #twitter-logo:hover,
-  .toolbar #youtube-logo:hover {
-    opacity: 0.8;
-  }
+      .toolbar #twitter-logo:hover,
+      .toolbar #youtube-logo:hover {
+        opacity: 0.8;
+      }
 
   .content {
     display: flex;
     margin: 82px auto 32px;
     padding: 0 16px;
-    max-width: 960px;
+    max-width: 1200px;
     flex-direction: column;
     align-items: center;
   }
@@ -80,9 +80,9 @@
     width: auto;
   }
 
-  svg.material-icons:not(:last-child) {
-    margin-right: 8px;
-  }
+    svg.material-icons:not(:last-child) {
+      margin-right: 8px;
+    }
 
   .card svg.material-icons path {
     fill: #888;
@@ -125,14 +125,14 @@
     cursor: pointer;
   }
 
-  .card-container .card:not(.highlight-card):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
-  }
+    .card-container .card:not(.highlight-card):hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+    }
 
-  .card-container .card:not(.highlight-card):hover .material-icons path {
-    fill: rgb(105, 103, 103);
-  }
+      .card-container .card:not(.highlight-card):hover .material-icons path {
+        fill: rgb(105, 103, 103);
+      }
 
   .card.highlight-card {
     background-color: #1976d2;
@@ -170,9 +170,9 @@
     text-decoration: none;
   }
 
-  a:hover {
-    color: #125699;
-  }
+    a:hover {
+      color: #125699;
+    }
 
   .terminal {
     position: relative;
@@ -185,27 +185,27 @@
     background-color: rgb(15, 15, 16);
   }
 
-  .terminal::before {
-    content: "\2022 \2022 \2022";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background: rgb(58, 58, 58);
-    color: #c2c3c4;
-    width: 100%;
-    font-size: 2rem;
-    line-height: 0;
-    padding: 14px 0;
-    text-indent: 4px;
-  }
+    .terminal::before {
+      content: "\2022 \2022 \2022";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: rgb(58, 58, 58);
+      color: #c2c3c4;
+      width: 100%;
+      font-size: 2rem;
+      line-height: 0;
+      padding: 14px 0;
+      text-indent: 4px;
+    }
 
-  .terminal pre {
-    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-    color: white;
-    padding: 0 1rem 1rem;
-    margin: 0;
-  }
+    .terminal pre {
+      font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+      color: white;
+      padding: 0 1rem 1rem;
+      margin: 0;
+    }
 
   .circle-link {
     height: 40px;
@@ -222,10 +222,10 @@
     transition: 1s ease-out;
   }
 
-  .circle-link:hover {
-    transform: translateY(-0.25rem);
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
-  }
+    .circle-link:hover {
+      transform: translateY(-0.25rem);
+      box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+    }
 
   footer {
     margin-top: 8px;
@@ -234,10 +234,10 @@
     line-height: 20px;
   }
 
-  footer a {
-    display: flex;
-    align-items: center;
-  }
+    footer a {
+      display: flex;
+      align-items: center;
+    }
 
   .github-star-badge {
     color: #24292e;
@@ -252,17 +252,17 @@
     font-weight: 600;
   }
 
-  .github-star-badge:hover {
-    background-image: linear-gradient(-180deg,#f0f3f6,#e6ebf1 90%);
-    border-color: rgba(27,31,35,.35);
-    background-position: -.5em;
-  }
+    .github-star-badge:hover {
+      background-image: linear-gradient(-180deg,#f0f3f6,#e6ebf1 90%);
+      border-color: rgba(27,31,35,.35);
+      background-position: -.5em;
+    }
 
-  .github-star-badge .material-icons {
-    height: 16px;
-    width: 16px;
-    margin-right: 4px;
-  }
+    .github-star-badge .material-icons {
+      height: 16px;
+      width: 16px;
+      margin-right: 4px;
+    }
 
   svg#clouds {
     position: fixed;
@@ -274,7 +274,7 @@
 
   /* Responsive Styles */
   @media screen and (max-width: 767px) {
-    .card-container > *:not(.circle-link) ,
+    .card-container > *:not(.circle-link),
     .terminal {
       width: 100%;
     }
@@ -302,33 +302,49 @@
   }
 </style>
 
-<!-- Toolbar -->
-<div class="toolbar" role="banner">
-  <img
-    width="40"
-    alt="Angular Logo"
-    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-  />
-  <span>Welcome</span>
-    <div class="spacer"></div>
-    <a aria-label="Angular on twitter" target="_blank" rel="noopener" href="https://twitter.com/angular" title="Twitter">
-      <svg id="twitter-logo" height="24" data-name="Logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-        <rect width="400" height="400" fill="none"/>
-        <path d="M153.62,301.59c94.34,0,145.94-78.16,145.94-145.94,0-2.22,0-4.43-.15-6.63A104.36,104.36,0,0,0,325,122.47a102.38,102.38,0,0,1-29.46,8.07,51.47,51.47,0,0,0,22.55-28.37,102.79,102.79,0,0,1-32.57,12.45,51.34,51.34,0,0,0-87.41,46.78A145.62,145.62,0,0,1,92.4,107.81a51.33,51.33,0,0,0,15.88,68.47A50.91,50.91,0,0,1,85,169.86c0,.21,0,.43,0,.65a51.31,51.31,0,0,0,41.15,50.28,51.21,51.21,0,0,1-23.16.88,51.35,51.35,0,0,0,47.92,35.62,102.92,102.92,0,0,1-63.7,22A104.41,104.41,0,0,1,75,278.55a145.21,145.21,0,0,0,78.62,23" fill="#fff"/>
-      </svg>
-    </a>
-    <a aria-label="Angular on YouTube" target="_blank" rel="noopener" href="https://youtube.com/angular" title="YouTube">
-      <svg id="youtube-logo" height="24" width="24" data-name="Logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff">
-        <path d="M0 0h24v24H0V0z" fill="none"/>
-        <path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/>
-      </svg>
-    </a>
-</div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container">
+
+    <!-- Toggle button -->
+    <button class="navbar-toggler"
+            type="button"
+            (click)="buttonsNav.toggle()"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse"
+         id="navbarButtonsExample"
+         mdbCollapse
+         #buttonsNav="mdbCollapse">
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Anime To Notion</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+
+      <div class="d-flex align-items-center">
+        <a target="_blank" style="color: black;" href="https://github.com/lucagazzardi/NotionAnimeTracker" role="button">
+          <i class="fab fa-github fa-lg"></i>
+        </a>
+      </div>
+    </div>
+    <!-- Collapsible wrapper -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
 
 <div class="content" role="main">
 
   <!-- Highlight Card -->
-  <div class="card highlight-card card-small">
+  <!--<div class="card highlight-card card-small">
 
     <svg id="rocket" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
       <title>Rocket Ship</title>
@@ -348,13 +364,35 @@
       <path id="Path_40" data-name="Path 40" d="M644.6,141S143.02,215.537,147.049,870.207s342.774,201.755,342.774,201.755S404.659,847.213,388.815,762.2c-27.116-145.51-11.551-384.124,271.9-609.1C671.15,139.365,644.6,141,644.6,141Z" transform="translate(-147.025 -140.939)" fill="#f5f5f5" />
     </svg>
 
-  </div>
+  </div>-->
 
   <!-- Resources -->
-  <h2>Resources</h2>
-  <p>Here are some links to help you get started:</p>
+  <h1>Anime details to Notion</h1>
+  <p>Choose your preferred searching method:</p>
 
-  <div class="card-container">
+  <hr class="hr">
+
+  <div class="d-flex justify-content-evenly align-items-center">
+    <div class="col-md-6 px-4">
+      <div class="input-group rounded">
+        <input #searchId type="search" class="form-control rounded" placeholder="By identifier" aria-label="Search" aria-describedby="search-addon" (keyup.enter)="onSearchId(searchId.value)"/>
+        <span class="input-group-text border-0" id="search-addon">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-12 vr vr-blurry" style="height: 250px;"></div>
+    <div class="col-md-6 px-4">
+      <div class="input-group rounded col-md-6">
+        <input #searchName type="search" class="form-control rounded" placeholder="By show name" aria-label="Search" aria-describedby="search-addon" (keyup.enter)="onSearchName(searchName.value)" />
+        <span class="input-group-text border-0" id="search-addon">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="card-container">
     <a class="card" target="_blank" rel="noopener" href="https://angular.io/tutorial">
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" /></svg>
       <span>Learn Angular</span>
@@ -385,10 +423,9 @@
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
     </a>
 
-  </div>
-
+  </div>-->
   <!-- Next Steps -->
-  <h2>Next Steps</h2>
+  <!--<h2>Next Steps</h2>
   <p>What do you want to do next with your app?</p>
 
   <input type="hidden" #selection>
@@ -423,20 +460,18 @@
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" /></svg>
       <span>Build for Production</span>
     </button>
-  </div>
-
+  </div>-->
   <!-- Terminal -->
-  <div class="terminal" [ngSwitch]="selection.value">
+  <!--<div class="terminal" [ngSwitch]="selection.value">
     <pre *ngSwitchDefault>ng generate component xyz</pre>
     <pre *ngSwitchCase="'material'">ng add @angular/material</pre>
     <pre *ngSwitchCase="'pwa'">ng add @angular/pwa</pre>
     <pre *ngSwitchCase="'dependency'">ng add _____</pre>
     <pre *ngSwitchCase="'test'">ng test</pre>
     <pre *ngSwitchCase="'build'">ng build</pre>
-  </div>
-
+  </div>-->
   <!-- Links -->
-  <div class="card-container">
+  <!--<div class="card-container">
     <a class="circle-link" title="Find a Local Meetup" href="https://www.meetup.com/find/?keywords=angular" target="_blank" rel="noopener">
       <svg xmlns="http://www.w3.org/2000/svg" width="24.607" height="23.447" viewBox="0 0 24.607 23.447">
         <title>Meetup Logo</title>
@@ -451,21 +486,22 @@
         <path d="M189.5 20h-134C44.2 20 35 29.2 35 40.6v135.2c0 11.4 9.2 20.6 20.5 20.6h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V40.6c0-11.4-9.2-20.6-20.5-20.6zm-38.6 130.6s-3.6-4.3-6.6-8.1c13.1-3.7 18.1-11.9 18.1-11.9-4.1 2.7-8 4.6-11.5 5.9-5 2.1-9.8 3.5-14.5 4.3-9.6 1.8-18.4 1.3-25.9-.1-5.7-1.1-10.6-2.7-14.7-4.3-2.3-.9-4.8-2-7.3-3.4-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.4-.3-1.8-1-2.8-1.7-2.8-1.7s4.8 8 17.5 11.8c-3 3.8-6.7 8.3-6.7 8.3-22.1-.7-30.5-15.2-30.5-15.2 0-32.2 14.4-58.3 14.4-58.3 14.4-10.8 28.1-10.5 28.1-10.5l1 1.2c-18 5.2-26.3 13.1-26.3 13.1s2.2-1.2 5.9-2.9c10.7-4.7 19.2-6 22.7-6.3.6-.1 1.1-.2 1.7-.2 6.1-.8 13-1 20.2-.2 9.5 1.1 19.7 3.9 30.1 9.6 0 0-7.9-7.5-24.9-12.7l1.4-1.6s13.7-.3 28.1 10.5c0 0 14.4 26.1 14.4 58.3 0 0-8.5 14.5-30.6 15.2z" />
       </svg>
     </a>
-  </div>
-
+  </div>-->
   <!-- Footer -->
-  <footer>
-    Love Angular?&nbsp;
-    <a href="https://github.com/angular/angular" target="_blank" rel="noopener">
-      Give our repo a star.
-      <div class="github-star-badge">
-        <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>
-        Star
+  <footer style="flex-direction:column">
+    <div class="row" style="margin-bottom:20px">
+      <div class="col-12">Ended up here by mistake? Feel free to visit:&nbsp;</div>
+    </div>
+    <div class="row ">
+      <div class="col-12 d-flex">
+        <a target="_blank" class="px-2" style="color: black;" href="https://github.com/lucagazzardi/NotionAnimeTracker" role="button">
+          <i class="fab fa-github fa-lg"></i>
+        </a>
+        <a target="_blank" class="px-2" style="color: #ac2bac;" href="https://www.instagram.com/imgazza/" role="button">
+          <i class="fab fa-instagram fa-lg"></i>
+        </a>
       </div>
-    </a>
-    <a href="https://github.com/angular/angular" target="_blank" rel="noopener">
-      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="#1976d2" /><path d="M0 0h24v24H0z" fill="none" /></svg>
-    </a>
+    </div>
   </footer>
 
   <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
@@ -482,4 +518,3 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-

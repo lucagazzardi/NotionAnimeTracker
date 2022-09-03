@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'UI-AnimeToNotion';
+
+  onSearchName(value : string) {
+    alert(value);
+  }
+
+  onSearchId(id: string) {
+    alert(id);
+  }
 }

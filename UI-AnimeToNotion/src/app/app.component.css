@@ -1,0 +1,10 @@
+.vr-blurry {
+  background-image: linear-gradient(180deg,transparent,#666,transparent);
+  background-color: transparent;
+  width: 1px;
+  opacity: .25;
+}
+
+.opacity-1 {
+    opacity : 1;
+}
