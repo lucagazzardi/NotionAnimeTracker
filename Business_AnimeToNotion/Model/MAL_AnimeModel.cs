@@ -21,8 +21,15 @@ namespace Business_AnimeToNotion.Model
         public MAL_MainPicture main_picture { get; set; }
         public MAL_AlternativeTitle alternative_titles { get; set; }
         public decimal mean { get; set; }
-        public DateTime start_date { get; set; }
+        public string start_date { get; set; }
         public string media_type { get; set; }
+        public List<MAL_GeneralObject> genres { get; set; }
+        public List<MAL_GeneralObject> studios { get; set; }
+        public int num_episodes { get; set; } 
+
+        //Handled fields
+        public string genresJoined { get; set; }
+        public string studiosJoined { get; set; }
     }
 
     public class MAL_MainPicture
@@ -36,5 +43,11 @@ namespace Business_AnimeToNotion.Model
         public string[] synonmys { get; set; }
         public string en { get; set; }
         public string ja { get; set; }
+    }
+
+    public class MAL_GeneralObject
+    {
+        public int id { get; set; }
+        public string name { get; set; }
     }
 }

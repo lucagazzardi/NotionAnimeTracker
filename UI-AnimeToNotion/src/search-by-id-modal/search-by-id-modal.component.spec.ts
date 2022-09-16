@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomepageComponent } from './homepage.component';
+import { SearchByIdModalComponent } from './search-by-id-modal.component';
 
-describe('HomepageComponent', () => {
-  let component: HomepageComponent;
-  let fixture: ComponentFixture<HomepageComponent>;
+describe('SearchByIdModalComponent', () => {
+  let component: SearchByIdModalComponent;
+  let fixture: ComponentFixture<SearchByIdModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomepageComponent ]
+      declarations: [ SearchByIdModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomepageComponent);
+    fixture = TestBed.createComponent(SearchByIdModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

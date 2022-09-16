@@ -30,6 +30,12 @@ namespace WEBApi_AnimeToNotion
         {
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowAnyOrigin",
+                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
+
             #region DI
 
             services.AddScoped<IMAL_Integration, MAL_Integration>();
@@ -51,6 +57,8 @@ namespace WEBApi_AnimeToNotion
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("AllowAnyOrigin");
 
             app.UseEndpoints(endpoints =>
             {

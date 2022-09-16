@@ -2,6 +2,7 @@
 using Business_AnimeToNotion.Main_Integration.Exceptions;
 using Business_AnimeToNotion.Main_Integration.Interfaces;
 using Business_AnimeToNotion.Model;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace WEBApi_AnimeToNotion.Controllers
 {
     [ApiController]
+    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     public class MainController : ControllerBase
     {
@@ -40,7 +42,15 @@ namespace WEBApi_AnimeToNotion.Controllers
         [HttpPost("notion/add")]
         public async Task<IActionResult> Notion_AddNew(MAL_AnimeModel animeModel)
         {
-            await _notionIntegration.Notion_CreateNewEntry(animeModel);
+            try
+            {
+                await _notionIntegration.Notion_CreateNewEntry(animeModel);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Ok();            
         }
 

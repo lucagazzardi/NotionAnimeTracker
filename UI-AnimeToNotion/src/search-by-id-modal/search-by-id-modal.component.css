@@ -1,0 +1,22 @@
+.montserrat-font {
+  font-family: 'Montserrat', sans-serif;
+}
+
+p {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: smaller
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+.type {
+  font-weight: 700;
+}
+
+.value {
+  font-weight: 400;
+}

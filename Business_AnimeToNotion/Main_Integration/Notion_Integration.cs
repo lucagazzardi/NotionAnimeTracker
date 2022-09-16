@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Notion.Client;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,10 +16,11 @@ namespace Business_AnimeToNotion.Main_Integration
         public const string TV = "tv";
         public const string Movie = "movie";
         public const string Special = "special";
+        public const string OVA = "ova";
         public const string Base_MAL_URL = "https://myanimelist.net/anime/";
     }
 
-    internal class Notion_Properites_Mapping
+    internal class Notion_Properties_Mapping
     {
         //Main Properties
         public const string Name_English = "Name English";
@@ -33,10 +35,15 @@ namespace Business_AnimeToNotion.Main_Integration
         public const string Cover = "Cover";
         public const string MAL_Id = "MAL Id";
         public const string MAL_Link = "MAL Link";
+        public const string Episodes = "Episodes";
+        public const string Studios = "Studios";
+        public const string Genres = "Genres";
 
         //Minor properties
-        public const string TV = "TV Serie";
+        public const string TV = "TV Show";
         public const string Movie = "Movie";
+        public const string OVA = "OVA";
+        public const string Special = "Special";
         public const string AnimeSaturn = "AnimeSaturn";
         public const string ToWatch = "To Watch";
         public const string External = "external";
@@ -129,77 +136,98 @@ namespace Business_AnimeToNotion.Main_Integration
             {
                 Title = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = animeModel.alternative_titles.en } } }
             };
-            properties.Add(Notion_Properites_Mapping.Name_English, Name_English);
+            properties.Add(Notion_Properties_Mapping.Name_English, Name_English);
 
             //Name Original
             RichTextPropertyValue Name_Original = new RichTextPropertyValue()
             {
                 RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = animeModel.title } } }
             };
-            properties.Add(Notion_Properites_Mapping.Name_Original, Name_Original);
+            properties.Add(Notion_Properties_Mapping.Name_Original, Name_Original);
 
             //MAL Rating
             NumberPropertyValue MAL_Rating = new NumberPropertyValue()
             {
                 Number = Double.Parse(animeModel.mean.ToString())
             };
-            properties.Add(Notion_Properites_Mapping.MAL_Rating, MAL_Rating);
+            properties.Add(Notion_Properties_Mapping.MAL_Rating, MAL_Rating);
 
             //Next To Watch
             CheckboxPropertyValue Next_To_Watch = new CheckboxPropertyValue()
             {
                 Checkbox = false
             };
-            properties.Add(Notion_Properites_Mapping.Next_To_Watch, Next_To_Watch);
+            properties.Add(Notion_Properties_Mapping.Next_To_Watch, Next_To_Watch);
 
             //Distributor
             MultiSelectPropertyValue Distributor = new MultiSelectPropertyValue()
             {
-                MultiSelect = new List<SelectOption>() { new SelectOption() { Name = Notion_Properites_Mapping.AnimeSaturn } }
+                MultiSelect = new List<SelectOption>() { new SelectOption() { Name = Notion_Properties_Mapping.AnimeSaturn } }
             };
-            properties.Add(Notion_Properites_Mapping.Distributor, Distributor);
+            properties.Add(Notion_Properties_Mapping.Distributor, Distributor);
 
             //Type
             SelectPropertyValue Type = new SelectPropertyValue()
             {
                 Select = new SelectOption() { Name = Property_Type(animeModel.media_type) }
             };
-            properties.Add(Notion_Properites_Mapping.Type, Type);
+            properties.Add(Notion_Properties_Mapping.Type, Type);
 
             //Watched
             SelectPropertyValue Watched = new SelectPropertyValue()
             {
-                Select = new SelectOption() { Name = Notion_Properites_Mapping.ToWatch }
+                Select = new SelectOption() { Name = Notion_Properties_Mapping.ToWatch }
             };
-            properties.Add(Notion_Properites_Mapping.Watched, Watched);
+            properties.Add(Notion_Properties_Mapping.Watched, Watched);
 
             //Started Airing
             DatePropertyValue Started_Airing = new DatePropertyValue()
             {
-                Date = new Date() { Start = animeModel.start_date }
+                Date = new Date() { Start = DateTime.Parse(animeModel.start_date) }
             };
-            properties.Add(Notion_Properites_Mapping.Started_Airing, Started_Airing);
+            properties.Add(Notion_Properties_Mapping.Started_Airing, Started_Airing);
 
             //Cover
             FilesPropertyValue Cover = new FilesPropertyValue()
             {
-                Files = new List<FileObjectWithName>() { new ExternalFileWithName() { Type = Notion_Properites_Mapping.External, Name = animeModel.title, External = new ExternalFileWithName.Info() { Url = animeModel.main_picture.medium } } }
+                Files = new List<FileObjectWithName>() { new ExternalFileWithName() { Type = Notion_Properties_Mapping.External, Name = animeModel.title, External = new ExternalFileWithName.Info() { Url = animeModel.main_picture.medium } } }
             };
-            properties.Add(Notion_Properites_Mapping.Cover, Cover);
+            properties.Add(Notion_Properties_Mapping.Cover, Cover);
 
             //MAL Id
             NumberPropertyValue MAL_Id = new NumberPropertyValue()
             {
                 Number = animeModel.id
             };
-            properties.Add(Notion_Properites_Mapping.MAL_Id, MAL_Id);
+            properties.Add(Notion_Properties_Mapping.MAL_Id, MAL_Id);
 
             //MAL Link
             UrlPropertyValue MAL_Link = new UrlPropertyValue()
             {
                 Url = Property_MAL_Link(animeModel.id.ToString())
             };
-            properties.Add(Notion_Properites_Mapping.MAL_Link, MAL_Link);
+            properties.Add(Notion_Properties_Mapping.MAL_Link, MAL_Link);
+
+            //Episodes
+            NumberPropertyValue Episodes = new NumberPropertyValue()
+            {
+                Number = animeModel.num_episodes
+            };
+            properties.Add(Notion_Properties_Mapping.Episodes, Episodes);
+
+            //Studios
+            RichTextPropertyValue Studios = new RichTextPropertyValue()
+            {
+                RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = string.Join(", ", animeModel.studios.Select(x => x.name)) } } }
+            };
+            properties.Add(Notion_Properties_Mapping.Studios, Studios);
+
+            //Genres
+            RichTextPropertyValue Genres = new RichTextPropertyValue()
+            {
+                RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = string.Join(", ", animeModel.genres.Select(x => x.name)) } } }
+            };
+            properties.Add(Notion_Properties_Mapping.Genres, Genres);
 
             #endregion
 
@@ -218,11 +246,15 @@ namespace Business_AnimeToNotion.Main_Integration
             switch (MAL_Type)
             {
                 case MAL_Properties_Mapping.TV:
-                    return Notion_Properites_Mapping.TV;
+                    return Notion_Properties_Mapping.TV;
                 case MAL_Properties_Mapping.Movie:
-                    return Notion_Properites_Mapping.Movie;
+                    return Notion_Properties_Mapping.Movie;
+                case MAL_Properties_Mapping.Special:
+                    return Notion_Properties_Mapping.Special;
+                case MAL_Properties_Mapping.OVA:
+                    return Notion_Properties_Mapping.OVA;
                 default:
-                    return Notion_Properites_Mapping.TV;
+                    return Notion_Properties_Mapping.TV;
             }
         }
 

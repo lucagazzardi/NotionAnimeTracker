@@ -11,6 +11,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\UI-AnimeToNotion</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\components\" />
+    <Folder Include="src\model\" />
   </ItemGroup>
 </Project>
