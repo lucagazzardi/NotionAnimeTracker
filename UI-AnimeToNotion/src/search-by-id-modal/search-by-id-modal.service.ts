@@ -15,5 +15,9 @@ export class SearchByIdModalService {
   getShowById(id: string) {
     return this.client.get<MAL_AnimeModel>(this.baseUrl + this.mainController + "mal/search/" + id);
   }
+
+  postAddToNotion(show: MAL_AnimeModel) {
+    return this.client.post(this.baseUrl + this.mainController + "notion/add", show);
+  }
 }
 

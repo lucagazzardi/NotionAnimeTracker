@@ -5,6 +5,7 @@ import { SearchByIdModalComponent } from './search-by-id-modal.component';
 import { SearchByIdModalService } from './search-by-id-modal.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -16,7 +17,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MdbTooltipModule,
     CommonModule,
     HttpClientModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    FormsModule
   ],
   providers: [SearchByIdModalService],
   bootstrap: []

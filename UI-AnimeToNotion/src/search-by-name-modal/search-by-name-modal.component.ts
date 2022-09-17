@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
-import { animeListMocked, MAL_AnimeModel } from '../model/MAL_AnimeModel';
+import { MAL_AnimeModel } from '../model/MAL_AnimeModel';
 import { SearchByNameModalService } from './search-by-name-modal.service';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
@@ -27,6 +27,7 @@ export class SearchByNameModalComponent implements OnInit {
   ngOnInit(): void {
     //this.animeList = animeListMocked;
 
+    Notify.init({ position: 'center-top' });
     this.getShowListByName(this.searchTerm!);
   }
 
@@ -40,24 +41,27 @@ export class SearchByNameModalComponent implements OnInit {
           setInterval(() => this.loading = false, 100)
         },
         error => {
-          this.errorMessage = error.error;
+          Notify.failure(error.error);
           this.loading = false;
         }
       );
   }
 
-  postAddToNotion(show: MAL_AnimeModel) {
+  postAddToNotion(show: MAL_AnimeModel, event: any) {
     this.addingLoading = true;
+    event.target.innerHTML = '<span class="spinner-border spinner-border-sm btn-link" role="status" aria-hidden="true"></span>';
 
     this.service.postAddToNotion(show)
       .subscribe(
         () => {
-          Notify.success(show.title + " correctly sent to Notion");
+          Notify.success('"' + show.title + '" correctly sent to Notion');          
+          event.target.innerHTML = '<span>Added</span>';
+          event.target.disabled = true;
           this.addingLoading = false;
         },
         error => {
-          this.errorMessage = error.error;
-          console.log(this.errorMessage);
+          Notify.failure(error.error);
+          event.target.innerHTML = '<span>Add</span>';
           this.addingLoading = false;
         }
     )

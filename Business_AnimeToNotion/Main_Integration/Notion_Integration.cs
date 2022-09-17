@@ -18,6 +18,11 @@ namespace Business_AnimeToNotion.Main_Integration
         public const string Special = "special";
         public const string OVA = "ova";
         public const string Base_MAL_URL = "https://myanimelist.net/anime/";
+
+        //Related Anime
+        public const string Prequel = "prequel";
+        public const string Sequel = "sequel";
+        public const string ParentStory = "parent_story";
     }
 
     internal class Notion_Properties_Mapping
@@ -38,6 +43,7 @@ namespace Business_AnimeToNotion.Main_Integration
         public const string Episodes = "Episodes";
         public const string Studios = "Studios";
         public const string Genres = "Genres";
+        public const string Show_Hidden = "Show Hidden";
 
         //Minor properties
         public const string TV = "TV Show";
@@ -46,7 +52,7 @@ namespace Business_AnimeToNotion.Main_Integration
         public const string Special = "Special";
         public const string AnimeSaturn = "AnimeSaturn";
         public const string ToWatch = "To Watch";
-        public const string External = "external";
+        public const string External = "external"; 
     }
 
     internal class Notion_ExceptionMessages
@@ -59,15 +65,17 @@ namespace Business_AnimeToNotion.Main_Integration
         #region fields
 
         private readonly IConfiguration Configuration;
+        private readonly IMAL_Integration _malIntegration;
 
         #endregion
 
         private NotionClient Client { get; set; }
         private string DataBaseId { get; set; } = null;
 
-        public Notion_Integration(IConfiguration configuration)
+        public Notion_Integration(IConfiguration configuration, IMAL_Integration malIntegration)
         {
             Configuration = configuration;
+            _malIntegration = malIntegration;
 
             Client = NotionClientFactory.Create(new ClientOptions
             {
@@ -79,30 +87,17 @@ namespace Business_AnimeToNotion.Main_Integration
         {
             await Notion_GetDataBaseId();
 
-            //If a page with the same show title already exists, nothing is done
-            var checkAnimeDuplicate = await Client.Search.SearchAsync(new SearchParameters()
-            {
-                Filter = new SearchFilter() { Value = SearchObjectType.Page },
-                Query = animeModel.alternative_titles.en
-            });
+            await CoherenceChecks(animeModel);
 
-            if (checkAnimeDuplicate.Results.Count == 0)
+            try
             {
-                try
-                {
-                    PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(animeModel, DataBaseId);
-                    await Notion_CreateNewEntry(pagesCreateParameters);
-                }
-                catch(Exception ex)
-                {
-                    throw new Notion_Exception("Error: " + ex.Message);
-                }
-            }  
-            else
-            {
-                throw new Notion_Exception(Notion_ExceptionMessages.CreateNewEntryException.Replace("[title]", animeModel.alternative_titles.en));
+                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(animeModel, DataBaseId);
+                await Notion_CreateNewEntry(pagesCreateParameters);
             }
-
+            catch (Exception ex)
+            {
+                throw new Notion_Exception("Error: " + ex.Message);
+            }
         }
 
         #region Private
@@ -123,6 +118,60 @@ namespace Business_AnimeToNotion.Main_Integration
         private async Task Notion_CreateNewEntry(PagesCreateParameters pagesCreateParameters)
         {
             await Client.Pages.CreateAsync(pagesCreateParameters);
+        }
+
+        private async Task CoherenceChecks(MAL_AnimeModel animeModel)
+        {
+            ReplaceMissingTitle(animeModel);
+
+            await CheckForDuplicates(animeModel);
+
+            await SetShowHiddenMultiSeason(animeModel);
+        }
+
+        private async Task CheckForDuplicates(MAL_AnimeModel animeModel)
+        {
+            //If a page with the same show title already exists, nothing is done
+            var checkAnimeDuplicate = await Client.Search.SearchAsync(new SearchParameters()
+            {
+                Filter = new SearchFilter() { Value = SearchObjectType.Page },
+                Query = animeModel.alternative_titles.en
+            });
+
+            if(checkAnimeDuplicate.Results.Count > 0 )
+                throw new Notion_Exception(Notion_ExceptionMessages.CreateNewEntryException.Replace("[title]", animeModel.alternative_titles.en));
+        }
+
+        private void ReplaceMissingTitle(MAL_AnimeModel animeModel)
+        {
+            //Some show has not english name because it's the same as the original title
+            if (string.IsNullOrEmpty(animeModel.alternative_titles.en))
+                animeModel.alternative_titles.en = animeModel.title;
+        }
+
+        private async Task SetShowHiddenMultiSeason(MAL_AnimeModel animeModel)
+        {
+            int? prequelId = animeModel.related_anime
+                .SingleOrDefault(x => string.Equals(x.relation_type, MAL_Properties_Mapping.ParentStory) || string.Equals(x.relation_type, MAL_Properties_Mapping.Prequel))?
+                .node.id;
+
+            if (prequelId == null)
+                return;
+
+            var result = await _malIntegration.MAL_SearchAnimeByIdAsync(prequelId.Value);
+                        
+            var prequel = await Client.Search.SearchAsync(new SearchParameters()
+            {
+                Filter = new SearchFilter() { Value = SearchObjectType.Page },
+                Query = result.title
+            });
+
+            if (prequel.Results.Count > 0)
+            {
+                List<Notion.Client.Page> results = prequel.Results as List<Notion.Client.Page>;
+                Notion.Client.Page
+                animeModel.showHidden = prequel.Results.SingleOrDefault(x => x.)
+            }
         }
 
         private PagesCreateParameters ConvertMALResponseToNotionPage(MAL_AnimeModel animeModel, string databaseId)
@@ -228,6 +277,13 @@ namespace Business_AnimeToNotion.Main_Integration
                 RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = string.Join(", ", animeModel.genres.Select(x => x.name)) } } }
             };
             properties.Add(Notion_Properties_Mapping.Genres, Genres);
+
+            //Show Hidden
+            RichTextPropertyValue Show_Hidden = new RichTextPropertyValue()
+            {
+                RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = animeModel.showHidden ?? string.Empty } } }
+            };
+            properties.Add(Notion_Properties_Mapping.Show_Hidden, Show_Hidden);
 
             #endregion
 

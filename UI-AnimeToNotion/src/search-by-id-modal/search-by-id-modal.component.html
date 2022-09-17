@@ -104,8 +104,7 @@
                           The value should be the general name of the show by which all these records are grouped.
                           If left empty, by default the value used is the title of the show as written on MAL." [delayShow]="tooltipDelay">
     <div class="input-group" style="width: auto">
-      <input mdbInput [disabled]="multiSeasonInputDisabled"
-             type="text" class="form-control form-control-sm montserrat-font" aria-label="Example text with button addon" aria-describedby="button-addon1" placeholder="Multi Season Identifier" />
+      <input mdbInput [disabled]="multiSeasonInputDisabled" [(ngModel)]="multiSeasonIdentifier" type="text" class="form-control form-control-sm montserrat-font" aria-label="Example text with button addon" aria-describedby="button-addon1" placeholder="Multi Season Identifier" />
       <div *ngIf="multiSeasonEditBtn">
         <button (click)="editMultiSeasonId()" class="btn btn-outline-dark" type="button" id="button-addon1" mdbRipple rippleColor="dark" [disabled]="loading">
           <i class="fa-solid fa-pen-to-square"></i>
@@ -121,5 +120,7 @@
   <button type="button" mdbRipple class="btn btn-primary" (click)="modalRef.close()">
     Close
   </button>
-  <button type="button" mdbRipple class="btn btn-dark" [disabled]="loading">Add to Notion</button>
+  <button type="button" mdbRipple class="btn btn-dark" (click)="postAddToNotion(animeModel!, $event)" [disabled]="loading || multiSeasonCheckBtn">
+    <span>Add to Notion</span>
+  </button>
 </div>

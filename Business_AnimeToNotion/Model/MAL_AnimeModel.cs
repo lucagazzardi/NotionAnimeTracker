@@ -26,10 +26,12 @@ namespace Business_AnimeToNotion.Model
         public List<MAL_GeneralObject> genres { get; set; }
         public List<MAL_GeneralObject> studios { get; set; }
         public int num_episodes { get; set; } 
+        public List<MAL_RelatedShow> related_anime { get; set; }
 
         //Handled fields
         public string genresJoined { get; set; }
         public string studiosJoined { get; set; }
+        public string showHidden { get; set; } = null;
     }
 
     public class MAL_MainPicture
@@ -49,5 +51,19 @@ namespace Business_AnimeToNotion.Model
     {
         public int id { get; set; }
         public string name { get; set; }
+    }
+
+    public class MAL_RelatedShow
+    {
+        public MAL_RelatedAnime_Node node { get; set; }
+        public string relation_type { get; set; }
+        public string relation_type_formatter { get; set; }
+    }
+
+    public class MAL_RelatedAnime_Node
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public MAL_MainPicture main_picture { get; set; }
     }
 }

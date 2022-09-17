@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 import { MAL_AnimeModel } from '../model/MAL_AnimeModel';
 import { SearchByIdModalService } from './search-by-id-modal.service';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 @Component({
   selector: 'app-search-by-id-modal',
@@ -17,12 +18,14 @@ export class SearchByIdModalComponent implements OnInit {
   multiSeasonEditBtn: boolean = false;
   multiSeasonCheckBtn: boolean = false;
   multiSeasonInputDisabled: boolean = false;
+  multiSeasonIdentifier: string | null = null;
 
   tooltipDelay: number = 200;
   progressValue: number = 50;
   progressPercentage: string = "width: [value]%";
 
   loading: boolean = true;
+  addingLoading: boolean = false;
 
   constructor(private service: SearchByIdModalService, public modalRef: MdbModalRef<SearchByIdModalComponent>) {
 
@@ -32,6 +35,7 @@ export class SearchByIdModalComponent implements OnInit {
     this.multiSeasonEditBtn = true;
     this.multiSeasonCheckBtn = false;
     this.multiSeasonInputDisabled = true;
+    Notify.init({ position: 'center-top' });
 
     this.getShowById(this.id!);
   }
@@ -51,6 +55,26 @@ export class SearchByIdModalComponent implements OnInit {
           this.loading = false;
         }
     );    
+  }
+
+  postAddToNotion(show: MAL_AnimeModel, event: any) {
+    this.addingLoading = true;
+    show.showHidden = this.multiSeasonIdentifier !== "" ? this.multiSeasonIdentifier : null;
+    event.target.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+
+    this.service.postAddToNotion(show)
+      .subscribe(
+        () => {
+          Notify.success('"' + show.title + '" correctly sent to Notion');
+          event.target.innerHTML = '<span>Add to Notion</span>';
+          this.addingLoading = false;
+        },
+        error => {
+          Notify.failure(error.error);
+          event.target.innerHTML = '<span>Add to Notion</span>';
+          this.addingLoading = false;
+        }
+      )
   }
 
 

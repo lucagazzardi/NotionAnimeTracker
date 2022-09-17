@@ -16,7 +16,7 @@
         <th scope="col">Media</th>
         <th scope="col">Rating</th>
         <th scope="col">Episodes</th>
-        <th scope="col">Started Airing</th>
+        <th scope="col">Aired On</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -77,14 +77,14 @@
         </td>
         <td class="fw-bold" style="font-size:smaller">{{anime.mean}}</td>
         <td class="fw-bold" style="font-size:smaller">{{anime.num_episodes}}</td>
-        <td class="fw-bold" style="font-size:smaller">{{anime.start_date}}</td>
-        <td>
+        <td class="fw-bold" style="font-size: smaller; width: 11%">{{anime.start_date}}</td>
+        <td style="width:12%; text-align:center">
 
-          <span *ngIf="addingLoading" class="spinner-border spinner-border-sm"
+          <!--<span *ngIf="addingLoading" class="spinner-border spinner-border-sm btn-link"
                 role="status"
-                aria-hidden="true"></span>
+                aria-hidden="true"></span>-->
 
-          <button *ngIf="!addingLoading" type="button" class="btn btn-link btn-sm btn-rounded fw-bold" (click)="postAddToNotion(anime)">
+          <button type="button" class="btn btn-link btn-sm btn-rounded fw-bold" (click)="postAddToNotion(anime, $event)">
               Add
           </button>
         </td>
@@ -101,5 +101,4 @@
   <button type="button" mdbRipple class="btn btn-primary" (click)="modalRef.close()">
     Close
   </button>
-  <button type="button" mdbRipple class="btn btn-dark" [disabled]="loading">Add to Notion</button>
 </div>
