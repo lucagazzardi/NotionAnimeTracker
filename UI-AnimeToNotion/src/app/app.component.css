@@ -8,3 +8,15 @@
 .opacity-1 {
     opacity : 1;
 }
+
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: x-small
+}
+
+.montserrat-sm {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: xx-small
+}

@@ -2,10 +2,15 @@
 using Business_AnimeToNotion.Main_Integration.Interfaces;
 using Business_AnimeToNotion.Model;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using Notion.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -87,7 +92,7 @@ namespace Business_AnimeToNotion.Main_Integration
         {
             await Notion_GetDataBaseId();
 
-            await CoherenceChecks(animeModel);
+            await ConsistencyChecks(animeModel);
 
             try
             {
@@ -98,6 +103,72 @@ namespace Business_AnimeToNotion.Main_Integration
             {
                 throw new Notion_Exception("Error: " + ex.Message);
             }
+        }
+
+        public async Task<List<Notion_LatestAddedModel>> Notion_GetLatestAdded()
+        {
+            List<Notion_LatestAddedModel> result = new List<Notion_LatestAddedModel>();
+
+            await Notion_GetDataBaseId();
+
+            var sortedLastAdded = await Notion_GetSortedAdded();
+
+            foreach(var lastAdd in sortedLastAdded)
+            {
+                result.Add(MapNotionPageToLatestAdded(lastAdd, sortedLastAdded.IndexOf(lastAdd)));
+            }           
+
+            return result;
+        }
+
+        public async Task<Dictionary<string, string>> Notion_UpdateProperties(List<string> propertiesToUpate)
+        {
+            await Notion_GetDataBaseId();
+            PaginatedList<Page> retrievedNotionPages = null;
+            List<Page> toUpdate = new List<Page>();
+            string cursor = null;
+
+            Dictionary<string, string> differences = new Dictionary<string, string>();
+
+            // Retrieve the pages that need to be updated
+            do
+            {
+                retrievedNotionPages = await Client.Databases.QueryAsync(DataBaseId, new DatabasesQueryParameters()
+                {
+                    //Filter = new NumberFilter(Notion_Properties_Mapping.MAL_Id, equal: 268),
+                    StartCursor = cursor
+                });
+                cursor = retrievedNotionPages.NextCursor;
+                toUpdate.AddRange(retrievedNotionPages.Results);
+            }
+            while (retrievedNotionPages.HasMore);
+
+            //For every page, execute the update
+            foreach(var page in toUpdate)
+            {                
+                try
+                {
+                    int id = GetId(page).Value;
+                    var malShow = await GetFromMAL(id);
+
+                    differences.Add($"***** {id} - {GetTitle(page)} *****", "Starting");
+
+                    //Update only if there are differences
+                    Dictionary<string, PropertyValue> notionPropertiesDictionary = new Dictionary<string, PropertyValue>();
+                    Notion_UpdateProperties(page, malShow, propertiesToUpate, notionPropertiesDictionary, differences);                    
+
+                    if(notionPropertiesDictionary.Count > 0)
+                        await Client.Pages.UpdatePropertiesAsync(page.Id, notionPropertiesDictionary);
+
+                    differences.Add($"******* {GetTitle(page)} ******", "Finished");
+                }
+                catch
+                {
+                    differences.Add(GetTitle(page), "Error!");
+                }
+            }
+
+            return differences;
         }
 
         #region Private
@@ -120,22 +191,212 @@ namespace Business_AnimeToNotion.Main_Integration
             await Client.Pages.CreateAsync(pagesCreateParameters);
         }
 
-        private async Task CoherenceChecks(MAL_AnimeModel animeModel)
+        private async Task<List<Page>> Notion_GetSortedAdded()
+        {
+            var sortedLatestAdded = await Client.Databases.QueryAsync(DataBaseId, new DatabasesQueryParameters()
+            {
+                Sorts = new List<Sort>() { new Sort() { Timestamp = Timestamp.CreatedTime, Direction = Direction.Descending } },
+                PageSize = 3
+            });
+
+            return sortedLatestAdded.Results.Take(3).ToList();
+        }
+
+        private void Notion_UpdateProperties(Page toUpdate, MAL_AnimeModel showFrom, List<string> propertiesToUpate, Dictionary<string, PropertyValue> properties, Dictionary<string, string> differences)
+        {
+            foreach(var property in propertiesToUpate)
+            {
+                string newValue = string.Empty;
+                string oldValue = string.Empty;
+                switch (property)
+                { 
+                    #region Properties Building
+
+                    case Notion_Properties_Mapping.Name_English:
+
+                        newValue = string.IsNullOrEmpty(showFrom.alternative_titles.en) ? showFrom.title : showFrom.alternative_titles.en;
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+                        
+                        PropertyValue Name_English = new TitlePropertyValue()
+                        {
+                            Title = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = newValue } } }
+                        };
+                        properties.Add(Notion_Properties_Mapping.Name_English, Name_English);
+                        break;
+
+                    case Notion_Properties_Mapping.Name_Original:
+
+                        newValue = showFrom.title;
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        PropertyValue Name_Original = new RichTextPropertyValue()
+                        {
+                            RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = newValue } } }
+                        };
+                        properties.Add(Notion_Properties_Mapping.Name_Original, Name_Original);
+                        break;
+
+                    case Notion_Properties_Mapping.MAL_Rating:
+
+                        newValue = showFrom.mean.ToString();
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        PropertyValue MAL_Rating = new NumberPropertyValue()
+                        {
+                            Number = Double.Parse(newValue)
+                        };
+                        properties.Add(Notion_Properties_Mapping.MAL_Rating, MAL_Rating);
+                        break;
+
+                    case Notion_Properties_Mapping.Type:
+
+                        newValue = Property_Type(showFrom.media_type);
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        SelectPropertyValue Type = new SelectPropertyValue()
+                        {
+                            Select = new SelectOption() { Name = newValue }
+                        };
+                        properties.Add(Notion_Properties_Mapping.Type, Type);
+                        break;
+
+                    case Notion_Properties_Mapping.Episodes:
+
+                        newValue = showFrom.num_episodes.ToString();
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        NumberPropertyValue Episodes = new NumberPropertyValue()
+                        {
+                            Number = int.Parse(newValue)
+                        };
+                        properties.Add(Notion_Properties_Mapping.Episodes, Episodes);
+                        break;
+
+                    case Notion_Properties_Mapping.Genres:
+
+                        newValue = string.Join(", ", showFrom.genres.Select(x => x.name));
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        RichTextPropertyValue Genres = new RichTextPropertyValue()
+                        {
+                            RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = newValue } } }
+                        };
+                        properties.Add(Notion_Properties_Mapping.Genres, Genres);
+                        break;
+
+                    case Notion_Properties_Mapping.MAL_Id:
+
+                        newValue = showFrom.id.ToString();
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        NumberPropertyValue MAL_Id = new NumberPropertyValue()
+                        {
+                            Number = Double.Parse(newValue)
+                        };
+                        properties.Add(Notion_Properties_Mapping.MAL_Id, MAL_Id);
+                        break;
+
+                    case Notion_Properties_Mapping.MAL_Link:
+
+                        newValue = Property_MAL_Link(showFrom.id.ToString());
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        UrlPropertyValue MAL_Link = new UrlPropertyValue()
+                        {
+                            Url = newValue
+                        };
+                        properties.Add(Notion_Properties_Mapping.MAL_Link, MAL_Link);
+                        break;
+
+                    case Notion_Properties_Mapping.Studios:
+
+                        newValue = string.Join(", ", showFrom.studios.Select(x => x.name));
+                        oldValue = GetPropertyValue(toUpdate.Properties[property]);
+                        if (string.Equals(oldValue, newValue)) break;
+
+                        differences.Add(property, $"{oldValue} ---> {newValue}");
+
+                        RichTextPropertyValue Studios = new RichTextPropertyValue()
+                        {
+                            RichText = new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = newValue } } }
+                        };
+                        properties.Add(Notion_Properties_Mapping.Studios, Studios);
+                        break;
+
+                    #endregion
+                }
+            }
+        }
+
+        private string GetPropertyValue(PropertyValue propertyValue)
+        {
+            if (propertyValue is RichTextPropertyValue)
+            {
+                var richTextPropertyValue = propertyValue as RichTextPropertyValue;
+                return richTextPropertyValue.RichText[0].PlainText;
+            }
+            else if (propertyValue is TitlePropertyValue)
+            {
+                var titlePropertyValue = propertyValue as TitlePropertyValue;
+                return titlePropertyValue.Title[0].PlainText;
+            }
+            else if (propertyValue is NumberPropertyValue)
+            {
+                var numberPropertyValue = propertyValue as NumberPropertyValue;
+                return numberPropertyValue.Number.ToString();
+            }
+            else if (propertyValue is SelectPropertyValue)
+            {
+                var selectPropertyValue = propertyValue as SelectPropertyValue;
+                return selectPropertyValue.Select.Name;
+            }
+            else if (propertyValue is UrlPropertyValue)
+            {
+                var urlPropertyValue = propertyValue as UrlPropertyValue;
+                return urlPropertyValue.Url.ToString();
+            }
+            else return string.Empty;
+        } 
+
+        private async Task ConsistencyChecks(MAL_AnimeModel animeModel)
         {
             ReplaceMissingTitle(animeModel);
 
             await CheckForDuplicates(animeModel);
 
-            await SetShowHiddenMultiSeason(animeModel);
+            await SetMultiSeasonIdentifier(animeModel);
         }
 
         private async Task CheckForDuplicates(MAL_AnimeModel animeModel)
         {
-            //If a page with the same show title already exists, nothing is done
-            var checkAnimeDuplicate = await Client.Search.SearchAsync(new SearchParameters()
+            //If a page with the same show id already exists, nothing is done
+            var checkAnimeDuplicate = await Client.Databases.QueryAsync(DataBaseId, new DatabasesQueryParameters()
             {
-                Filter = new SearchFilter() { Value = SearchObjectType.Page },
-                Query = animeModel.alternative_titles.en
+                Filter = new NumberFilter(Notion_Properties_Mapping.MAL_Id, animeModel.id)
             });
 
             if(checkAnimeDuplicate.Results.Count > 0 )
@@ -144,33 +405,35 @@ namespace Business_AnimeToNotion.Main_Integration
 
         private void ReplaceMissingTitle(MAL_AnimeModel animeModel)
         {
-            //Some show has not english name because it's the same as the original title
+            //When english and original title match "alternative_titles.en" is empty
             if (string.IsNullOrEmpty(animeModel.alternative_titles.en))
                 animeModel.alternative_titles.en = animeModel.title;
         }
 
-        private async Task SetShowHiddenMultiSeason(MAL_AnimeModel animeModel)
+        private async Task SetMultiSeasonIdentifier(MAL_AnimeModel animeModel)
         {
-            int? prequelId = animeModel.related_anime
-                .SingleOrDefault(x => string.Equals(x.relation_type, MAL_Properties_Mapping.ParentStory) || string.Equals(x.relation_type, MAL_Properties_Mapping.Prequel))?
-                .node.id;
+            animeModel.showHidden = animeModel.alternative_titles.en;
 
-            if (prequelId == null)
-                return;
+            //If the show comes from the search by name, MAL doesn't populate the field "related_anime" so a new call is needed to recover that field
+            animeModel = animeModel.related_anime.Count == 0 ? await GetFromMAL(animeModel.id) : animeModel;
 
-            var result = await _malIntegration.MAL_SearchAnimeByIdAsync(prequelId.Value);
-                        
-            var prequel = await Client.Search.SearchAsync(new SearchParameters()
+            int? prequelId = GetPrequelId(animeModel);
+
+            //Recursive check to get the first show in a series
+            while(prequelId != null)
             {
-                Filter = new SearchFilter() { Value = SearchObjectType.Page },
-                Query = result.title
-            });
+                var prequel = await _malIntegration.MAL_SearchAnimeByIdAsync(prequelId.Value);
+                ReplaceMissingTitle(prequel);
+                animeModel.showHidden = prequel.alternative_titles.en;
+                prequelId = GetPrequelId(prequel);
+            }
 
-            if (prequel.Results.Count > 0)
+            //Internal method
+            int? GetPrequelId(MAL_AnimeModel animeModel)
             {
-                List<Notion.Client.Page> results = prequel.Results as List<Notion.Client.Page>;
-                Notion.Client.Page
-                animeModel.showHidden = prequel.Results.SingleOrDefault(x => x.)
+                return animeModel.related_anime?
+                    .SingleOrDefault(x => string.Equals(x.relation_type, MAL_Properties_Mapping.ParentStory) || string.Equals(x.relation_type, MAL_Properties_Mapping.Prequel))?
+                    .node.id;
             }
         }
 
@@ -293,6 +556,51 @@ namespace Business_AnimeToNotion.Main_Integration
                 Parent = new DatabaseParentInput() { DatabaseId = databaseId }
             };
             return result;
+        }
+
+        private Notion_LatestAddedModel MapNotionPageToLatestAdded(Page notionPage, int orderIndex)
+        {           
+
+            
+            Notion_LatestAddedModel result = new Notion_LatestAddedModel()
+            {
+                orderIndex = orderIndex,
+                title = GetTitle(notionPage),
+                cover = GetCover(notionPage),
+                createdTime = notionPage.CreatedTime.ToString("yyyy-MM-dd")
+            };
+
+            return result;
+        }
+
+        private string GetTitle(Page page)
+        {
+            PropertyValue nameOriginalPropertyValue = null; RichTextPropertyValue titleRichText = null;
+            page.Properties.TryGetValue(Notion_Properties_Mapping.Name_Original, out nameOriginalPropertyValue);
+            titleRichText = nameOriginalPropertyValue as RichTextPropertyValue;
+            return titleRichText.RichText[0].PlainText;
+        }
+
+        private int? GetId(Page page)
+        {
+            PropertyValue idPropValue = null; NumberPropertyValue id = null;
+            page.Properties.TryGetValue(Notion_Properties_Mapping.MAL_Id, out idPropValue);
+            id = idPropValue as NumberPropertyValue;
+            return Convert.ToInt32(id.Number);
+        }
+
+        private string GetCover(Page page)
+        {
+            PropertyValue coverPropertyValue = null; FilesPropertyValue filesProperty = null; ExternalFileWithName externalFile = null;
+            page.Properties.TryGetValue(Notion_Properties_Mapping.Cover, out coverPropertyValue);
+            filesProperty = coverPropertyValue as FilesPropertyValue;
+            externalFile = filesProperty.Files[0] as ExternalFileWithName;
+            return externalFile.External.Url;
+        }
+
+        private async Task<MAL_AnimeModel> GetFromMAL(int id)
+        {
+            return await _malIntegration.MAL_SearchAnimeByIdAsync(id);
         }
 
         #region MAL to Notion Properties Mapping

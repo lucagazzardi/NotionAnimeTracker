@@ -32,9 +32,6 @@ export class SearchByIdModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.multiSeasonEditBtn = true;
-    this.multiSeasonCheckBtn = false;
-    this.multiSeasonInputDisabled = true;
     Notify.init({ position: 'center-top' });
 
     this.getShowById(this.id!);
@@ -54,7 +51,7 @@ export class SearchByIdModalComponent implements OnInit {
           this.errorMessage = error;
           this.loading = false;
         }
-    );    
+      );
   }
 
   postAddToNotion(show: MAL_AnimeModel, event: any) {
@@ -74,23 +71,7 @@ export class SearchByIdModalComponent implements OnInit {
           event.target.innerHTML = '<span>Add to Notion</span>';
           this.addingLoading = false;
         }
-      )
-  }
-
-
-  //Multi Season Identifier Methods
-  editMultiSeasonId() {
-    this.multiSeasonEditBtn = false;
-    this.multiSeasonCheckBtn = true;
-
-    this.multiSeasonInputDisabled = false;
-  }
-
-  confirmMultiSeasonId() {
-    this.multiSeasonEditBtn = true;
-    this.multiSeasonCheckBtn = false;
-
-    this.multiSeasonInputDisabled = true;
+      );
   }
 
   remapMediaType(media_type: string) {

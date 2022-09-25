@@ -32,7 +32,6 @@ import { AppService } from './app.service';
     SearchByNameModule,
     HttpClientModule,
     NgxSkeletonLoaderModule
-
   ],
   providers: [AppService],
   bootstrap: [AppComponent],

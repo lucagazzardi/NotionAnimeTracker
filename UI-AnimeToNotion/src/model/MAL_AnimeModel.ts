@@ -45,12 +45,12 @@ export class MAL_MainPicture {
 }
 
 export class MAL_AlternativeTitle {
-  synonmys: string[];
+  synonyms: string[];
   en: string;
   ja: string;
 
-  constructor(synonmys: string[], en: string, ja: string) {
-    this.synonmys = synonmys;
+  constructor(synonyms: string[], en: string, ja: string) {
+    this.synonyms = synonyms;
     this.en = en;
     this.ja = ja;
   }

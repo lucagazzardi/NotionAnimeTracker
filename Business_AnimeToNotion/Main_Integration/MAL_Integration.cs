@@ -53,11 +53,16 @@ namespace Business_AnimeToNotion.Main_Integration
         {
             string result = Configuration["MAL_ApiConfig:MAL_BaseURL"];
 
+            // Join with query string space and substring to 80 maximum chars
+            searchTerm = string.Join("%20", searchTerm.Split(" "));
+            searchTerm = searchTerm.Length > 80 ? searchTerm.Substring(0, 79) : searchTerm;
+
+
             // QueryString build
             result += Configuration["MAL_ApiConfig:MAL_SearchAnime"];
             result += "?";
             result += Configuration["MAL_ApiConfig:MAL_SearchByName"];
-            result += string.Join("%20", searchTerm.Split(" "));
+            result += searchTerm;
             result += "&";
             result += Configuration["MAL_ApiConfig:MAL_NotionNeededFields"];
 

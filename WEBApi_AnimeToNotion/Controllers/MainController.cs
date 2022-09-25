@@ -70,5 +70,18 @@ namespace WEBApi_AnimeToNotion.Controllers
             }
             
         }
+
+        [HttpGet("notion/get/latestadded")]
+        public async Task<IActionResult> Notion_GetLatestAdded()
+        {
+            var result = await _notionIntegration.Notion_GetLatestAdded();
+            return Ok(result);
+        }
+
+        [HttpPost("notion/get/toupdate")]
+        public async Task<IActionResult> Notion_GetShowsToUpdate([FromBody] List<string> propertiesToUpdate )
+        {
+            return Ok(await _notionIntegration.Notion_UpdateProperties(propertiesToUpdate));
+        }
     }
 }

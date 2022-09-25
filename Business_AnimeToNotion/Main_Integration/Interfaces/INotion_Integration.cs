@@ -10,5 +10,9 @@ namespace Business_AnimeToNotion.Main_Integration.Interfaces
     public interface INotion_Integration
     {
         public Task Notion_CreateNewEntry(MAL_AnimeModel animeModel);
+
+        public Task<List<Notion_LatestAddedModel>> Notion_GetLatestAdded();
+
+        public Task<Dictionary<string, string>> Notion_UpdateProperties(List<string> propertiesToUpate);
     }
 }

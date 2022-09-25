@@ -99,24 +99,7 @@
 </div>
 
 
-<div class="modal-footer">
-  <div class="me-auto" mdbTooltip="Multi Season Identifier should be specified when one show consists in multiple records in Notion, like multiple seasons, special episodes or movies.
-                          The value should be the general name of the show by which all these records are grouped.
-                          If left empty, by default the value used is the title of the show as written on MAL." [delayShow]="tooltipDelay">
-    <div class="input-group" style="width: auto">
-      <input mdbInput [disabled]="multiSeasonInputDisabled" [(ngModel)]="multiSeasonIdentifier" type="text" class="form-control form-control-sm montserrat-font" aria-label="Example text with button addon" aria-describedby="button-addon1" placeholder="Multi Season Identifier" />
-      <div *ngIf="multiSeasonEditBtn">
-        <button (click)="editMultiSeasonId()" class="btn btn-outline-dark" type="button" id="button-addon1" mdbRipple rippleColor="dark" [disabled]="loading">
-          <i class="fa-solid fa-pen-to-square"></i>
-        </button>
-      </div>
-      <div *ngIf="multiSeasonCheckBtn">
-        <button (click)="confirmMultiSeasonId()" class="btn btn-outline-success" type="button" id="button-addon2" mdbRipple rippleColor="dark">
-          <i class="fa-solid fa-check"></i>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="modal-footer">  
   <button type="button" mdbRipple class="btn btn-primary" (click)="modalRef.close()">
     Close
   </button>

@@ -84,7 +84,7 @@
       margin-right: 8px;
     }
 
-  .card svg.material-icons path {
+  /*.card svg.material-icons path {
     fill: #888;
   }
 
@@ -146,7 +146,7 @@
 
   .card.card.highlight-card span {
     margin-left: 60px;
-  }
+  }*/
 
   svg#rocket {
     width: 80px;
@@ -343,10 +343,40 @@
 
 <div class="content" role="main">
 
+  <!--LATEST ADDS-->
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+
+    <div *ngFor="let latest of latestAdded" class="col" style="padding-top:0">
+      <div *ngIf="!loading" class="card w-75 h-100" style="width: 18rem;">
+        <img src="{{latest.cover}}" class="card-img-top" alt="{{latest.title}}" style="width:100%" />
+        <div class="card-body" style="padding: 1rem; text-align: center">
+          <p class="card-text montserrat">{{latest.title}}</p>
+        </div>
+        <div class="card-footer text-muted montserrat-sm">Added on {{latest.createdTime}}</div>
+      </div>
+    </div>
+
+    <div class="col" style="padding-top:0">
+      <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
+        <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
+      </div>
+    </div><div class="col" style="padding-top:0">
+      <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
+        <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
+      </div>
+    </div><div class="col" style="padding-top:0">
+      <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
+        <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="hr" style="margin-bottom:3rem"/>
 
   <!-- Resources -->
   <h1>Anime details to Notion</h1>
-  <p>Choose your preferred searching method:</p>  
+  <p>Choose your preferred searching method:</p>
 
   <hr class="hr">
 

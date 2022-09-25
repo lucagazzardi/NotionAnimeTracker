@@ -25,8 +25,8 @@ namespace Business_AnimeToNotion.Model
         public string media_type { get; set; }
         public List<MAL_GeneralObject> genres { get; set; }
         public List<MAL_GeneralObject> studios { get; set; }
-        public int num_episodes { get; set; } 
-        public List<MAL_RelatedShow> related_anime { get; set; }
+        public int num_episodes { get; set; }
+        public List<MAL_RelatedShow> related_anime { get; set; } = new List<MAL_RelatedShow>();
 
         //Handled fields
         public string genresJoined { get; set; }
@@ -42,7 +42,7 @@ namespace Business_AnimeToNotion.Model
 
     public class MAL_AlternativeTitle
     {
-        public string[] synonmys { get; set; }
+        public string[] synonyms { get; set; }
         public string en { get; set; }
         public string ja { get; set; }
     }
