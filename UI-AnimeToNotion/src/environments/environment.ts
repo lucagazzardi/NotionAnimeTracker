@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiKey: "https://localhost:44389/api/"
+  apiKey: "https://lg-animetonotion-appservice.azurewebsites.net"
 };
 
 /*
