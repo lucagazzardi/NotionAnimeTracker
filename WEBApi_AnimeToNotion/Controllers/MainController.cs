@@ -4,6 +4,7 @@ using Business_AnimeToNotion.Main_Integration.Interfaces;
 using Business_AnimeToNotion.Model;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,13 @@ namespace WEBApi_AnimeToNotion.Controllers
     {
         private readonly IMAL_Integration _malIntegration;
         private readonly INotion_Integration _notionIntegration;
+        private readonly IConfiguration Config;
 
-        public MainController(IMAL_Integration malIntegration, INotion_Integration notionIntegration)
+        public MainController(IMAL_Integration malIntegration, INotion_Integration notionIntegration, IConfiguration config)
         {
             _malIntegration = malIntegration;
             _notionIntegration = notionIntegration;
+            Config = config;
         }
 
         [HttpGet("mal/search/name")]
@@ -82,6 +85,16 @@ namespace WEBApi_AnimeToNotion.Controllers
         public async Task<IActionResult> Notion_GetShowsToUpdate([FromBody] List<string> propertiesToUpdate )
         {
             return Ok(await _notionIntegration.Notion_UpdateProperties(propertiesToUpdate));
+        }
+
+        [HttpGet("keyvault")]
+        public IActionResult GetKeyVault()
+        {
+            List<string> secrets = new List<string>();
+            secrets.Add(Config["Notion-AuthToken"]);
+            secrets.Add(Config["MAL-ApiKey"]);
+
+            return Ok(secrets);
         }
     }
 }

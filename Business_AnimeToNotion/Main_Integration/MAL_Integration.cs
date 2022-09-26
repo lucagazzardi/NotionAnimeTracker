@@ -28,7 +28,7 @@ namespace Business_AnimeToNotion.Main_Integration
 
             // Add MAL Secret Api Key as header
             if(!StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Contains(Configuration["MAL_ApiConfig:MAL_Header"]))
-                StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Add(Configuration["MAL_ApiConfig:MAL_Header"], Configuration["MAL_ApiConfig:MAL_ApiKey"]);
+                StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Add(Configuration["MAL_ApiConfig:MAL_Header"], Configuration["MAL-ApiKey"]);
         }
 
         public async Task<List<MAL_AnimeModel>> MAL_SearchAnimeByNameAsync(string searchTerm)

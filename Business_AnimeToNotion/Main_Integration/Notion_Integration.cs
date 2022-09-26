@@ -84,7 +84,7 @@ namespace Business_AnimeToNotion.Main_Integration
 
             Client = NotionClientFactory.Create(new ClientOptions
             {
-                AuthToken = Configuration["Notion_ApiConfig:Notion_AuthToken"]
+                AuthToken = Configuration["Notion-AuthToken"]
             });
         }
 
