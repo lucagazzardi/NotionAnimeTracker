@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiKey: "https://lg-animetonotion-appservice.azurewebsites.net/"
+  apiKey: "https://lg-animetonotion-appservice.azurewebsites.net/api/"
 };
