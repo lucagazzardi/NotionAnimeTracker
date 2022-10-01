@@ -63,6 +63,9 @@ namespace Business_AnimeToNotion.Main_Integration
     internal class Notion_ExceptionMessages
     {
         public const string CreateNewEntryException = "Error: \"[title]\" is already present in the Notion Database";
+        public const string MultiSeasonIdentifierException = "Error: couldn't retrieve parent show for \"[title]\"";
+        public const string GetLatestAdded = "Error: failed latest added retrieval";
+        public const string UpdatePropertiesException = "Error: properties update failed";
     }
 
     public class Notion_Integration : INotion_Integration
@@ -92,11 +95,11 @@ namespace Business_AnimeToNotion.Main_Integration
         {
             await Notion_GetDataBaseId();
 
-            await ConsistencyChecks(animeModel);
+            var result = await ConsistencyChecks(animeModel);
 
             try
             {
-                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(animeModel, DataBaseId);
+                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(result, DataBaseId);
                 await Notion_CreateNewEntry(pagesCreateParameters);
             }
             catch (Exception ex)
@@ -111,12 +114,19 @@ namespace Business_AnimeToNotion.Main_Integration
 
             await Notion_GetDataBaseId();
 
-            var sortedLastAdded = await Notion_GetSortedAdded();
-
-            foreach(var lastAdd in sortedLastAdded)
+            try
             {
-                result.Add(MapNotionPageToLatestAdded(lastAdd, sortedLastAdded.IndexOf(lastAdd)));
-            }           
+                var sortedLastAdded = await Notion_GetSortedAdded();
+
+                foreach (var lastAdd in sortedLastAdded)
+                {
+                    result.Add(MapNotionPageToLatestAdded(lastAdd, sortedLastAdded.IndexOf(lastAdd)));
+                }
+            }
+            catch
+            {
+                throw new Notion_Exception(Notion_ExceptionMessages.GetLatestAdded);
+            }    
 
             return result;
         }
@@ -124,52 +134,77 @@ namespace Business_AnimeToNotion.Main_Integration
         public async Task<Dictionary<string, string>> Notion_UpdateProperties(List<string> propertiesToUpate)
         {
             await Notion_GetDataBaseId();
-            PaginatedList<Page> retrievedNotionPages = null;
-            List<Page> toUpdate = new List<Page>();
-            string cursor = null;
 
             Dictionary<string, string> differences = new Dictionary<string, string>();
 
-            // Retrieve the pages that need to be updated
-            do
+            try
             {
-                retrievedNotionPages = await Client.Databases.QueryAsync(DataBaseId, new DatabasesQueryParameters()
+                var toUpdate = await RetrieveAllPages(DataBaseId);
+
+                //For every page, execute the update
+                foreach (var page in toUpdate)
                 {
-                    //Filter = new NumberFilter(Notion_Properties_Mapping.MAL_Id, equal: 268),
-                    StartCursor = cursor
-                });
-                cursor = retrievedNotionPages.NextCursor;
-                toUpdate.AddRange(retrievedNotionPages.Results);
-            }
-            while (retrievedNotionPages.HasMore);
+                    try
+                    {
+                        int id = GetId(page).Value;
+                        var malShow = await GetFromMAL(id);
 
-            //For every page, execute the update
-            foreach(var page in toUpdate)
-            {                
-                try
-                {
-                    int id = GetId(page).Value;
-                    var malShow = await GetFromMAL(id);
+                        differences.Add($"***** {id} - {GetTitle(page)} *****", "Starting");
 
-                    differences.Add($"***** {id} - {GetTitle(page)} *****", "Starting");
+                        //Update only if there are differences
+                        Dictionary<string, PropertyValue> notionPropertiesDictionary = new Dictionary<string, PropertyValue>();
+                        Notion_UpdateProperties(page, malShow, propertiesToUpate, notionPropertiesDictionary, differences);
 
-                    //Update only if there are differences
-                    Dictionary<string, PropertyValue> notionPropertiesDictionary = new Dictionary<string, PropertyValue>();
-                    Notion_UpdateProperties(page, malShow, propertiesToUpate, notionPropertiesDictionary, differences);                    
+                        if (notionPropertiesDictionary.Count > 0)
+                            await Client.Pages.UpdatePropertiesAsync(page.Id, notionPropertiesDictionary);
 
-                    if(notionPropertiesDictionary.Count > 0)
-                        await Client.Pages.UpdatePropertiesAsync(page.Id, notionPropertiesDictionary);
-
-                    differences.Add($"******* {GetTitle(page)} ******", "Finished");
-                }
-                catch
-                {
-                    differences.Add(GetTitle(page), "Error!");
+                        differences.Add($"******* {GetTitle(page)} ******", "Finished");
+                    }
+                    catch
+                    {
+                        differences.Add(GetTitle(page), "Error!");
+                    }
                 }
             }
+            catch
+            {
+                throw new Notion_Exception(Notion_ExceptionMessages.UpdatePropertiesException);
+            }
+
+            
 
             return differences;
         }
+
+        #region Demo
+
+        public async Task<List<Notion_RatingsUpdate>> GetRatingsToUpdate()
+        {
+            List<Notion_RatingsUpdate> result = new List<Notion_RatingsUpdate>();
+            await Notion_GetDataBaseId();
+
+            var toUpdate = await RetrieveAllPages(DataBaseId);
+
+            foreach(var page in toUpdate)
+            {
+                var MALShow = await GetFromMAL(GetId(page).Value);
+
+                decimal currentRating = GetRating(page);
+
+                if (MALShow.mean != currentRating)
+                    result.Add(new Notion_RatingsUpdate()
+                    {
+                        title = GetTitle(page),
+                        oldRating = currentRating,
+                        newRating = MALShow.mean
+                    });
+            }
+
+
+            return result;
+        }
+
+        #endregion
 
         #region Private
 
@@ -382,13 +417,13 @@ namespace Business_AnimeToNotion.Main_Integration
             else return string.Empty;
         } 
 
-        private async Task ConsistencyChecks(MAL_AnimeModel animeModel)
+        private async Task<MAL_AnimeModel> ConsistencyChecks(MAL_AnimeModel animeModel)
         {
             ReplaceMissingTitle(animeModel);
 
             await CheckForDuplicates(animeModel);
 
-            await SetMultiSeasonIdentifier(animeModel);
+            return await SetMultiSeasonIdentifier(animeModel);
         }
 
         private async Task CheckForDuplicates(MAL_AnimeModel animeModel)
@@ -410,23 +445,33 @@ namespace Business_AnimeToNotion.Main_Integration
                 animeModel.alternative_titles.en = animeModel.title;
         }
 
-        private async Task SetMultiSeasonIdentifier(MAL_AnimeModel animeModel)
+        private async Task<MAL_AnimeModel> SetMultiSeasonIdentifier(MAL_AnimeModel animeModel)
         {
             animeModel.showHidden = animeModel.alternative_titles.en;
 
             //If the show comes from the search by name, MAL doesn't populate the field "related_anime" so a new call is needed to recover that field
             animeModel = animeModel.related_anime.Count == 0 ? await GetFromMAL(animeModel.id) : animeModel;
+            ReplaceMissingTitle(animeModel);
 
-            int? prequelId = GetPrequelId(animeModel);
-
-            //Recursive check to get the first show in a series
-            while(prequelId != null)
+            try
             {
-                var prequel = await _malIntegration.MAL_SearchAnimeByIdAsync(prequelId.Value);
-                ReplaceMissingTitle(prequel);
-                animeModel.showHidden = prequel.alternative_titles.en;
-                prequelId = GetPrequelId(prequel);
+                int? prequelId = GetPrequelId(animeModel);
+
+                //Recursive check to get the first show in a series
+                while (prequelId != null)
+                {
+                    var prequel = await _malIntegration.MAL_SearchAnimeByIdAsync(prequelId.Value);
+                    ReplaceMissingTitle(prequel);
+                    animeModel.showHidden = prequel.alternative_titles.en;
+                    prequelId = GetPrequelId(prequel);
+                }
             }
+            catch
+            {
+                throw new Notion_Exception(Notion_ExceptionMessages.MultiSeasonIdentifierException.Replace("[title]", animeModel.alternative_titles.en));
+            }
+
+            return animeModel;
 
             //Internal method
             int? GetPrequelId(MAL_AnimeModel animeModel)
@@ -435,6 +480,27 @@ namespace Business_AnimeToNotion.Main_Integration
                     .SingleOrDefault(x => string.Equals(x.relation_type, MAL_Properties_Mapping.ParentStory) || string.Equals(x.relation_type, MAL_Properties_Mapping.Prequel))?
                     .node.id;
             }
+        }
+
+        private async Task<List<Page>> RetrieveAllPages(string DataBaseId)
+        {
+            List<Page> result = new List<Page>();
+            PaginatedList<Page> retrievedNotionPages = null;
+            string cursor = null;
+            // Retrieve the pages that need to be updated
+            do
+            {
+                retrievedNotionPages = await Client.Databases.QueryAsync(DataBaseId, new DatabasesQueryParameters()
+                {
+                    //Filter = new NumberFilter(Notion_Properties_Mapping.MAL_Id, equal: 268),
+                    StartCursor = cursor
+                });
+                cursor = retrievedNotionPages.NextCursor;
+                result.AddRange(retrievedNotionPages.Results);
+            }
+            while (retrievedNotionPages.HasMore);
+
+            return result;
         }
 
         private PagesCreateParameters ConvertMALResponseToNotionPage(MAL_AnimeModel animeModel, string databaseId)
@@ -559,9 +625,7 @@ namespace Business_AnimeToNotion.Main_Integration
         }
 
         private Notion_LatestAddedModel MapNotionPageToLatestAdded(Page notionPage, int orderIndex)
-        {           
-
-            
+        {  
             Notion_LatestAddedModel result = new Notion_LatestAddedModel()
             {
                 orderIndex = orderIndex,
@@ -596,6 +660,14 @@ namespace Business_AnimeToNotion.Main_Integration
             filesProperty = coverPropertyValue as FilesPropertyValue;
             externalFile = filesProperty.Files[0] as ExternalFileWithName;
             return externalFile.External.Url;
+        }
+
+        private decimal GetRating(Page page)
+        {
+            PropertyValue ratingPropValue = null; NumberPropertyValue rating = null;
+            page.Properties.TryGetValue(Notion_Properties_Mapping.MAL_Rating, out ratingPropValue);
+            rating = ratingPropValue as NumberPropertyValue;
+            return Convert.ToDecimal(rating.Number);
         }
 
         private async Task<MAL_AnimeModel> GetFromMAL(int id)

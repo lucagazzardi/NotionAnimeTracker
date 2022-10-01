@@ -5,6 +5,7 @@ using Business_AnimeToNotion.Model;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,19 +20,26 @@ namespace WEBApi_AnimeToNotion.Controllers
     {
         private readonly IMAL_Integration _malIntegration;
         private readonly INotion_Integration _notionIntegration;
-        private readonly IConfiguration Config;
 
-        public MainController(IMAL_Integration malIntegration, INotion_Integration notionIntegration, IConfiguration config)
+        public MainController(IMAL_Integration malIntegration, INotion_Integration notionIntegration)
         {
             _malIntegration = malIntegration;
             _notionIntegration = notionIntegration;
-            Config = config;
         }
 
         [HttpGet("mal/search/name")]
         public async Task<IActionResult> MAL_SearchAnime([FromQuery] string searchTerm)
         {
-            var foundAnimeList = await _malIntegration.MAL_SearchAnimeByNameAsync(searchTerm);
+            List<MAL_AnimeModel> foundAnimeList = new List<MAL_AnimeModel>();
+            try
+            {
+                foundAnimeList = await _malIntegration.MAL_SearchAnimeByNameAsync(searchTerm);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Ok(foundAnimeList);
         }
 
@@ -70,31 +78,37 @@ namespace WEBApi_AnimeToNotion.Controllers
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
-            
+            }            
         }
 
         [HttpGet("notion/get/latestadded")]
         public async Task<IActionResult> Notion_GetLatestAdded()
         {
-            var result = await _notionIntegration.Notion_GetLatestAdded();
+            List<Notion_LatestAddedModel> result = new List<Notion_LatestAddedModel>();
+
+            try
+            {
+                result = await _notionIntegration.Notion_GetLatestAdded();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Ok(result);
         }
 
         [HttpPost("notion/get/toupdate")]
         public async Task<IActionResult> Notion_GetShowsToUpdate([FromBody] List<string> propertiesToUpdate )
         {
-            return Ok(await _notionIntegration.Notion_UpdateProperties(propertiesToUpdate));
-        }
-
-        [HttpGet("keyvault")]
-        public IActionResult GetKeyVault()
-        {
-            List<string> secrets = new List<string>();
-            secrets.Add(Config["Notion-AuthToken"]);
-            secrets.Add(Config["MAL-ApiKey"]);
-
-            return Ok(secrets);
+            try
+            {
+                return Ok(await _notionIntegration.Notion_UpdateProperties(propertiesToUpdate));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

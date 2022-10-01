@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Business_AnimeToNotion.Main_Integration.Exceptions;
 
 namespace Business_AnimeToNotion.Main_Integration
 {
@@ -21,6 +22,12 @@ namespace Business_AnimeToNotion.Main_Integration
         private readonly IConfiguration Configuration;
 
         #endregion
+
+        internal class MAL_ExceptionMessages
+        {
+            public const string SearchByNameException = "Error: couldn't find shows with input \"[searchTerm]\"";
+            public const string SearchByIdException = "Error: show with id \"[id]\" not found";
+        }
 
         public MAL_Integration(IConfiguration configuration)
         {
@@ -33,16 +40,34 @@ namespace Business_AnimeToNotion.Main_Integration
 
         public async Task<List<MAL_AnimeModel>> MAL_SearchAnimeByNameAsync(string searchTerm)
         {
-            var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchByName(searchTerm));
-            List<MAL_AnimeModel> result = DeserializeResponseList(httpResponse);
+            List<MAL_AnimeModel> result = new List<MAL_AnimeModel>();
+            try
+            {
+                var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchByName(searchTerm));
+                result = DeserializeResponseList(httpResponse);
+            }
+            catch
+            {
+                throw new MAL_Exception(MAL_ExceptionMessages.SearchByNameException.Replace("[searchTerm]", searchTerm));
+            }
+            
 
             return result;
         }
 
         public async Task<MAL_AnimeModel> MAL_SearchAnimeByIdAsync(int id)
         {
-            var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchById(id));
-            MAL_AnimeModel result = DeserializeResponse(httpResponse);
+            MAL_AnimeModel result = null;
+
+            try
+            {
+                var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchById(id));
+                result = DeserializeResponse(httpResponse);
+            }
+            catch
+            {
+                throw new MAL_Exception(MAL_ExceptionMessages.SearchByIdException.Replace("[id]", id.ToString()));
+            }
 
             return result;
         }

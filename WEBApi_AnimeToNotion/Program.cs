@@ -23,11 +23,14 @@ namespace WEBApi_AnimeToNotion
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
+                    if (context.HostingEnvironment.IsProduction())
+                    {
                         var builtConfig = config.Build();
                         var secretClient = new SecretClient(
                             new Uri($"https://{builtConfig["KeyVaultName"]}.vault.azure.net/"),
                             new DefaultAzureCredential());
                         config.AddAzureKeyVault(secretClient, new KeyVaultSecretManager());
+                    }
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
