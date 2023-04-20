@@ -15,6 +15,6 @@ namespace Business_AnimeToNotion.Main_Integration.Interfaces
 
         public Task<Dictionary<string, string>> Notion_UpdateProperties(List<string> propertiesToUpate);
 
-        public Task<List<Notion_RatingsUpdate>> GetRatingsToUpdate();
+        public Task<List<Notion_RatingsUpdate>> Notion_GetRatingsToUpdate();
     }
 }

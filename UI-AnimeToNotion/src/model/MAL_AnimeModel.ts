@@ -3,7 +3,7 @@ export class MAL_AnimeModel {
   title: string;
   main_picture: MAL_MainPicture;
   alternative_titles: MAL_AlternativeTitle;
-  mean: number;
+  mean: number | null;
   start_date: string;
   media_type: string;
   genres: MAL_GeneralObject[];
@@ -16,7 +16,7 @@ export class MAL_AnimeModel {
   showHidden: string | null;
   
 
-  constructor(id: string, title: string, main_picture: MAL_MainPicture, alternative_titles: MAL_AlternativeTitle, mean: number, start_date: string, media_type: string, genres: MAL_GeneralObject[], studios: MAL_GeneralObject[], num_episodes: number, genresJoined: string, studiosJoined: string, showHidden: string | null, related_anime: MAL_RelatedShow[]) {
+  constructor(id: string, title: string, main_picture: MAL_MainPicture, alternative_titles: MAL_AlternativeTitle, mean: number | null, start_date: string, media_type: string, genres: MAL_GeneralObject[], studios: MAL_GeneralObject[], num_episodes: number, genresJoined: string, studiosJoined: string, showHidden: string | null, related_anime: MAL_RelatedShow[]) {
     this.id = id;
     this.title = title;
     this.main_picture = main_picture;

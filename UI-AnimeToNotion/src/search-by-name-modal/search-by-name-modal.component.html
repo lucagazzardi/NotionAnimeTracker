@@ -75,9 +75,9 @@
         <td>
           <span [ngClass]="remapBadgeColor(anime.media_type)" class="badge rounded-pill d-inline">{{remapMediaType(anime.media_type)}}</span>
         </td>
-        <td class="fw-bold" style="font-size:smaller">{{anime.mean}}</td>
-        <td class="fw-bold" style="font-size:smaller">{{anime.num_episodes}}</td>
-        <td class="fw-bold" style="font-size: smaller; width: 11%">{{anime.start_date}}</td>
+        <td class="fw-bold" style="font-size:smaller">{{anime.mean !== 0 ? anime.mean : "N/A"}}</td>
+        <td class="fw-bold" style="font-size:smaller">{{animeModel?.num_episodes !== 0 ? animeModel?.num_episodes : "N/A"}}</td>
+        <td class="fw-bold" style="font-size: smaller; width: 11%">{{animeModel?.start_date !== null ? animeModel?.start_date : "Not available" }}</td>
         <td style="width:12%; text-align:center">
 
           <!--<span *ngIf="addingLoading" class="spinner-border spinner-border-sm btn-link"

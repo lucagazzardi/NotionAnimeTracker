@@ -48,7 +48,7 @@
       <div class="d-flex">
         <div [hidden]="loading" style="margin-bottom: 0.5rem" class="flex-fill">
           <p class="type">Rating</p>
-          <p class="value">{{animeModel?.mean}}</p>
+          <p class="value">{{animeModel?.mean !== 0 ? animeModel?.mean : "N/A"}}</p>
 
           <div [hidden]="loading" class="progress">
             <div class="progress-bar bg-success" role="progressbar" [attr.aria-valuenow]="progressValue" [style]="progressPercentage" aria-valuemin="0" aria-valuemax="100"></div>
@@ -80,11 +80,11 @@
     </div>
     <div [hidden]="loading" style="margin-bottom: 0.5rem" class="flex-fill">
       <p class="type">Started Airing</p>
-      <p class="value">{{animeModel?.start_date}}</p>
+      <p class="value">{{animeModel?.start_date !== null ? animeModel?.start_date : "Not available" }}</p>
     </div>
     <div [hidden]="loading" style="margin-bottom: 0.5rem" class="flex-fill">
       <p class="type">Episodes</p>
-      <p class="value">{{animeModel?.num_episodes}}</p>
+      <p class="value">{{animeModel?.num_episodes !== 0 ? animeModel?.num_episodes : "N/A"}}</p>
     </div>
 
   </div>

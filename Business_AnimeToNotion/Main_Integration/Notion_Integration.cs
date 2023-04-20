@@ -1,6 +1,8 @@
-﻿using Business_AnimeToNotion.Main_Integration.Exceptions;
+﻿using Business_AnimeToNotion.Common;
+using Business_AnimeToNotion.Main_Integration.Exceptions;
 using Business_AnimeToNotion.Main_Integration.Interfaces;
 using Business_AnimeToNotion.Model;
+using Business_AnimeToNotion.Profile.AutoMapperConfig;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using Notion.Client;
@@ -99,7 +101,7 @@ namespace Business_AnimeToNotion.Main_Integration
 
             try
             {
-                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage(result, DataBaseId);
+                PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage_V2(result, DataBaseId);
                 await Notion_CreateNewEntry(pagesCreateParameters);
             }
             catch (Exception ex)
@@ -178,7 +180,7 @@ namespace Business_AnimeToNotion.Main_Integration
 
         #region Demo
 
-        public async Task<List<Notion_RatingsUpdate>> GetRatingsToUpdate()
+        public async Task<List<Notion_RatingsUpdate>> Notion_GetRatingsToUpdate()
         {
             List<Notion_RatingsUpdate> result = new List<Notion_RatingsUpdate>();
             await Notion_GetDataBaseId();
@@ -294,7 +296,7 @@ namespace Business_AnimeToNotion.Main_Integration
 
                     case Notion_Properties_Mapping.Type:
 
-                        newValue = Property_Type(showFrom.media_type);
+                        newValue = MAL_NotionUtility.Property_Type(showFrom.media_type);
                         oldValue = GetPropertyValue(toUpdate.Properties[property]);
                         if (string.Equals(oldValue, newValue)) break;
 
@@ -354,7 +356,7 @@ namespace Business_AnimeToNotion.Main_Integration
 
                     case Notion_Properties_Mapping.MAL_Link:
 
-                        newValue = Property_MAL_Link(showFrom.id.ToString());
+                        newValue = MAL_NotionUtility.Property_MAL_Link(showFrom.id.ToString());
                         oldValue = GetPropertyValue(toUpdate.Properties[property]);
                         if (string.Equals(oldValue, newValue)) break;
 
@@ -477,7 +479,7 @@ namespace Business_AnimeToNotion.Main_Integration
             int? GetPrequelId(MAL_AnimeModel animeModel)
             {
                 return animeModel.related_anime?
-                    .SingleOrDefault(x => string.Equals(x.relation_type, MAL_Properties_Mapping.ParentStory) || string.Equals(x.relation_type, MAL_Properties_Mapping.Prequel))?
+                    .FirstOrDefault(x => string.Equals(x.relation_type, MAL_Properties_Mapping.ParentStory) || string.Equals(x.relation_type, MAL_Properties_Mapping.Prequel))?
                     .node.id;
             }
         }
@@ -503,6 +505,7 @@ namespace Business_AnimeToNotion.Main_Integration
             return result;
         }
 
+        [Obsolete("This method is obsolete. Use ConvertMALResponseToNotionPage_V2 instead.")]
         private PagesCreateParameters ConvertMALResponseToNotionPage(MAL_AnimeModel animeModel, string databaseId)
         {
             Dictionary<string, PropertyValue> properties = new Dictionary<string, PropertyValue>();
@@ -524,11 +527,14 @@ namespace Business_AnimeToNotion.Main_Integration
             properties.Add(Notion_Properties_Mapping.Name_Original, Name_Original);
 
             //MAL Rating
-            NumberPropertyValue MAL_Rating = new NumberPropertyValue()
+            if (animeModel.mean != 0)
             {
-                Number = Double.Parse(animeModel.mean.ToString())
-            };
-            properties.Add(Notion_Properties_Mapping.MAL_Rating, MAL_Rating);
+                NumberPropertyValue MAL_Rating = new NumberPropertyValue()
+                {
+                    Number = Double.Parse(animeModel.mean.ToString())
+                };
+                properties.Add(Notion_Properties_Mapping.MAL_Rating, MAL_Rating);
+            }
 
             //Next To Watch
             CheckboxPropertyValue Next_To_Watch = new CheckboxPropertyValue()
@@ -547,7 +553,7 @@ namespace Business_AnimeToNotion.Main_Integration
             //Type
             SelectPropertyValue Type = new SelectPropertyValue()
             {
-                Select = new SelectOption() { Name = Property_Type(animeModel.media_type) }
+                Select = new SelectOption() { Name = MAL_NotionUtility.Property_Type(animeModel.media_type) }
             };
             properties.Add(Notion_Properties_Mapping.Type, Type);
 
@@ -558,12 +564,15 @@ namespace Business_AnimeToNotion.Main_Integration
             };
             properties.Add(Notion_Properties_Mapping.Watched, Watched);
 
-            //Started Airing
-            DatePropertyValue Started_Airing = new DatePropertyValue()
+            if (animeModel.start_date != null)
             {
-                Date = new Date() { Start = DateTime.Parse(animeModel.start_date) }
-            };
-            properties.Add(Notion_Properties_Mapping.Started_Airing, Started_Airing);
+                //Started Airing
+                DatePropertyValue Started_Airing = new DatePropertyValue()
+                {
+                    Date = new Date() { Start = DateTime.Parse(animeModel.start_date) }
+                };
+                properties.Add(Notion_Properties_Mapping.Started_Airing, Started_Airing);
+            }
 
             //Cover
             FilesPropertyValue Cover = new FilesPropertyValue()
@@ -582,16 +591,19 @@ namespace Business_AnimeToNotion.Main_Integration
             //MAL Link
             UrlPropertyValue MAL_Link = new UrlPropertyValue()
             {
-                Url = Property_MAL_Link(animeModel.id.ToString())
+                Url = MAL_NotionUtility.Property_MAL_Link(animeModel.id.ToString())
             };
             properties.Add(Notion_Properties_Mapping.MAL_Link, MAL_Link);
 
-            //Episodes
-            NumberPropertyValue Episodes = new NumberPropertyValue()
+            if (animeModel.num_episodes != 0)
             {
-                Number = animeModel.num_episodes
-            };
-            properties.Add(Notion_Properties_Mapping.Episodes, Episodes);
+                //Episodes
+                NumberPropertyValue Episodes = new NumberPropertyValue()
+                {
+                    Number = animeModel.num_episodes
+                };
+                properties.Add(Notion_Properties_Mapping.Episodes, Episodes);
+            }
 
             //Studios
             RichTextPropertyValue Studios = new RichTextPropertyValue()
@@ -615,6 +627,18 @@ namespace Business_AnimeToNotion.Main_Integration
             properties.Add(Notion_Properties_Mapping.Show_Hidden, Show_Hidden);
 
             #endregion
+
+            PagesCreateParameters result = new PagesCreateParameters()
+            {
+                Properties = properties,
+                Parent = new DatabaseParentInput() { DatabaseId = databaseId }
+            };
+            return result;
+        }
+
+        private PagesCreateParameters ConvertMALResponseToNotionPage_V2(MAL_AnimeModel animeModel, string databaseId)
+        {
+            Dictionary<string, PropertyValue> properties = MappingHandler.Mapper.Map<Dictionary<string, PropertyValue>>(animeModel);            
 
             PagesCreateParameters result = new PagesCreateParameters()
             {
@@ -674,32 +698,6 @@ namespace Business_AnimeToNotion.Main_Integration
         {
             return await _malIntegration.MAL_SearchAnimeByIdAsync(id);
         }
-
-        #region MAL to Notion Properties Mapping
-
-        private string Property_Type(string MAL_Type)
-        {
-            switch (MAL_Type)
-            {
-                case MAL_Properties_Mapping.TV:
-                    return Notion_Properties_Mapping.TV;
-                case MAL_Properties_Mapping.Movie:
-                    return Notion_Properties_Mapping.Movie;
-                case MAL_Properties_Mapping.Special:
-                    return Notion_Properties_Mapping.Special;
-                case MAL_Properties_Mapping.OVA:
-                    return Notion_Properties_Mapping.OVA;
-                default:
-                    return Notion_Properties_Mapping.TV;
-            }
-        }
-
-        private string Property_MAL_Link(string MAL_Id)
-        {
-            return $"{MAL_Properties_Mapping.Base_MAL_URL}{MAL_Id}";
-        }
-
-        #endregion
 
         #endregion
     }

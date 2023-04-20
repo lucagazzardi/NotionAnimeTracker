@@ -32,7 +32,7 @@ namespace WEBApi_AnimeToNotion.Controllers
             List<Notion_RatingsUpdate> result = new List<Notion_RatingsUpdate>();
             try
             {
-                result = await _notionIntegration.GetRatingsToUpdate();
+                result = await _notionIntegration.Notion_GetRatingsToUpdate();
             }
             catch (Exception ex)
             {
