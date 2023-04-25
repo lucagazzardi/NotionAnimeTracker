@@ -72,7 +72,7 @@ namespace AzFunctions_AnimeToNotion
                 var differences = CheckDifferences(MALEntry, notionEntry);
 
                 // Update if there are differences
-                await UpdateItem(MALEntry.title, differences, notionEntry, log);                    
+                await UpdateItem(MALEntry.title, differences, notionEntry, log);
             }
         }
 

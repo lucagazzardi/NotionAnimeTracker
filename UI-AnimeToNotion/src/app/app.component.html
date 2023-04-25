@@ -1,429 +1,111 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<style>
-  :host {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 8px 0;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  .spacer {
-    flex: 1;
-  }
-
-  .toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: #1976d2;
-    color: white;
-    font-weight: 600;
-  }
-
-    .toolbar img {
-      margin: 0 16px;
-    }
-
-    .toolbar #twitter-logo {
-      height: 40px;
-      margin: 0 8px;
-    }
-
-    .toolbar #youtube-logo {
-      height: 40px;
-      margin: 0 16px;
-    }
-
-      .toolbar #twitter-logo:hover,
-      .toolbar #youtube-logo:hover {
-        opacity: 0.8;
-      }
-
-  .content {
-    display: flex;
-    margin: 82px auto 32px;
-    padding: 0 16px;
-    max-width: 1200px;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  svg.material-icons {
-    height: 24px;
-    width: auto;
-  }
-
-    svg.material-icons:not(:last-child) {
-      margin-right: 8px;
-    }
-
-  /*.card svg.material-icons path {
-    fill: #888;
-  }
-
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 16px;
-  }
-
-  .card {
-    all: unset;
-    border-radius: 4px;
-    border: 1px solid #eee;
-    background-color: #fafafa;
-    height: 40px;
-    width: 200px;
-    margin: 0 8px 16px;
-    padding: 16px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.2s ease-in-out;
-    line-height: 24px;
-  }
-
-  .card-container .card:not(:last-child) {
-    margin-right: 0;
-  }
-
-  .card.card-small {
-    height: 16px;
-    width: 168px;
-  }
-
-  .card-container .card:not(.highlight-card) {
-    cursor: pointer;
-  }
-
-    .card-container .card:not(.highlight-card):hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
-    }
-
-      .card-container .card:not(.highlight-card):hover .material-icons path {
-        fill: rgb(105, 103, 103);
-      }
-
-  .card.highlight-card {
-    background-color: #1976d2;
-    color: white;
-    font-weight: 600;
-    border: none;
-    width: auto;
-    min-width: 30%;
-    position: relative;
-  }
-
-  .card.card.highlight-card span {
-    margin-left: 60px;
-  }*/
-
-  svg#rocket {
-    width: 80px;
-    position: absolute;
-    left: -10px;
-    top: -24px;
-  }
-
-  svg#rocket-smoke {
-    height: calc(100vh - 95px);
-    position: absolute;
-    top: 10px;
-    right: 180px;
-    z-index: -10;
-  }
-
-  a,
-  a:visited,
-  a:hover {
-    color: #1976d2;
-    text-decoration: none;
-  }
-
-    a:hover {
-      color: #125699;
-    }
-
-  .terminal {
-    position: relative;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 6px;
-    padding-top: 45px;
-    margin-top: 8px;
-    overflow: hidden;
-    background-color: rgb(15, 15, 16);
-  }
-
-    .terminal::before {
-      content: "\2022 \2022 \2022";
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 4px;
-      background: rgb(58, 58, 58);
-      color: #c2c3c4;
-      width: 100%;
-      font-size: 2rem;
-      line-height: 0;
-      padding: 14px 0;
-      text-indent: 4px;
-    }
-
-    .terminal pre {
-      font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-      color: white;
-      padding: 0 1rem 1rem;
-      margin: 0;
-    }
-
-  .circle-link {
-    height: 40px;
-    width: 40px;
-    border-radius: 40px;
-    margin: 8px;
-    background-color: white;
-    border: 1px solid #eeeeee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: 1s ease-out;
-  }
-
-    .circle-link:hover {
-      transform: translateY(-0.25rem);
-      box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
-    }
-
-  footer {
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    line-height: 20px;
-  }
-
-    footer a {
-      display: flex;
-      align-items: center;
-    }
-
-  .github-star-badge {
-    color: #24292e;
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    padding: 3px 10px;
-    border: 1px solid rgba(27,31,35,.2);
-    border-radius: 3px;
-    background-image: linear-gradient(-180deg,#fafbfc,#eff3f6 90%);
-    margin-left: 4px;
-    font-weight: 600;
-  }
-
-    .github-star-badge:hover {
-      background-image: linear-gradient(-180deg,#f0f3f6,#e6ebf1 90%);
-      border-color: rgba(27,31,35,.35);
-      background-position: -.5em;
-    }
-
-    .github-star-badge .material-icons {
-      height: 16px;
-      width: 16px;
-      margin-right: 4px;
-    }
-
-  svg#clouds {
-    position: fixed;
-    bottom: -160px;
-    left: -230px;
-    z-index: -10;
-    width: 1920px;
-  }
-
-  /* Responsive Styles */
-  @media screen and (max-width: 767px) {
-    .card-container > *:not(.circle-link),
-    .terminal {
-      width: 100%;
-    }
-
-    .card:not(.highlight-card) {
-      height: 16px;
-      margin: 8px 0;
-    }
-
-    .card.highlight-card span {
-      margin-left: 72px;
-    }
-
-    svg#rocket-smoke {
-      right: 120px;
-      transform: rotate(-5deg);
-    }
-  }
-
-  @media screen and (max-width: 575px) {
-    svg#rocket-smoke {
-      display: none;
-      visibility: hidden;
-    }
-  }
-</style>
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <!-- Container wrapper -->
   <div class="container">
-
-    <!-- Toggle button -->
-    <button class="navbar-toggler"
-            type="button"
-            (click)="buttonsNav.toggle()"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse"
-         id="navbarButtonsExample"
-         mdbCollapse
-         #buttonsNav="mdbCollapse">
-      <!-- Left links -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Anime To Notion</a>
-        </li>
-      </ul>
-      <!-- Left links -->
-
-      <div class="d-flex align-items-center">
-        <a target="_blank" style="color: black;" href="https://github.com/lucagazzardi/NotionAnimeTracker" role="button">
-          <i class="fab fa-github fa-lg"></i>
-        </a>
-      </div>
+    <a class="nav-link logo" href="#">A2N</a>
+    <div class="links">
+      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="#">Browse</a>
+      <a class="nav-link" href="#">Latest</a>
     </div>
-    <!-- Collapsible wrapper -->
+    <a *ngIf="isDarkTheme()" class="nav-link theme-switcher" href="#" (click)="switchTheme(false)">
+      <svg class="theme-switcher icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z" />
+      </svg>
+    </a>
+    <a *ngIf="!isDarkTheme()" class="nav-link theme-switcher" href="#" (click)="switchTheme(true)">
+      <svg class="theme-switcher icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+        <path fill="currentColor" d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
+      </svg>
+    </a>
   </div>
   <!-- Container wrapper -->
 </nav>
 <!-- Navbar -->
 
-<div class="content" role="main">
+<div class="container" role="main">
+    <app-search-anime></app-search-anime>
+</div>
 
-  <!--LATEST ADDS-->
-  <div class="row row-cols-1 row-cols-md-3 g-4">
 
-    <div *ngFor="let latest of latestAdded" class="col" style="padding-top:0">
-      <div *ngIf="!loading" class="card w-75 h-100" style="width: 18rem;">
-        <img src="{{latest.cover}}" class="card-img-top" alt="{{latest.title}}" style="width:100%" />
-        <div class="card-body" style="padding: 1rem; text-align: center">
-          <p class="card-text montserrat">{{latest.title}}</p>
-        </div>
-        <div class="card-footer text-muted montserrat-sm">Added on {{latest.createdTime}}</div>
+
+
+
+
+
+
+<!--OLDPAGE-->
+<!--LATEST ADDS-->
+<!--<div class="row row-cols-1 row-cols-md-3 g-4">
+
+  <div *ngFor="let latest of latestAdded" class="col" style="padding-top:0">
+    <div *ngIf="!loading" class="card w-75 h-100" style="width: 18rem;">
+      <img src="{{latest.cover}}" class="card-img-top" alt="{{latest.title}}" style="width:100%" />
+      <div class="card-body" style="padding: 1rem; text-align: center">
+        <p class="card-text montserrat">{{latest.title}}</p>
       </div>
-    </div>
-
-    <div class="col" style="padding-top:0">
-      <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
-        <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
-      </div>
-    </div><div class="col" style="padding-top:0">
-      <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
-        <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
-      </div>
-    </div><div class="col" style="padding-top:0">
-      <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
-        <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
-      </div>
-    </div>
-
-  </div>
-
-  <hr class="hr" style="margin-bottom:3rem"/>
-
-  <!-- Resources -->
-  <h1>Anime details to Notion</h1>
-  <p>Choose your preferred searching method:</p>
-
-  <hr class="hr">
-
-  <div class="d-flex justify-content-evenly align-items-center">
-    <div class="col-md-6 px-4">
-      <div class="input-group rounded">
-        <input #searchId type="search" class="form-control rounded" placeholder="Insert MAL Identifier" aria-label="Search" aria-describedby="search-addon" (keyup.enter)="openByIdModal(searchId.value)" />
-        <span class="input-group-text border-0" id="search-addon">
-          <i class="fas fa-search"></i>
-        </span>
-      </div>
-    </div>
-    <div class="col-md-12 vr vr-blurry" style="height: 250px;"></div>
-    <div class="col-md-6 px-4">
-      <div class="input-group rounded col-md-6">
-        <input #searchName type="search" class="form-control rounded" placeholder="Insert Show Title" aria-label="Search" aria-describedby="search-addon" (keyup.enter)="openByNameModal(searchName.value)" />
-        <span class="input-group-text border-0" id="search-addon">
-          <i class="fas fa-search"></i>
-        </span>
-      </div>
+      <div class="card-footer text-muted montserrat-sm">Added on {{latest.createdTime}}</div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer style="flex-direction:column">
-    <div class="row" style="margin-bottom:20px">
-      <div class="col-12">Ended up here by mistake? Feel free to visit:&nbsp;</div>
+  <div class="col" style="padding-top:0">
+    <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
+      <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
     </div>
-    <div class="row ">
-      <div class="col-12 d-flex">
-        <a target="_blank" class="px-2" style="color: black;" href="https://github.com/lucagazzardi/NotionAnimeTracker" role="button">
-          <i class="fab fa-github fa-lg"></i>
-        </a>
-        <a target="_blank" class="px-2" style="color: #ac2bac;" href="https://www.instagram.com/imgazza/" role="button">
-          <i class="fab fa-instagram fa-lg"></i>
-        </a>
-      </div>
+  </div><div class="col" style="padding-top:0">
+    <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
+      <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
     </div>
-  </footer>
-
-  <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
-    <title>Gray Clouds Background</title>
-    <path id="Path_39" data-name="Path 39" d="M2379.709,863.793c10-93-77-171-168-149-52-114-225-105-264,15-75,3-140,59-152,133-30,2.83-66.725,9.829-93.5,26.25-26.771-16.421-63.5-23.42-93.5-26.25-12-74-77-130-152-133-39-120-212-129-264-15-54.084-13.075-106.753,9.173-138.488,48.9-31.734-39.726-84.4-61.974-138.487-48.9-52-114-225-105-264,15a162.027,162.027,0,0,0-103.147,43.044c-30.633-45.365-87.1-72.091-145.206-58.044-52-114-225-105-264,15-75,3-140,59-152,133-53,5-127,23-130,83-2,42,35,72,70,86,49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33,61.112,8.015,113.854-5.72,150.492-29.764a165.62,165.62,0,0,0,110.861-3.236c47,94,178,113,251,33,31.385,4.116,60.563,2.495,86.487-3.311,25.924,5.806,55.1,7.427,86.488,3.311,73,80,204,61,251-33a165.625,165.625,0,0,0,120,0c51,13,108,15,157-5a147.188,147.188,0,0,0,33.5-18.694,147.217,147.217,0,0,0,33.5,18.694c49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33C2446.709,1093.793,2554.709,922.793,2379.709,863.793Z" transform="translate(142.69 -634.312)" fill="#eee" />
-  </svg>
+  </div><div class="col" style="padding-top:0">
+    <div *ngIf="loading" class="w-75 h-100" style="width: 18rem; padding-left:2rem; padding-right:2rem">
+      <ngx-skeleton-loader animation="pulse" [theme]="{height:'363px', width: '200px'}"></ngx-skeleton-loader>
+    </div>
+  </div>
 
 </div>
 
+<hr class="hr" style="margin-bottom:3rem"/>-->
+<!-- Resources -->
+<!--<h1>Anime details to Notion</h1>
+<p>Choose your preferred searching method:</p>
+
+<hr class="hr">
+
+<div class="d-flex justify-content-evenly align-items-center">
+  <div class="col-md-6 px-4">
+    <div class="input-group rounded">
+      <input #searchId type="search" class="form-control rounded" placeholder="Insert MAL Identifier" aria-label="Search" aria-describedby="search-addon" (keyup.enter)="openByIdModal(searchId.value)" />
+      <span class="input-group-text border-0" id="search-addon">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+  </div>
+  <div class="col-md-12 vr vr-blurry" style="height: 250px;"></div>
+  <div class="col-md-6 px-4">
+    <div class="input-group rounded col-md-6">
+      <input #searchName type="search" class="form-control rounded" placeholder="Insert Show Title" aria-label="Search" aria-describedby="search-addon" (keyup.enter)="openByNameModal(searchName.value)" />
+      <span class="input-group-text border-0" id="search-addon">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+  </div>
+</div>-->
+<!-- Footer -->
+<!--<footer style="flex-direction:column">
+  <div class="row" style="margin-bottom:20px">
+    <div class="col-12">Ended up here by mistake? Feel free to visit:&nbsp;</div>
+  </div>
+  <div class="row ">
+    <div class="col-12 d-flex">
+      <a target="_blank" class="px-2" style="color: black;" href="https://github.com/lucagazzardi/NotionAnimeTracker" role="button">
+        <i class="fab fa-github fa-lg"></i>
+      </a>
+      <a target="_blank" class="px-2" style="color: #ac2bac;" href="https://www.instagram.com/imgazza/" role="button">
+        <i class="fab fa-instagram fa-lg"></i>
+      </a>
+    </div>
+  </div>
+</footer>-->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->

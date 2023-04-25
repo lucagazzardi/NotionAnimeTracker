@@ -61,7 +61,14 @@ namespace Business_AnimeToNotion.Profile
             CreateMap<string, SelectPropertyValue>().ForMember(dto => dto.Select, map => map.MapFrom(source => new SelectOption() { Name = source }));
 
             //Started Airing
-            CreateMap<string, DatePropertyValue>().ForMember(dto => dto.Date, map => map.MapFrom(source => new Date() { Start = DateTime.Parse(source) }));
+            CreateMap<string, DatePropertyValue>().ConvertUsing((source, dest) =>
+            {
+                DateTime result = DateTime.Now;
+                if (DateTime.TryParse(source, out result))
+                    return new DatePropertyValue() { Date = new Date() { Start = DateTime.Parse(source) } };
+                else
+                    return new DatePropertyValue() { Date = new Date() { Start = null } };
+            });
 
             //Cover
             CreateMap<string, FilesPropertyValue>().ForMember(dto => dto.Files, map => map.MapFrom(source => new List<FileObjectWithName>() { new ExternalFileWithName() { Type = Notion_Properties_Mapping.External, Name = source, External = new ExternalFileWithName.Info() { Url = source } } }));
@@ -108,7 +115,7 @@ namespace Business_AnimeToNotion.Profile
                     case PropertyValueType.Select:
                         return ((SelectPropertyValue)src).Select.Name;
                     case PropertyValueType.Date:
-                        return ((DatePropertyValue)src).Date != null ? ((DatePropertyValue)src).Date.ToString() : null;
+                        return ((DatePropertyValue)src).Date != null ? !string.IsNullOrEmpty(((DatePropertyValue)src).Date.Start.ToString()) ? ((DatePropertyValue)src).Date.Start.ToString() : null : null;
                     case PropertyValueType.Files:
                         return ((FilesPropertyValue)src).Files.First().Name;
                     case PropertyValueType.Url:

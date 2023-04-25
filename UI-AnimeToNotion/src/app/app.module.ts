@@ -15,10 +15,13 @@ import { SearchByIdModalComponent } from '../search-by-id-modal/search-by-id-mod
 import { SearchByIdModalModule } from '../search-by-id-modal/search-by-id-modal.module';
 import { SearchByNameModule } from '../search-by-name-modal/search-by-name-modal.module';
 import { AppService } from './app.service';
+import { SearchAnimeComponent } from '../components/search-anime/search-anime.component';
+import { ThemeService } from '../components/utility-components/theme/theme.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SearchAnimeComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ import { AppService } from './app.service';
     HttpClientModule,
     NgxSkeletonLoaderModule
   ],
-  providers: [AppService],
+  providers: [AppService, ThemeService],
   bootstrap: [AppComponent],
   entryComponents: [SearchByIdModalComponent]
 })

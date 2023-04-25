@@ -11,6 +11,14 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\UI-AnimeToNotion</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\assets\scss\" />
+    <Folder Include="src\components\utility-components\" />
     <Folder Include="src\model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\theme\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\theme\**" />
   </ItemGroup>
 </Project>
