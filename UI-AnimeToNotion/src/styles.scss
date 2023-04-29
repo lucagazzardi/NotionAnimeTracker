@@ -6,16 +6,18 @@
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
 :root {
-  --color-background: 230, 236, 247;
+  --color-background: 237, 241, 245;
   --color-foreground: 255, 255, 255;
   --color-foreground-light: 177, 191, 205;
   --color-text: 169, 180, 204;
-  --color-text-light: 183, 208, 235;
+  --color-text-light: 136, 143, 153;
+  --color-placeholder: 181, 187, 201;
   --font-family-primary: 'Poppins', sans-serif;
   --font-family-secondary: 'Overpass', sans-serif;
   --font-family-tertiary: 'Montserrat', sans-serif;
   --background-active-item: 61,180,242;
   --color-shadow: 0,5,15;
+  --box-shadow: 0 14px 30px rgba(103,132,187, .1),0 4px 4px rgba(103,132,187, .04);
 }
 
 .dark-theme {
@@ -24,7 +26,8 @@
   --color-foreground-light: 99, 106, 112;
   --color-text: 88, 97, 99;
   --color-text-light: 191, 206, 217;
-  --color-shadow: 0,5,15;
+  --color-placeholder: 88, 97, 99;
+  --box-shadow: 0 14px 30px rgba(0, 5, 15, .08),0 12px 12px rgba(0, 5, 15, .2);
 }
 
 body{

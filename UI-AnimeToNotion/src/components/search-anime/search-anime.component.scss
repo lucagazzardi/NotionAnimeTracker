@@ -16,7 +16,7 @@
   align-items: center;
   justify-items: center;
   padding: 5px 10px;
-  box-shadow: 0 14px 30px rgba(var(--color-shadow),.1),0 4px 4px rgba(var(--color-shadow),.04);
+  box-shadow: var(--box-shadow);
 
   & .icon {
     width: .85em;
@@ -25,7 +25,7 @@
 
   & .search-input-wrapper {
     justify-self: start;
-    padding: 0 15px;
+    padding: 0 8px;
     width: 100%;
 
     & .search-input {
@@ -36,10 +36,10 @@
       font-family: var(--font-family-secondary);
       font-weight: 500;
       font-size: 13px;
-      width:100%;
+      width: 100%;
 
       &::placeholder {
-        color: rgb(var(--color-text));
+        color: rgb(var(--color-placeholder));
       }
     }
   }
@@ -65,13 +65,13 @@
       display: flex;
       justify-content: center;
       border-radius: 6px;
-      color: rgb(var(--color-text-light));
+      color: rgb(var(--color-text));
       cursor: pointer;
       user-select: none;
 
       &.active {
         background: rgb(var(--background-active-item));
-        box-shadow: 0 14px 30px rgba(var(--color-shadow), .1),0 12px 12px rgba(var(--color-shadow), .6);
+        box-shadow: var(--box-shadow);
         color: rgb(var(--color-background));
       }
     }
