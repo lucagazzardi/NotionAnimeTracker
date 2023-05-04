@@ -5,12 +5,18 @@
 @import "~@fortawesome/fontawesome-free/scss/regular.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
+@import "assets/scss/divider.scss";
+
 :root {
   --color-background: 237, 241, 245;
   --color-foreground: 255, 255, 255;
   --color-foreground-light: 177, 191, 205;
-  --color-text: 169, 180, 204;
-  --color-text-light: 136, 143, 153;
+  --color-skeleton-base: 217, 222, 219;
+  --color-skeleton-outer: 41,61,87;
+  --color-skeleton-center: 0, 0, 35;
+  --color-text-highlight: 100, 105, 112;
+  --color-text-normal: 136, 143, 153;
+  --color-text-hover: 100, 105, 112;
   --color-placeholder: 181, 187, 201;
   --font-family-primary: 'Poppins', sans-serif;
   --font-family-secondary: 'Overpass', sans-serif;
@@ -24,10 +30,14 @@
   --color-background: 18, 25, 43;
   --color-foreground: 14, 36, 68;
   --color-foreground-light: 99, 106, 112;
-  --color-text: 88, 97, 99;
-  --color-text-light: 191, 206, 217;
+  --color-skeleton-base: 13, 32, 57;
+  --color-skeleton-outer: 41,61,87;
+  --color-skeleton-center: 71, 91, 130;
+  --color-text-highlight: 220, 237, 250;
+  --color-text-normal: 191, 206, 217;
+  --color-text-hover: 153, 165, 173;
   --color-placeholder: 88, 97, 99;
-  --box-shadow: 0 14px 30px rgba(0, 5, 15, .08),0 12px 12px rgba(0, 5, 15, .2);
+  --box-shadow: 0 14px 30px rgba(0, 5, 15, .08),0 12px 12px rgba(0, 5, 15, .05);
 }
 
 body{

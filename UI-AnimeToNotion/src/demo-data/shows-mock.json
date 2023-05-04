@@ -1,0 +1,2164 @@
+{
+  "demolist": [
+    {
+      "id": 21,
+      "title": "One Piece",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/6/73245.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/6/73245l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [
+          "OP"
+        ],
+        "en": "One Piece",
+        "ja": "ONE PIECE"
+      },
+      "mean": 8.69,
+      "start_date": "1999-10-20",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 2,
+          "name": "Adventure"
+        },
+        {
+          "id": 10,
+          "name": "Fantasy"
+        },
+        {
+          "id": 27,
+          "name": "Shounen"
+        }
+      ],
+      "studios": [
+        {
+          "id": 18,
+          "name": "Toei Animation"
+        }
+      ],
+      "num_episodes": 0,
+      "related_anime": [
+        {
+          "node": {
+            "id": 459,
+            "title": "One Piece Movie 01",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1770/97704.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1770/97704l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 460,
+            "title": "One Piece Movie 02: Nejimaki-jima no Daibouken",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1939/97699.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1939/97699l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 461,
+            "title": "One Piece Movie 03: Chinjuu-jima no Chopper Oukoku",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1017/97698.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1017/97698l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 462,
+            "title": "One Piece Movie 04: Dead End no Bouken",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1100/116767.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1100/116767l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 463,
+            "title": "One Piece Movie 05: Norowareta Seiken",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/25413.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/25413l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 464,
+            "title": "One Piece Movie 06: Omatsuri Danshaku to Himitsu no Shima",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/11/25415.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/11/25415l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 465,
+            "title": "One Piece Movie 07: Karakuri-jou no Mecha Kyohei",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/9/20927.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/9/20927l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 466,
+            "title": "One Piece: Taose! Kaizoku Ganzack",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1848/96972.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1848/96972l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 813,
+            "title": "Dragon Ball Z",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1607/117271.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1607/117271l.jpg"
+            }
+          },
+          "relation_type": "character",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1094,
+            "title": "One Piece: Umi no Heso no Daibouken-hen",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/6/20923.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/6/20923l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1237,
+            "title": "One Piece: Oounabara ni Hirake! Dekkai Dekkai Chichi no Yume!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/6/20850.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/6/20850l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1238,
+            "title": "One Piece: Mamore! Saigo no Dai Butai",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/5/77108.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/5/77108l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2020,
+            "title": "One Piece: Nenmatsu Tokubetsu Kikaku! Mugiwara no Luffy Oyabun Torimonochou",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/9/21651.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/9/21651l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2107,
+            "title": "One Piece Movie 08: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/21760.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/21760l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2385,
+            "title": "One Piece: Jango no Dance Carnival",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1726/113142.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1726/113142l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2386,
+            "title": "One Piece: Yume no Soccer Ou!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/4/70587.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/4/70587l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2490,
+            "title": "One Piece: Mezase! Kaizoku Yakyuu Ou",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/8/70593.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/8/70593l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 3848,
+            "title": "One Piece Movie 09: Episode of Chopper Plus - Fuyu ni Saku, Kiseki no Sakura",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1709/135258.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1709/135258l.jpg"
+            }
+          },
+          "relation_type": "alternative_version",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 4155,
+            "title": "One Piece Film: Strong World",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1192/116784.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1192/116784l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 5252,
+            "title": "One Piece: Romance Dawn Story",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/6/11300.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/6/11300l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 8171,
+            "title": "One Piece Recap",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/9/20706.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/9/20706l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 8740,
+            "title": "One Piece Film: Strong World Episode 0",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1172/109469.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1172/109469l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 9999,
+            "title": "One Piece 3D: Mugiwara Chase",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/4/32455.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/4/32455l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 10033,
+            "title": "Toriko",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1757/100671.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1757/100671l.jpg"
+            }
+          },
+          "relation_type": "character",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 12001,
+            "title": "One Piece 3D: Gekisou! Trap Coaster",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/4/33839.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/4/33839l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 12859,
+            "title": "One Piece Film: Z",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/6/44297.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/6/44297l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 15323,
+            "title": "One Piece: Episode of Nami - Koukaishi no Namida to Nakama no Kizuna",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/5/41415.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/5/41415l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 16143,
+            "title": "One Piece: Kinkyuu Kikaku One Piece Kanzen Kouryakuhou",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/45414.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/45414l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 16239,
+            "title": "One Piece: Episode of Luffy - Hand Island no Bouken",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/8/52463.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/8/52463l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 16468,
+            "title": "One Piece: Glorious Island",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/7/85476.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/7/85476l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 19123,
+            "title": "One Piece: Episode of Merry - Mou Hitori no Nakama no Monogatari",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/9/61015.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/9/61015l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 22661,
+            "title": "One Piece: Cry Heart",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/60173.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/60173l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 23933,
+            "title": "Kyutai Panic Adventure!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/9/62123.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/9/62123l.jpg"
+            }
+          },
+          "relation_type": "character",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 23935,
+            "title": "Kyutai Panic Adventure Returns!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/3/62121.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/3/62121l.jpg"
+            }
+          },
+          "relation_type": "character",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 25161,
+            "title": "One Piece 3D2Y: Ace no shi wo Koete! Luffy Nakama Tono Chikai",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/3/64755.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/3/64755l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 28683,
+            "title": "One Piece: Episode of Alabasta - Prologue",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/12/69239.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/12/69239l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 31289,
+            "title": "One Piece: Episode of Sabo - 3 Kyoudai no Kizuna Kiseki no Saikai to Uketsugareru Ishi",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1373/106587.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1373/106587l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 31490,
+            "title": "One Piece Film: Gold",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/12/81081.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/12/81081l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 32051,
+            "title": "One Piece: Adventure of Nebulandia",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/5/77050.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/5/77050l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 32437,
+            "title": "One Piece: Long Ring Long Land-hen",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/12/83503.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/12/83503l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 34165,
+            "title": "Oishi-sa Hajikeru! One Piece",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/12/82171.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/12/82171l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 36215,
+            "title": "One Piece: Episode of East Blue - Luffy to 4-nin no Nakama no Daibouken",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/10/87473.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/10/87473l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 36239,
+            "title": "Sono Me ga Mitsumeru Mono",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/87540.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/87540l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 37902,
+            "title": "One Piece: Episode of Sorajima",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1533/92968.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1533/92968l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 38234,
+            "title": "One Piece Movie 14: Stampede",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1221/100550.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1221/100550l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 38419,
+            "title": "Tokyo One Piece Tower: Tongari Shima no Dai Hihou",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1203/95013.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1203/95013l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 40181,
+            "title": "Look Plus One Piece Special Movie",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1541/102314.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1541/102314l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 40970,
+            "title": "A-ra-shi: Reborn",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1160/105219.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1160/105219l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 50410,
+            "title": "One Piece Film: Red",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1668/125323.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1668/125323l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 50696,
+            "title": "One Piece: Barto no Himitsu no Heya!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1385/120283.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1385/120283l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 51162,
+            "title": "One Piece: Otoshidama Special - Tokubetsu Hou Mugiwara Kaizoku-dan no Himitsu!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1916/121232.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1916/121232l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 51163,
+            "title": "One Piece: Mugiwara no Ichimi kara no Kansen Yobou Message",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1564/121266.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1564/121266l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 52139,
+            "title": "Hungry Days x Bump of Chicken: Kinen Satsuei",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1762/124614.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1762/124614l.jpg"
+            }
+          },
+          "relation_type": "character",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 52199,
+            "title": "One Piece: Dai Tettei Kaibou! Kouzuki Oden Densetsu!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1059/124766.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1059/124766l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 52921,
+            "title": "One Piece: Densetsu no Log! Akagami no Shanks!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1517/127442.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1517/127442l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 53235,
+            "title": "One Piece: Dai Tettei Kaibou! Gekitou! 5-nin no Shin Sedai",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1360/128759.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1360/128759l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 53878,
+            "title": "One Piece: Uchuu tte Omoshiree! Hoshizora Jima-hen",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1442/131890.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1442/131890l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 53880,
+            "title": "One Piece The Planetarium",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1348/131891.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1348/131891l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 53890,
+            "title": "One Piece: Dai Gekisen Tokushuu! Mugiwara no Ichimi vs. Tobi Roppou",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1816/131928.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1816/131928l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Shounen, Fantasy, Adventure, Action",
+      "studiosJoined": "Toei Animation",
+      "showHidden": null
+    },
+    {
+      "id": 51019,
+      "title": "Kimetsu no Yaiba: Katanakaji no Sato-hen",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1765/135099.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1765/135099l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [],
+        "en": "Demon Slayer: Kimetsu no Yaiba Swordsmith Village Arc",
+        "ja": "鬼滅の刃 刀鍛冶の里編"
+      },
+      "mean": 8.66,
+      "start_date": "2023-04-09",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 10,
+          "name": "Fantasy"
+        },
+        {
+          "id": 13,
+          "name": "Historical"
+        },
+        {
+          "id": 27,
+          "name": "Shounen"
+        }
+      ],
+      "studios": [
+        {
+          "id": 43,
+          "name": "ufotable"
+        }
+      ],
+      "num_episodes": 0,
+      "related_anime": [
+        {
+          "node": {
+            "id": 47778,
+            "title": "Kimetsu no Yaiba: Yuukaku-hen",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1908/120036.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1908/120036l.jpg"
+            }
+          },
+          "relation_type": "prequel",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 54591,
+            "title": "Kimetsu no Yaiba: Jougen Shuuketsu, Soshite Katanakaji no Sato e",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1566/133666.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1566/133666l.jpg"
+            }
+          },
+          "relation_type": "alternative_version",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Shounen, Historical, Fantasy, Action",
+      "studiosJoined": "ufotable",
+      "showHidden": null
+    },
+    {
+      "id": 49387,
+      "title": "Vinland Saga Season 2",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1170/124312.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1170/124312l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [],
+        "en": "Vinland Saga Season 2",
+        "ja": "ヴィンランド・サガ SEASON2"
+      },
+      "mean": 8.69,
+      "start_date": "2023-01-10",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 2,
+          "name": "Adventure"
+        },
+        {
+          "id": 8,
+          "name": "Drama"
+        },
+        {
+          "id": 58,
+          "name": "Gore"
+        },
+        {
+          "id": 13,
+          "name": "Historical"
+        },
+        {
+          "id": 42,
+          "name": "Seinen"
+        }
+      ],
+      "studios": [
+        {
+          "id": 569,
+          "name": "MAPPA"
+        }
+      ],
+      "num_episodes": 24,
+      "related_anime": [
+        {
+          "node": {
+            "id": 37521,
+            "title": "Vinland Saga",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1500/103005.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1500/103005l.jpg"
+            }
+          },
+          "relation_type": "prequel",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 54463,
+            "title": "Vinland Saga Season 2: Drowning in the Shadow",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1118/133378.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1118/133378l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Gore, Seinen, Historical, Drama",
+      "studiosJoined": "MAPPA",
+      "showHidden": null
+    },
+    {
+      "id": 52034,
+      "title": "\"Oshi no Ko\"",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1812/134736.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1812/134736l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [
+          "My Star"
+        ],
+        "en": "[Oshi No Ko]",
+        "ja": "【推しの子】"
+      },
+      "mean": 9.1,
+      "start_date": "2023-04-12",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 8,
+          "name": "Drama"
+        },
+        {
+          "id": 72,
+          "name": "Reincarnation"
+        },
+        {
+          "id": 42,
+          "name": "Seinen"
+        },
+        {
+          "id": 75,
+          "name": "Showbiz"
+        },
+        {
+          "id": 37,
+          "name": "Supernatural"
+        }
+      ],
+      "studios": [
+        {
+          "id": 95,
+          "name": "Doga Kobo"
+        }
+      ],
+      "num_episodes": 11,
+      "related_anime": [
+        {
+          "node": {
+            "id": 55016,
+            "title": "Idol",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1921/135489.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1921/135489l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Showbiz, Reincarnation, Seinen, Supernatural",
+      "studiosJoined": "Doga Kobo",
+      "showHidden": null
+    },
+    {
+      "id": 46569,
+      "title": "Jigokuraku",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1075/131925.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1075/131925l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [
+          "Paradition",
+          "Heavenhell"
+        ],
+        "en": "Hell's Paradise",
+        "ja": "地獄楽"
+      },
+      "mean": 8.4,
+      "start_date": "2023-04-01",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 2,
+          "name": "Adventure"
+        },
+        {
+          "id": 10,
+          "name": "Fantasy"
+        },
+        {
+          "id": 58,
+          "name": "Gore"
+        },
+        {
+          "id": 13,
+          "name": "Historical"
+        },
+        {
+          "id": 27,
+          "name": "Shounen"
+        }
+      ],
+      "studios": [
+        {
+          "id": 569,
+          "name": "MAPPA"
+        }
+      ],
+      "num_episodes": 13,
+      "related_anime": [],
+      "genresJoined": "Gore, Shounen, Historical, Fantasy",
+      "studiosJoined": "MAPPA",
+      "showHidden": null
+    },
+    {
+      "id": 235,
+      "title": "Detective Conan",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/7/75199.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/7/75199l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [
+          "Meitantei Conan"
+        ],
+        "en": "Case Closed",
+        "ja": "名探偵コナン"
+      },
+      "mean": 8.17,
+      "start_date": "1996-01-08",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 2,
+          "name": "Adventure"
+        },
+        {
+          "id": 4,
+          "name": "Comedy"
+        },
+        {
+          "id": 39,
+          "name": "Detective"
+        },
+        {
+          "id": 7,
+          "name": "Mystery"
+        },
+        {
+          "id": 27,
+          "name": "Shounen"
+        }
+      ],
+      "studios": [
+        {
+          "id": 73,
+          "name": "TMS Entertainment"
+        }
+      ],
+      "num_episodes": 0,
+      "related_anime": [
+        {
+          "node": {
+            "id": 779,
+            "title": "Detective Conan Movie 01: The Timed Skyscraper",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/3/77131.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/3/77131l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 780,
+            "title": "Detective Conan Movie 02: The Fourteenth Target",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1900/94316.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1900/94316l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 781,
+            "title": "Detective Conan Movie 03: The Last Wizard of the Century",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1831/94317.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1831/94317l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1363,
+            "title": "Detective Conan Movie 04: Captured in Her Eyes",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1196/94319.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1196/94319l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1364,
+            "title": "Detective Conan Movie 05: Countdown to Heaven",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1144/92654.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1144/92654l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1365,
+            "title": "Detective Conan Movie 06: The Phantom of Baker Street",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1400/94320.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1400/94320l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1366,
+            "title": "Detective Conan Movie 07: Crossroad in the Ancient Capital",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/10/20984.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/10/20984l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1367,
+            "title": "Detective Conan Movie 08: Magician of the Silver Sky",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/20982.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/20982l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1368,
+            "title": "Detective Conan OVA 06: Follow the Vanished Diamond! Conan & Heiji vs. Kid!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/10/31137.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/10/31137l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1369,
+            "title": "Detective Conan OVA 01: Conan vs. Kid vs. Yaiba - Houtou Soudatsu Daikessen!!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1029/125693.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1029/125693l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1505,
+            "title": "Detective Conan Movie 09: Strategy Above the Depths",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/8/20983.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/8/20983l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 1506,
+            "title": "Detective Conan Movie 10: Requiem of the Detectives",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1919/94322.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1919/94322l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2171,
+            "title": "Detective Conan Movie 11: Jolly Roger in the Deep Azure",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1765/94323.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1765/94323l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2512,
+            "title": "Detective Conan OVA 02: 16 Suspects",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/10/71317.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/10/71317l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2513,
+            "title": "Detective Conan OVA 03: Conan and Heiji and the Vanished Boy",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/72319.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/72319l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2514,
+            "title": "Detective Conan OVA 04: Conan and Kid and Crystal Mother",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/31141.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/31141l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2515,
+            "title": "Detective Conan OVA 05: The Target is Kogoro! The Detective Boys' Secret Investigation",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/10/31143.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/10/31143l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 2597,
+            "title": "Detective Conan OVA 07: A Challenge from Agasa! Agasa vs. Conan and the Detective Boys",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/12/31145.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/12/31145l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 4447,
+            "title": "Detective Conan Movie 12: Full Score of Fear",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/6/22766.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/6/22766l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 5348,
+            "title": "Detective Conan Magic File 2: Kudou Shinichi - The Case of the Mysterious Wall and the Black Lab",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1509/124723.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1509/124723l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 5460,
+            "title": "Detective Conan Movie 13: The Raven Chaser",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/22558.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/22558l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 5578,
+            "title": "Gosho Aoyama's Collection of Short Stories",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/28783.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/28783l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 6115,
+            "title": "Lupin III vs. Detective Conan",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1849/134190.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1849/134190l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 6198,
+            "title": "Detective Conan OVA 08: High School Girl Detective Sonoko Suzuki's Case Files",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1982/111465.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1982/111465l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 6231,
+            "title": "Detective Conan Magic File 3: Shinichi and Ran - Memories of Mahjong Tiles and Tanabata",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/9/37977.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/9/37977l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 6438,
+            "title": "Detective Conan OVA 09: The Stranger in 10 Years...",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/5/14746.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/5/14746l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 6467,
+            "title": "Detective Conan Movie 14: The Lost Ship in the Sky",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/7/22312.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/7/22312l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 7303,
+            "title": "Detective Conan: Black History",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1309/121762.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1309/121762l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 8310,
+            "title": "Magic Kaito",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/46095.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/46095l.jpg"
+            }
+          },
+          "relation_type": "alternative_setting",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 8331,
+            "title": "Detective Conan Magic File 4: Osaka Okonomiyaki Odyssey",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/21912.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/21912l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 8609,
+            "title": "Detective Conan OVA 10: Kid in Trap Island",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/7/23698.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/7/23698l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 9785,
+            "title": "Detective Conan: Conan vs. Kid - Shark & Jewel",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/27101.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/27101l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 9786,
+            "title": "Detective Conan: Conan vs. Kid - Jet Black Sniper",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/27102.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/27102l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 9963,
+            "title": "Detective Conan Movie 15: Quarter of Silence",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/9/32035.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/9/32035l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 10531,
+            "title": "Detective Conan Magic File 5: Niigata - Tokyo Omiyage Capriccio",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/6/28938.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/6/28938l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 10703,
+            "title": "Detective Conan OVA 11: A Secret Order from London",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/11/29489.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/11/29489l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 10766,
+            "title": "Detective Conan vs. Wooo",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/7/29671.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/7/29671l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 12117,
+            "title": "Detective Conan Movie 16: The Eleventh Striker",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/8/37511.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/8/37511l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 13837,
+            "title": "Detective Conan Bonus File: Fantasista Flower",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/38385.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/38385l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 13839,
+            "title": "Detective Conan OVA 12: The Miracle of Excalibur",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/5/59513.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/5/59513l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 14735,
+            "title": "Detective Conan Movie 17: Private Eye in the Distant Sea",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/4/47419.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/4/47419l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 21419,
+            "title": "Detective Conan Movie 18: The Sniper from Another Dimension",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/11/60289.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/11/60289l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 21867,
+            "title": "The Disappearance of Conan Edogawa: The Worst Two Days in History",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1533/133822.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1533/133822l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 24169,
+            "title": "Detective Conan: The Fugitive Kogorou Mouri",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/8/62767.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/8/62767l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 25517,
+            "title": "Magic Kaito 1412",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/3/67807.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/3/67807l.jpg"
+            }
+          },
+          "relation_type": "alternative_setting",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 28479,
+            "title": "Detective Conan Movie 19: The Hellfire Sunflowers",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/5/73618.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/5/73618l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 32005,
+            "title": "Detective Conan Movie 20: The Darkest Nightmare",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/10/78894.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/10/78894l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 33145,
+            "title": "Detective Conan: Chase the Mysterious Comet Monster!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/81490.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/81490l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 33148,
+            "title": "Detective Conan: Let's Experience the Jomon Period!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/13/81492.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/13/81492l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 33149,
+            "title": "Detective Conan: The Internet - The Mysterious E-mail Case",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/11/85629.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/11/85629l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 33150,
+            "title": "Detective Conan: A Written Challenge from the Pyramids!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/4/79626.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/4/79626l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 33152,
+            "title": "Detective Conan: City Exploration! Get the Animal Mark!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/12/79628.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/12/79628l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 34036,
+            "title": "Detective Conan: Episode One - The Great Detective Turned Small",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/5/81968.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/5/81968l.jpg"
+            }
+          },
+          "relation_type": "alternative_version",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 34430,
+            "title": "Detective Conan Movie 21: The Crimson Love Letter",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/2/83919.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/2/83919l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 35798,
+            "title": "Detective Conan Movie 22: Zero the Enforcer",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/12/90104.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/12/90104l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 36269,
+            "title": "Detective Conan: Anti-Crime Guide",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/7/87607.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/7/87607l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 36760,
+            "title": "Detective Conan: The Magician of Starlight",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/3/88889.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/3/88889l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 38770,
+            "title": "Detective Conan Movie 23: The Fist of Blue Sapphire",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1010/98309.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1010/98309l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 39764,
+            "title": "Detective Conan Movie 24: The Scarlet Bullet",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1306/112616.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1306/112616l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 40348,
+            "title": "Shounen Sunday CM: Detective Conan",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1661/102859.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1661/102859l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 42476,
+            "title": "Detective Conan: The Burning Galactic Railway",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1318/108547.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1318/108547l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 47413,
+            "title": "Detective Conan: The Scarlet Alibi",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1234/117118.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1234/117118l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 49320,
+            "title": "Detective Conan Movie 25: Halloween no Hanayome",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1744/120789.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1744/120789l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 49611,
+            "title": "Detective Conan: Solve the Mystery of Heatstroke!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1761/117190.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1761/117190l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 50010,
+            "title": "Meitantei Conan: Hannin no Hanzawa-san",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1560/125527.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1560/125527l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 50012,
+            "title": "Meitantei Conan: Zero no Tea Time",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1445/121082.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1445/121082l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 51782,
+            "title": "Detective Conan: Love Story at Police Headquarters - Wedding Eve",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1774/123682.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1774/123682l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 53540,
+            "title": "Detective Conan Movie 26: Kurogane no Submarine",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1138/133101.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1138/133101l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 53780,
+            "title": "Detective Conan: Haibara Ai Monogatari - Kurogane no Mystery Train",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1285/131672.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1285/131672l.jpg"
+            }
+          },
+          "relation_type": "summary",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 53976,
+            "title": "Detective Conan: Tantei-tachi no Starry Night",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1409/132067.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1409/132067l.jpg"
+            }
+          },
+          "relation_type": "side_story",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 55134,
+            "title": "Detective Conan: TDK Video Head Cleaner",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1241/135597.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1241/135597l.jpg"
+            }
+          },
+          "relation_type": "other",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Detective, Shounen, Mystery, Comedy",
+      "studiosJoined": "TMS Entertainment",
+      "showHidden": null
+    },
+    {
+      "id": 48549,
+      "title": "Dr. Stone: New World",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1255/135158.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1255/135158l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [
+          "Dr. Stone 3rd Season"
+        ],
+        "en": "",
+        "ja": "Dr.STONE NEW WORLD"
+      },
+      "mean": 8.37,
+      "start_date": "2023-04-06",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 2,
+          "name": "Adventure"
+        },
+        {
+          "id": 4,
+          "name": "Comedy"
+        },
+        {
+          "id": 24,
+          "name": "Sci-Fi"
+        },
+        {
+          "id": 27,
+          "name": "Shounen"
+        },
+        {
+          "id": 78,
+          "name": "Time Travel"
+        }
+      ],
+      "studios": [
+        {
+          "id": 73,
+          "name": "TMS Entertainment"
+        }
+      ],
+      "num_episodes": 11,
+      "related_anime": [
+        {
+          "node": {
+            "id": 50612,
+            "title": "Dr. Stone: Ryuusui",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1071/124921.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1071/124921l.jpg"
+            }
+          },
+          "relation_type": "prequel",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Time Travel, Shounen, Sci-Fi, Comedy",
+      "studiosJoined": "TMS Entertainment",
+      "showHidden": null
+    },
+    {
+      "id": 48417,
+      "title": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou II",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1471/128323.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1471/128323l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [
+          "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou 2nd Season",
+          "The Misfit of Demon King Academy 2nd Season"
+        ],
+        "en": "The Misfit of Demon King Academy Ⅱ",
+        "ja": "魔王学院の不適合者 ～史上最強の魔王の始祖、転生して子孫たちの学校へ通う～ II"
+      },
+      "mean": 6.97,
+      "start_date": "2023-01-08",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 10,
+          "name": "Fantasy"
+        },
+        {
+          "id": 6,
+          "name": "Mythology"
+        },
+        {
+          "id": 72,
+          "name": "Reincarnation"
+        },
+        {
+          "id": 23,
+          "name": "School"
+        }
+      ],
+      "studios": [
+        {
+          "id": 300,
+          "name": "SILVER LINK."
+        }
+      ],
+      "num_episodes": 0,
+      "related_anime": [
+        {
+          "node": {
+            "id": 40496,
+            "title": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1126/108573.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1126/108573l.jpg"
+            }
+          },
+          "relation_type": "prequel",
+          "relation_type_formatter": null
+        },
+        {
+          "node": {
+            "id": 48418,
+            "title": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou II Part 2",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/1421/113319.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/1421/113319l.jpg"
+            }
+          },
+          "relation_type": "sequel",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Reincarnation, School, Fantasy, Mythology",
+      "studiosJoined": "SILVER LINK.",
+      "showHidden": null
+    },
+    {
+      "id": 51105,
+      "title": "NieR:Automata Ver1.1a",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1399/128318.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1399/128318l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [],
+        "en": "",
+        "ja": "NieR:Automata Ver1.1a"
+      },
+      "mean": 7.44,
+      "start_date": "2023-01-08",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 10,
+          "name": "Fantasy"
+        },
+        {
+          "id": 24,
+          "name": "Sci-Fi"
+        }
+      ],
+      "studios": [
+        {
+          "id": 56,
+          "name": "A-1 Pictures"
+        }
+      ],
+      "num_episodes": 0,
+      "related_anime": [],
+      "genresJoined": "Sci-Fi, Fantasy, Action",
+      "studiosJoined": "A-1 Pictures",
+      "showHidden": null
+    },
+    {
+      "id": 51958,
+      "title": "Kono Subarashii Sekai ni Bakuen wo!",
+      "main_picture": {
+        "medium": "https://api-cdn.myanimelist.net/images/anime/1439/135042.jpg",
+        "large": "https://api-cdn.myanimelist.net/images/anime/1439/135042l.jpg"
+      },
+      "alternative_titles": {
+        "synonyms": [],
+        "en": "KonoSuba: An Explosion on This Wonderful World!",
+        "ja": "この素晴らしい世界に爆焔を！"
+      },
+      "mean": 7.81,
+      "start_date": "2023-04-06",
+      "media_type": "tv",
+      "genres": [
+        {
+          "id": 4,
+          "name": "Comedy"
+        },
+        {
+          "id": 10,
+          "name": "Fantasy"
+        }
+      ],
+      "studios": [
+        {
+          "id": 1967,
+          "name": "Drive"
+        }
+      ],
+      "num_episodes": 12,
+      "related_anime": [
+        {
+          "node": {
+            "id": 30831,
+            "title": "Kono Subarashii Sekai ni Shukufuku wo!",
+            "main_picture": {
+              "medium": "https://api-cdn.myanimelist.net/images/anime/8/77831.jpg",
+              "large": "https://api-cdn.myanimelist.net/images/anime/8/77831l.jpg"
+            }
+          },
+          "relation_type": "parent_story",
+          "relation_type_formatter": null
+        }
+      ],
+      "genresJoined": "Fantasy, Comedy",
+      "studiosJoined": "Drive",
+      "showHidden": null
+    }      
+  ]
+}

@@ -1,3 +1,4 @@
+@import '../../assets/scss/skeleton.scss';
 
 .search-area {
     padding: 60px 0 60px 0;
@@ -29,7 +30,7 @@
     width: 100%;
 
     & .search-input {
-      color: rgb(var(--color-text-light));
+      color: rgb(var(--color-text-normal));
       outline: none;
       background: none;
       border: none;
@@ -65,7 +66,7 @@
       display: flex;
       justify-content: center;
       border-radius: 6px;
-      color: rgb(var(--color-text));
+      color: rgb(var(--color-text-normal));
       cursor: pointer;
       user-select: none;
 
@@ -73,6 +74,162 @@
         background: rgb(var(--background-active-item));
         box-shadow: var(--box-shadow);
         color: rgb(var(--color-background));
+      }
+    }
+  }
+}
+
+.category-area {
+  font-family: var(--font-family-secondary);
+  font-weight: 700;
+
+}
+
+.category-container {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  & .category-title {
+    letter-spacing: .2em;
+    font-size: 15px;
+    color: rgb(var(--color-text-highlight))
+  }
+
+  & .category-shows {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 180px);
+    grid-gap: 30px 20px;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 0;
+
+    @media screen and (max-width: 1540px) {
+      & {
+        grid-gap: 30px 17px;
+      }
+    }
+
+    @media screen and (max-width: 1040px) {
+      & {
+        grid-gap: 25px 13px;
+        grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
+        padding: 20px 0;
+      }
+    }
+
+    @media screen and (max-width: 760px) {
+      & {
+        grid-gap: 20px 10px;
+        grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
+        padding: 10px 0;
+      }
+    }
+
+    & .category-shows-item {
+      width: 180px;
+      display: grid;
+      grid-template-rows: min-content auto;
+      grid-gap: 7px;
+
+      @media screen and (max-width: 1040px) {
+        & {
+          width: 100%;
+        }
+      }
+
+      & .cover {
+        height: 270px;
+        background: rgb(var(--color-foreground));
+        width: 100%;
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: var(--box-shadow);
+
+        &.loading {
+          background: rgba(var(--color-skeleton-base),.8);
+          box-shadow: none;
+          opacity: 1;
+          overflow: hidden;
+
+          &:before {
+            @include skeleton;
+            @include skeleton-animation;
+          }
+        }
+
+        @media screen and (max-width: 1040px) {
+          & {
+            height: auto;
+          }
+
+          &:before {
+            display: block;
+            content: "";
+            height: 0;
+            width: 0;
+            /*
+                  Needed to display the cover image. It gives space for the image with position absolute to appear.
+                  It is calculated based on the aspect ratio that is desired to keep, in this case 2:3.
+                  (height / width) * 100
+                  (3 / 2) * 100 = 150%
+            */
+            padding-bottom: 150%;
+          }
+        }
+
+        & .cover-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
+
+      & .show-title {
+        font-weight: 700;
+        font-family: var(--font-family-tertiary);
+        text-align: left;
+        color: rgb(var(--color-text-normal));
+        font-size: 12px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        cursor: pointer;
+
+        &.loading {
+          border-radius: 4px;
+          height: 17px;
+          margin-top: 12px;
+          width: 90%;
+          background: rgba(var(--color-skeleton-base),.8);
+          box-shadow: none;
+          opacity: 1;
+          overflow: hidden;
+
+          &:before {
+            @include skeleton;
+            @include skeleton-animation;
+          }
+        }
+
+        @media screen and (max-width: 1040px) {
+          & {
+            font-size: 10px;
+          }
+        }
+
+        &:hover {
+          transition: 0.25s;
+          color: rgb(var(--color-text-hover));
+        }
       }
     }
   }

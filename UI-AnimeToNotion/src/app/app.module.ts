@@ -17,6 +17,8 @@ import { SearchByNameModule } from '../search-by-name-modal/search-by-name-modal
 import { AppService } from './app.service';
 import { SearchAnimeComponent } from '../components/search-anime/search-anime.component';
 import { ThemeService } from '../components/utility-components/theme/theme.service';
+import { SearchAnimeService } from '../components/search-anime/search-anime.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,9 +36,10 @@ import { ThemeService } from '../components/utility-components/theme/theme.servi
     BrowserAnimationsModule,
     SearchByNameModule,
     HttpClientModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    FormsModule
   ],
-  providers: [AppService, ThemeService],
+  providers: [AppService, ThemeService, SearchAnimeService],
   bootstrap: [AppComponent],
   entryComponents: [SearchByIdModalComponent]
 })

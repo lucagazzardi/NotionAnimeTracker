@@ -90,6 +90,8 @@ namespace Business_AnimeToNotion.Main_Integration
             result += searchTerm;
             result += "&";
             result += Configuration["MAL_ApiConfig:MAL_NotionNeededFields"];
+            result += "&";
+            result += Configuration["MAL_NSFW"];
 
             return result;
         }
@@ -103,6 +105,8 @@ namespace Business_AnimeToNotion.Main_Integration
             result += id;
             result += "?";
             result += Configuration["MAL_ApiConfig:MAL_NotionNeededFields"];
+            result += "&";
+            result += Configuration["MAL_NSFW"];
 
             return result;
         }

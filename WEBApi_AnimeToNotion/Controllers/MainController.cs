@@ -30,6 +30,9 @@ namespace WEBApi_AnimeToNotion.Controllers
         [HttpGet("mal/search/name")]
         public async Task<IActionResult> MAL_SearchAnime([FromQuery] string searchTerm)
         {
+            if (string.IsNullOrEmpty(searchTerm))
+                return Ok();
+
             List<MAL_AnimeModel> foundAnimeList = new List<MAL_AnimeModel>();
             try
             {
