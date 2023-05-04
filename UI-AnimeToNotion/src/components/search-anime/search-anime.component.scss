@@ -234,3 +234,14 @@
     }
   }
 }
+
+.no-results {
+  display: inline-flex;
+  width: 100%;
+  color: rgb(var(--color-text-normal));
+  font-weight: 600;
+  font-size: 18px;
+  justify-content: center;
+  letter-spacing: 1px;
+  font-family: var(--font-family-secondary);
+}

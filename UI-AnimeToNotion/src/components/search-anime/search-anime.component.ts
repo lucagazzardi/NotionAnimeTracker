@@ -35,6 +35,7 @@ export class SearchAnimeComponent implements OnInit {
   searchResult$!: Observable<{ loading: boolean, list?: MAL_AnimeModel[] }>;
 
   searching: boolean = false;
+  noResults: boolean = false;
 
   constructor(private service: SearchAnimeService) { }
 
@@ -42,9 +43,9 @@ export class SearchAnimeComponent implements OnInit {
 
     //MOCK ITEMS
     this.seasonalList$ = this.service.getAll().pipe(delay(1000));
-    this.seasonalList$.subscribe((data) => { next: this.seasonalListStatic = data });
+    this.seasonalList$.subscribe((data) => { this.seasonalListStatic = data });
 
-    this.debouncingPipe();
+    this.debouncingPipe();    
   }
 
   switchMode(value: boolean) {
@@ -55,6 +56,7 @@ export class SearchAnimeComponent implements OnInit {
     if (searchTerm) {
       this.searchTerm$.next(searchTerm);
       this.searching = true;
+      this.noResults = false;
     }
     else
       this.searching = false;
@@ -67,12 +69,22 @@ export class SearchAnimeComponent implements OnInit {
   debouncingPipe() {
     this.searchResult$ = this.searchTerm$
       .pipe(
-        debounceTime(150),
+        debounceTime(200),
         distinctUntilChanged(),
         switchMap(searchTerm =>
           concat(
-            of({ loading: true }),
-            this.querySearch(searchTerm).pipe(map(value => ({ loading: false, list: value })))
+            // Starts with
+            of({ loading: true, list: [] }),
+            // API call starts
+            this.querySearch(searchTerm)
+              .pipe(
+                //Result
+                tap(value => {
+                  this.noResults = value.length == 0;
+                }),
+                map(value => ({ loading: false, list: value })),
+                
+              )
           )
         )
     );

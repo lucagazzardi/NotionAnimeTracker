@@ -23,8 +23,8 @@ namespace Business_AnimeToNotion.Model
         public decimal mean { get; set; }
         public string start_date { get; set; }
         public string media_type { get; set; }
-        public List<MAL_GeneralObject> genres { get; set; }
-        public List<MAL_GeneralObject> studios { get; set; }
+        public List<MAL_GeneralObject> genres { get; set; } = new List<MAL_GeneralObject>();
+        public List<MAL_GeneralObject> studios { get; set; } = new List<MAL_GeneralObject>();
         public int num_episodes { get; set; }
         public List<MAL_RelatedShow> related_anime { get; set; } = new List<MAL_RelatedShow>();
 

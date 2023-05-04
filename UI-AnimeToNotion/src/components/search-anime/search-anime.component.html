@@ -66,12 +66,12 @@
   </ng-container>
 
   <ng-container *ngIf="searching">
-    <div class="category-area">
+    <div class="category-area" *ngIf="noResults === false; else noResultsCont">
       <div class="category-container">
         <div class="category-shows">
 
-          <ng-container *ngIf="searchResult$ | async as searchResult; skeleton">
-            <ng-container *ngIf="searchResult?.list">
+          <ng-container *ngIf="searchResult$ | async as searchResult; else skeleton">
+            <ng-container *ngIf="searchResult?.list!.length > 0">
               <div *ngFor="let item of searchResult?.list" class="category-shows-item">
                 <a class="cover" @opacityOnEnter>
                   <img class="cover-image" src="{{item.main_picture.medium}}">
@@ -82,6 +82,7 @@
               </div>
             </ng-container>
             <ng-container *ngIf="searchResult?.loading; then skeleton"></ng-container>
+            <!--<ng-container *ngIf="searchResult?.loading === false && searchResult?.list!.length === 0; then noResults"></ng-container>-->
           </ng-container>
 
         </div>
@@ -93,9 +94,16 @@
 
 
 <!--SKELETON TEMPLATE-->
-<ng-template #skeleton>  
-    <div *ngFor="let item of seasonalSkeleton" class="category-shows-item">
-      <div class="cover loading" @scaleUpOnEnter></div>
-      <div class="show-title loading"></div>
-    </div>  
+<ng-template #skeleton>
+  <div *ngFor="let item of seasonalSkeleton" class="category-shows-item">
+    <div class="cover loading" @scaleUpOnEnter></div>
+    <div class="show-title loading"></div>
+  </div>
+</ng-template>
+
+<!--NO RESULTS-->
+<ng-template #noResultsCont>
+
+  <div class="no-results">No Results</div>
+
 </ng-template>

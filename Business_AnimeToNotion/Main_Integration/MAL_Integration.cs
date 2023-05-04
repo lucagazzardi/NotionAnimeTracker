@@ -91,7 +91,8 @@ namespace Business_AnimeToNotion.Main_Integration
             result += "&";
             result += Configuration["MAL_ApiConfig:MAL_NotionNeededFields"];
             result += "&";
-            result += Configuration["MAL_NSFW"];
+            result += Configuration["MAL_ApiConfig:MAL_NSFW"];
+            result += "&limit=6";
 
             return result;
         }
