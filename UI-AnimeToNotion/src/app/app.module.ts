@@ -19,6 +19,7 @@ import { SearchAnimeComponent } from '../components/search-anime/search-anime.co
 import { ThemeService } from '../components/utility-components/theme/theme.service';
 import { SearchAnimeService } from '../components/search-anime/search-anime.service';
 import { FormsModule } from '@angular/forms';
+import { NotionService } from '../components/utility-components/notion/notion.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { FormsModule } from '@angular/forms';
     NgxSkeletonLoaderModule,
     FormsModule
   ],
-  providers: [AppService, ThemeService, SearchAnimeService],
+  providers: [AppService, ThemeService, SearchAnimeService, NotionService],
   bootstrap: [AppComponent],
   entryComponents: [SearchByIdModalComponent]
 })

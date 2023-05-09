@@ -17,3 +17,21 @@ export const scaleUpOnEnter = animation([
   ]))
 
 ]);
+
+export const totalScaleUp_OpacityOnEnter = animation([
+
+  animate('100ms linear', keyframes([
+    style({ transform: 'scale(0)', opacity: 0, offset: 0 }),
+    style({ transform: 'scale(1)', opacity: 1, offset: 1 })
+  ]))
+
+]);
+
+export const totalScaleDown_OpacityOnEnter = animation([
+
+  animate('100ms linear', keyframes([
+    style({ transform: 'scale(1)', opacity: 1, offset: 0 }),
+    style({ transform: 'scale(0)', opacity: 0, offset: 1 })
+  ]))
+
+]);

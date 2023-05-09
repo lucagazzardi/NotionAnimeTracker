@@ -1,6 +1,6 @@
 <div>
 
-  <!--SEARCHBAR-->
+  <!--!SEARCHBAR-->
   <div class="search-area">
     <div class="search-bar">
       <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -22,20 +22,32 @@
 
 
   <ng-container *ngIf="!searching">
-    <!--SEASONAL-->
+    <!--!SEASONAL-->
     <div class="category-area">
       <div class="category-container">
         <span class="category-title">SEASONAL</span>
         <div class="category-shows">
 
-          <ng-container *ngIf="(seasonalList$ | async) || seasonalListStatic; else skeleton">
-            <div *ngFor="let item of seasonalListStatic" class="category-shows-item">
+          <ng-container *ngIf="seasonalListStatic || (seasonalList$ | async); else skeleton">
+            <div *ngFor="let item of seasonalListStatic; let i = index" class="category-shows-item" (mouseenter)="seasonalListTracker[i] = true" (mouseleave)="seasonalListTracker[i] = false">
               <a class="cover" @opacityOnEnter>
                 <img class="cover-image" src="{{item.main_picture.medium}}">
+
+                <!--BUTTONS-->
+                <div *ngIf="seasonalListTracker[i]" class="n-button" mdbTooltip="Add to Notion" placement="left" @totalScale_OpacityOnEnter>
+                  <div (click)="addItemToNotion(item)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="icon">
+                      <path fill="currentColor" d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" />
+                    </svg>
+                  </div>
+                </div>
               </a>
               <a class="show-title">
                 {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
               </a>
+
+              
+
             </div>
           </ng-container>
 
@@ -43,16 +55,25 @@
       </div>
     </div>
 
-    <!--NEXT SEASON-->
+    <!--!NEXT SEASON-->
     <div class="category-area" style="padding-top: 30px">
       <div class="category-container">
         <span class="category-title">NEXT SEASON</span>
 
         <div class="category-shows">
           <ng-container *ngIf="seasonalList$ | async as seasonalList; else skeleton">
-            <div *ngFor="let item of seasonalList" class="category-shows-item">
+            <div *ngFor="let item of seasonalList; let i = index" class="category-shows-item" (mouseenter)="nextSeasonTracker[i] = true" (mouseleave)="nextSeasonTracker[i] = false">
               <a class="cover" @opacityOnEnter>
                 <img class="cover-image" src="{{item.main_picture.medium}}">
+
+                <!--BUTTONS-->
+                <div *ngIf="nextSeasonTracker[i]" class="n-button" mdbTooltip="Add to Notion" placement="left" @totalScale_OpacityOnEnter>
+                  <div (click)="addItemToNotion(item)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="icon">
+                      <path fill="currentColor" d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" />
+                    </svg>
+                  </div>
+                </div>
               </a>
               <a class="show-title">
                 {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
@@ -65,6 +86,7 @@
     </div>
   </ng-container>
 
+  <!--!SEARCH RESULT-->
   <ng-container *ngIf="searching">
     <div class="category-area" *ngIf="noResults === false; else noResultsCont">
       <div class="category-container">
@@ -72,9 +94,18 @@
 
           <ng-container *ngIf="searchResult$ | async as searchResult; else skeleton">
             <ng-container *ngIf="searchResult?.list!.length > 0">
-              <div *ngFor="let item of searchResult?.list" class="category-shows-item">
+              <div *ngFor="let item of searchResult?.list; let i = index" class="category-shows-item" (mouseenter)="searchResultTracker[i] = true" (mouseleave)="searchResultTracker[i] = false">
                 <a class="cover" @opacityOnEnter>
                   <img class="cover-image" src="{{item.main_picture.medium}}">
+
+                  <!--BUTTONS-->
+                  <div *ngIf="searchResultTracker[i]" class="n-button" mdbTooltip="Add to Notion" placement="left" @totalScale_OpacityOnEnter>
+                    <div (click)="addItemToNotion(item)">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="icon">
+                        <path fill="currentColor" d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" />
+                      </svg>
+                    </div>
+                  </div>
                 </a>
                 <a class="show-title">
                   {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
@@ -82,7 +113,6 @@
               </div>
             </ng-container>
             <ng-container *ngIf="searchResult?.loading; then skeleton"></ng-container>
-            <!--<ng-container *ngIf="searchResult?.loading === false && searchResult?.list!.length === 0; then noResults"></ng-container>-->
           </ng-container>
 
         </div>
@@ -101,9 +131,7 @@
   </div>
 </ng-template>
 
-<!--NO RESULTS-->
+<!--NO RESULTS TEMPLATE-->
 <ng-template #noResultsCont>
-
-  <div class="no-results">No Results</div>
-
+  <div class="no-results" @opacityOnEnter>No Results</div>
 </ng-template>

@@ -4,7 +4,8 @@ import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map
 import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
 import { SearchByNameModalService } from '../../search-by-name-modal/search-by-name-modal.service';
 import { SearchAnimeService } from './search-anime.service';
-import { opacityOnEnter, scaleUpOnEnter } from '../utility-components/animations/animations';
+import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnEnter, totalScaleUp_OpacityOnEnter } from '../utility-components/animations/animations';
+import { NotionService } from '../utility-components/notion/notion.service';
 
 @Component({
   selector: 'app-search-anime',
@@ -21,37 +22,61 @@ import { opacityOnEnter, scaleUpOnEnter } from '../utility-components/animations
         useAnimation(scaleUpOnEnter)
       ])
     ]),
+    trigger('totalScale_OpacityOnEnter', [
+      transition(':enter', [
+        useAnimation(totalScaleUp_OpacityOnEnter)
+      ]),
+      transition(':leave', [
+        useAnimation(totalScaleDown_OpacityOnEnter)
+      ])
+    ])
   ]
 })
 export class SearchAnimeComponent implements OnInit {
 
-  searchById: boolean = false;  
-  seasonalList$!: Observable<MAL_AnimeModel[]>;
-  seasonalListStatic!: MAL_AnimeModel[];
+  //! ==General fields==
+  searchById: boolean = false;
   seasonalSkeleton = Array(20).fill(0);
 
+  //! ==SEASONAL==
+  seasonalList$!: Observable<MAL_AnimeModel[]>;
+  seasonalListStatic!: MAL_AnimeModel[];
+  seasonalListTracker!: boolean[];
+
+  //! ==NEXT SEASON==
+  nextSeasonList$!: Observable<MAL_AnimeModel[]>;
+  nextSeasonListStatic!: MAL_AnimeModel[];
+  nextSeasonTracker!: boolean[];
+
+  //! ==SEARCH==
   searchTerm: string = "";
   private searchTerm$ = new BehaviorSubject<string>('');
   searchResult$!: Observable<{ loading: boolean, list?: MAL_AnimeModel[] }>;
-
+  searchResultTracker!: boolean[];
   searching: boolean = false;
   noResults: boolean = false;
 
-  constructor(private service: SearchAnimeService) { }
+  constructor(private service: SearchAnimeService, private notionService: NotionService) { }
 
   ngOnInit(): void {
 
-    //MOCK ITEMS
+    // MOCK ITEMS
     this.seasonalList$ = this.service.getAll().pipe(delay(1000));
-    this.seasonalList$.subscribe((data) => { this.seasonalListStatic = data });
+    this.seasonalList$.subscribe((data) => { this.seasonalListStatic = data; this.seasonalListTracker = Array(data.length).fill(false) });
 
+    this.nextSeasonList$ = this.service.getAll().pipe(delay(1000));
+    this.nextSeasonList$.subscribe((data) => { this.nextSeasonListStatic = data; this.nextSeasonTracker = Array(data.length).fill(false) });
+
+    //! DEBOUNCING START
     this.debouncingPipe();    
   }
 
+  /// Alternate search by id or by title
   switchMode(value: boolean) {
     this.searchById = value;
   }
 
+  /// Triggered when something is typed in the search bar
   search(searchTerm: string) {
     if (searchTerm) {
       this.searchTerm$.next(searchTerm);
@@ -62,10 +87,12 @@ export class SearchAnimeComponent implements OnInit {
       this.searching = false;
   }
 
+  /// Retrieve the value of text typed in search bar
   getEventType(event: Event): string {
     return (event.target as HTMLInputElement).value;
   }
 
+  /// Triggered if there's no input for more than [debounceTime] ms in the search bar
   debouncingPipe() {
     this.searchResult$ = this.searchTerm$
       .pipe(
@@ -75,12 +102,13 @@ export class SearchAnimeComponent implements OnInit {
           concat(
             // Starts with
             of({ loading: true, list: [] }),
-            // API call starts
+            // API call
             this.querySearch(searchTerm)
               .pipe(
-                //Result
+                // Result
                 tap(value => {
                   this.noResults = value.length == 0;
+                  this.searchResultTracker = Array(value.length).fill(false);
                 }),
                 map(value => ({ loading: false, list: value })),
                 
@@ -90,6 +118,7 @@ export class SearchAnimeComponent implements OnInit {
     );
   }
 
+  /// Calls the right API based on the type of search being executed (ID / TITLE)
   querySearch(searchTerm: string) {
     if (this.searchById) {
       return this.service.getShowById(searchTerm).pipe(toArray());
@@ -98,4 +127,15 @@ export class SearchAnimeComponent implements OnInit {
       return this.service.getShowListByName(searchTerm);
     }    
   }
+
+  /// API call to Notion (Add new item)
+  addItemToNotion(newItem: MAL_AnimeModel) {
+    this.notionService.add(newItem)
+      .subscribe(
+        {
+          next: () => { },
+          error: () => { }
+        });
+  }
+  
 }

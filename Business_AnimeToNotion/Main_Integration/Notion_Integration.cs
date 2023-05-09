@@ -102,6 +102,7 @@ namespace Business_AnimeToNotion.Main_Integration
             try
             {
                 PagesCreateParameters pagesCreateParameters = ConvertMALResponseToNotionPage_V2(result, DataBaseId);
+
                 await Notion_CreateNewEntry(pagesCreateParameters);
             }
             catch (Exception ex)
@@ -449,6 +450,13 @@ namespace Business_AnimeToNotion.Main_Integration
 
         private async Task<MAL_AnimeModel> SetMultiSeasonIdentifier(MAL_AnimeModel animeModel)
         {
+            //// If related_anime is populated but has no items, it means that the search is by ID but this is the first season.
+            //if(animeModel.related_anime.Count == 0)
+            //{
+            //    animeModel.related_anime = new List<MAL_RelatedShow>();
+            //    return animeModel;
+            //}
+
             animeModel.showHidden = animeModel.alternative_titles.en;
 
             //If the show comes from the search by name, MAL doesn't populate the field "related_anime" so a new call is needed to recover that field

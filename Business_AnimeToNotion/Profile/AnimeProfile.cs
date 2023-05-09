@@ -33,7 +33,7 @@ namespace Business_AnimeToNotion.Profile
                     { Notion_Properties_Mapping.Episodes, MappingHandler.Mapper.Map<NumberPropertyValue>(source.num_episodes) },
                     { Notion_Properties_Mapping.Studios, MappingHandler.Mapper.Map<RichTextPropertyValue>(source.studios) },
                     { Notion_Properties_Mapping.Genres, MappingHandler.Mapper.Map<RichTextPropertyValue>(source.genres) },
-                    { Notion_Properties_Mapping.Show_Hidden, MappingHandler.Mapper.Map<RichTextPropertyValue>(source.showHidden) }
+                    { Notion_Properties_Mapping.Show_Hidden, MappingHandler.Mapper.Map<RichTextPropertyValue>(source.showHidden ?? string.Empty) }
                 };
             });
 
@@ -89,7 +89,7 @@ namespace Business_AnimeToNotion.Profile
             CreateMap<List<MAL_GeneralObject>, RichTextPropertyValue>().ForMember(dto => dto.RichText, map => map.MapFrom(source => new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = string.Join(", ", source.Select(x => x.name)) } } }));
 
             //Show Hidden
-            CreateMap<string, RichTextPropertyValue>().ForMember(dto => dto.RichText, map => map.MapFrom(source => new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = source ?? string.Empty } } }));
+            CreateMap<string, RichTextPropertyValue>().ForMember(dto => dto.RichText, map => map.MapFrom(source => new List<RichTextBase>() { new RichTextText() { Text = new Text() { Content = source } } }));
 
 
 
