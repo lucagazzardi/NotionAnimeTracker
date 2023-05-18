@@ -6,7 +6,6 @@
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
 @import "assets/scss/divider.scss";
-@import "assets/scss/tooltip.scss";
 
 :root {
   --color-background: 237, 241, 245;
@@ -28,10 +27,10 @@
 }
 
 .dark-theme {
-  --color-background: 18, 25, 43;
-  --color-foreground: 14, 36, 68;
+  --color-background: 14, 19, 31;
+  --color-foreground: 20, 30, 45;
   --color-foreground-light: 99, 106, 112;
-  --color-skeleton-base: 13, 32, 57;
+  --color-skeleton-base: 20, 30, 45;
   --color-skeleton-outer: 41,61,87;
   --color-skeleton-center: 71, 91, 130;
   --color-text-highlight: 220, 237, 250;

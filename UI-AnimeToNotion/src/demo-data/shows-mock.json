@@ -752,8 +752,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Shounen, Fantasy, Adventure, Action",
-      "studiosJoined": "Toei Animation",
       "showHidden": null
     },
     {
@@ -822,8 +820,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Shounen, Historical, Fantasy, Action",
-      "studiosJoined": "ufotable",
       "showHidden": null
     },
     {
@@ -900,8 +896,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Gore, Seinen, Historical, Drama",
-      "studiosJoined": "MAPPA",
       "showHidden": null
     },
     {
@@ -964,8 +958,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Showbiz, Reincarnation, Seinen, Supernatural",
-      "studiosJoined": "Doga Kobo",
       "showHidden": null
     },
     {
@@ -1020,8 +1012,6 @@
       ],
       "num_episodes": 13,
       "related_anime": [],
-      "genresJoined": "Gore, Shounen, Historical, Fantasy",
-      "studiosJoined": "MAPPA",
       "showHidden": null
     },
     {
@@ -1924,8 +1914,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Detective, Shounen, Mystery, Comedy",
-      "studiosJoined": "TMS Entertainment",
       "showHidden": null
     },
     {
@@ -1988,8 +1976,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Time Travel, Shounen, Sci-Fi, Comedy",
-      "studiosJoined": "TMS Entertainment",
       "showHidden": null
     },
     {
@@ -2065,8 +2051,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Reincarnation, School, Fantasy, Mythology",
-      "studiosJoined": "SILVER LINK.",
       "showHidden": null
     },
     {
@@ -2106,8 +2090,6 @@
       ],
       "num_episodes": 0,
       "related_anime": [],
-      "genresJoined": "Sci-Fi, Fantasy, Action",
-      "studiosJoined": "A-1 Pictures",
       "showHidden": null
     },
     {
@@ -2156,8 +2138,6 @@
           "relation_type_formatter": null
         }
       ],
-      "genresJoined": "Fantasy, Comedy",
-      "studiosJoined": "Drive",
       "showHidden": null
     }      
   ]

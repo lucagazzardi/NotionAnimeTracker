@@ -20,18 +20,36 @@ export const scaleUpOnEnter = animation([
 
 export const totalScaleUp_OpacityOnEnter = animation([
 
-  animate('100ms linear', keyframes([
-    style({ transform: 'scale(0)', opacity: 0, offset: 0 }),
+  animate('200ms ease-in-out', keyframes([
+    style({ transform: 'scale(.2)', opacity: 0, offset: 0 }),
     style({ transform: 'scale(1)', opacity: 1, offset: 1 })
   ]))
 
 ]);
 
-export const totalScaleDown_OpacityOnEnter = animation([
+export const totalScaleDown_OpacityOnLeave = animation([
 
-  animate('100ms linear', keyframes([
+  animate('200ms ease-in-out', keyframes([
     style({ transform: 'scale(1)', opacity: 1, offset: 0 }),
-    style({ transform: 'scale(0)', opacity: 0, offset: 1 })
+    style({ transform: 'scale(.2)', opacity: 0, offset: 1 })
+  ]))
+
+]);
+
+export const totalScaleUp_Opacity_MarginOnEnter = animation([
+
+  animate('200ms ease-in-out', keyframes([
+    style({ transform: 'scale(.2)', opacity: 0, marginTop: '-10px', offset: 0 }),
+    style({ transform: 'scale(1)', opacity: 1, marginTop: '0', offset: 1 })
+  ]))
+
+]);
+
+export const totalScaleUp_Opacity_MarginOnLeave = animation([
+
+  animate('200ms ease-in-out', keyframes([
+    style({ transform: 'scale(1)', opacity: 1, marginTop: '0', offset: 0 }),
+    style({ transform: 'scale(.2)', opacity: 0, marginTop: '-10px', offset: 1 })
   ]))
 
 ]);

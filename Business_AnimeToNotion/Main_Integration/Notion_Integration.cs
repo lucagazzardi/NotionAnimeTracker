@@ -64,7 +64,7 @@ namespace Business_AnimeToNotion.Main_Integration
 
     internal class Notion_ExceptionMessages
     {
-        public const string CreateNewEntryException = "Error: \"[title]\" is already present in the Notion Database";
+        public const string CreateNewEntryException = "Error: \"[title]\" is already present";
         public const string MultiSeasonIdentifierException = "Error: couldn't retrieve parent show for \"[title]\"";
         public const string GetLatestAdded = "Error: failed latest added retrieval";
         public const string UpdatePropertiesException = "Error: properties update failed";

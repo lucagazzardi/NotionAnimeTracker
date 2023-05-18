@@ -27,10 +27,6 @@ namespace Business_AnimeToNotion.Model
         public List<MAL_GeneralObject> studios { get; set; } = new List<MAL_GeneralObject>();
         public int num_episodes { get; set; }
         public List<MAL_RelatedShow> related_anime { get; set; } = new List<MAL_RelatedShow> ();
-
-        //Handled fields
-        public string genresJoined { get; set; }
-        public string studiosJoined { get; set; }
         public string showHidden { get; set; } = null;
     }
 

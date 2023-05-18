@@ -1,11 +1,15 @@
-import { animate, keyframes, style, transition, trigger, useAnimation } from '@angular/animations';
+import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, Observable, of, startWith, Subject, Subscription, switchMap, takeUntil, tap, toArray } from 'rxjs';
+import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, Observable, of, switchMap, tap, toArray } from 'rxjs';
 import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
-import { SearchByNameModalService } from '../../search-by-name-modal/search-by-name-modal.service';
 import { SearchAnimeService } from './search-anime.service';
-import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnEnter, totalScaleUp_OpacityOnEnter } from '../utility-components/animations/animations';
+import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../utility-components/animations/animations';
 import { NotionService } from '../utility-components/notion/notion.service';
+import { ToasterService } from 'gazza-toaster';
+import { Router } from '@angular/router';
+import { StringManipulationService } from '../utility-components/string-manipulation/string-manipulation.service';
+import { EditService } from '../edit/edit.service';
+
 
 @Component({
   selector: 'app-search-anime',
@@ -27,7 +31,15 @@ import { NotionService } from '../utility-components/notion/notion.service';
         useAnimation(totalScaleUp_OpacityOnEnter)
       ]),
       transition(':leave', [
-        useAnimation(totalScaleDown_OpacityOnEnter)
+        useAnimation(totalScaleDown_OpacityOnLeave)
+      ])
+    ]),
+    trigger('totalScaleUp_Opacity_MarginOnEnter', [
+      transition(':enter', [
+        useAnimation(totalScaleUp_Opacity_MarginOnEnter)
+      ]),
+      transition(':leave', [
+        useAnimation(totalScaleUp_Opacity_MarginOnLeave)
       ])
     ])
   ]
@@ -37,6 +49,7 @@ export class SearchAnimeComponent implements OnInit {
   //! ==General fields==
   searchById: boolean = false;
   seasonalSkeleton = Array(20).fill(0);
+  showEditButton: boolean = false;
 
   //! ==SEASONAL==
   seasonalList$!: Observable<MAL_AnimeModel[]>;
@@ -56,7 +69,14 @@ export class SearchAnimeComponent implements OnInit {
   searching: boolean = false;
   noResults: boolean = false;
 
-  constructor(private service: SearchAnimeService, private notionService: NotionService) { }
+  constructor(
+    private router: Router,
+    private service: SearchAnimeService,
+    private notionService: NotionService,
+    private toasterService: ToasterService,
+    private stringManipulation: StringManipulationService,
+    private editService: EditService
+  ) { }
 
   ngOnInit(): void {
 
@@ -133,9 +153,30 @@ export class SearchAnimeComponent implements OnInit {
     this.notionService.add(newItem)
       .subscribe(
         {
-          next: () => { },
-          error: () => { }
+          next: () => { this.toasterService.notifySuccess((newItem.alternative_titles.en ? newItem.alternative_titles.en : newItem.title) + " has been saved") },
+          error: (error) => { this.toasterService.notifyError(error.error) }
         });
+  }
+
+  removeItemFromNotion(id: number) {
+    // TODO: Add logic of removal
+    this.notionService.remove(id);
+  }
+
+  /// Open Edit Component
+  editItem(item: MAL_AnimeModel) {
+    let title: string = this.stringManipulation.normalize(item.alternative_titles.en ? item.alternative_titles.en : item.title);
+
+    this.editService.setItem(item);
+    this.router.navigate(['edit', item.id, title]);
+  }
+
+
+
+
+
+  testToast() {
+    this.toasterService.notifyError("Tanto ciao dai è stato aggiunto con successo");
   }
   
 }

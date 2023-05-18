@@ -1,7 +1,4 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable, Renderer2, RendererFactory2 } from "@angular/core";
-import { Observable } from "rxjs";
-
 
 @Injectable()
 export class ThemeService {

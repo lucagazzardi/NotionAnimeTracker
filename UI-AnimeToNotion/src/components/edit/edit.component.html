@@ -1,0 +1,84 @@
+<div>
+
+  <div class="box-top">
+    <div class="container">
+      <div class="top-container">
+        <div class="title-wrapper">
+          <div class="title-main">
+            {{item?.alternative_titles?.en ? item?.alternative_titles?.en : item?.title}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+
+    <div class="box-fields">
+      <div class="elements-wrapper">
+
+        <!--COVER-->
+        <div class="cover-wrapper">
+          <div *ngIf="item != null" class="cover">
+            <img class="cover-image" src="{{item?.main_picture?.large}}">
+          </div>
+        </div>
+
+        <!--TITLE-->
+        <div class="title-original">
+          {{item?.alternative_titles?.en ? item?.alternative_titles?.ja : item?.title}}
+        </div>
+
+        <div>
+          <div class="left-btn">
+            <svg class="favorite-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
+            </svg>
+          </div>
+
+          <div class="left-btn">
+            <span>{{item?.id}}</span>
+          </div>
+
+          <div class="left-info">
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.title }"></ng-container>
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: item?.start_date }"></ng-container>
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.media_type }"></ng-container>
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Episodes', value: item?.num_episodes }"></ng-container>
+            <ng-container *ngTemplateOutlet="fieldList; context: { title: 'Studios', values: item?.studios }"></ng-container>
+            <ng-container *ngTemplateOutlet="fieldList; context: { title: 'Genres', values: item?.genres }"></ng-container>
+          </div>
+        </div>
+
+      </div>  
+    </div>
+  </div>
+</div>
+
+<ng-template #field let-title="title" let-value="value">
+  <div class="left-info-item">
+    <div class="left-info-title">
+      {{title}}
+    </div>
+    <div class="left-info-value" [class.upper]="title === 'Format'">
+      {{value}}
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #fieldList let-title="title" let-values="values">
+  <div class="left-info-item">
+    <div class="left-info-title">
+      {{title}}
+    </div>
+    <div *ngFor="let value of values" class="left-info-value">
+      {{value.name}}
+      <br>
+    </div>
+  </div>
+</ng-template>
+
+<!--<div class="favorite-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
+  </svg>
+</div>-->

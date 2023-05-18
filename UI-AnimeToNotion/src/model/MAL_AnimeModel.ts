@@ -10,9 +10,6 @@ export class MAL_AnimeModel {
   studios: MAL_GeneralObject[];
   num_episodes: number;
   related_anime: MAL_RelatedShow[];
-
-  genresJoined: string;
-  studiosJoined: string;
   showHidden: string | null;
   
 
@@ -27,8 +24,6 @@ export class MAL_AnimeModel {
     this.genres = genres;
     this.studios = studios;
     this.num_episodes = num_episodes;
-    this.genresJoined = genresJoined;
-    this.studiosJoined = studiosJoined;
     this.showHidden = showHidden;
     this.related_anime = related_anime;
   }

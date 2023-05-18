@@ -43,7 +43,7 @@ namespace Business_AnimeToNotion.Main_Integration
             List<MAL_AnimeModel> result = new List<MAL_AnimeModel>();
             try
             {
-                var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchByName(searchTerm));
+               var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchByName(searchTerm));
                 result = DeserializeResponseList(httpResponse);
             }
             catch
@@ -115,20 +115,12 @@ namespace Business_AnimeToNotion.Main_Integration
         private MAL_AnimeModel DeserializeResponse(string httpResponse)
         {
             MAL_AnimeModel result = JsonSerializer.Deserialize<MAL_AnimeModel>(httpResponse);
-            result.genresJoined = string.Join(", ", result.genres.OrderByDescending(x => x.id).Select(x => x.name).Take(4).ToList());
-            result.studiosJoined = string.Join(", ", result.studios.OrderByDescending(x => x.id).Select(x => x.name).Take(4).ToList());
             return result;
         }
 
         private List<MAL_AnimeModel> DeserializeResponseList(string httpResponse)
         {
             MAL_ApiResponseModel response = JsonSerializer.Deserialize<MAL_ApiResponseModel>(httpResponse);
-
-            foreach(var show in response.data)
-            {
-                show.node.genresJoined = string.Join(", ", show.node.genres.OrderByDescending(x => x.id).Select(x => x.name).Take(4).ToList());
-                show.node.studiosJoined = string.Join(", ", show.node.studios.OrderByDescending(x => x.id).Select(x => x.name).Take(4).ToList());
-            }
 
             return response.data.Select(x => x.node).ToList();
         }

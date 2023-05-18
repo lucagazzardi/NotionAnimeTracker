@@ -1,9 +1,10 @@
 @import '../../assets/scss/skeleton.scss';
+@import '../../assets/scss/container.scss';
+
 
 .search-area {
     padding: 60px 0 60px 0;
-    display: flex;
-  
+    display: flex;  
 }
 
 .search-bar {
@@ -151,32 +152,6 @@
         cursor: pointer;
         box-shadow: var(--box-shadow);
 
-        & .n-button {
-          height: 25px;
-          width: 25px;
-          background: rgb(18, 25, 43);
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          border-radius: 4px;
-          box-shadow: var(--box-shadow);
-          opacity: 75%;
-          color: rgb(220, 237, 250);
-          display: grid;
-          align-items: center;
-          justify-content: center;
-
-          &:hover {
-            transform: scale(1.1);
-            transition: 0.25s;
-            opacity: 100%;
-          }
-
-          & .icon {
-            width: .5rem;
-          }
-        }
-
         &.loading {
           background: rgba(var(--color-skeleton-base),.8);
           box-shadow: none;
@@ -200,7 +175,7 @@
             height: 0;
             width: 0;
             /*
-                  Needed to display the cover image. It gives space for the image with position absolute to appear.
+                Needed to display the cover image. It gives space for the image with position absolute to appear.
                   It is calculated based on the aspect ratio that is desired to keep, in this case 2:3.
                   (height / width) * 100
                   (3 / 2) * 100 = 150%
@@ -234,7 +209,7 @@
         &.loading {
           border-radius: 4px;
           height: 17px;
-          margin-top: 12px;
+          margin-top: 5px;
           width: 90%;
           background: rgba(var(--color-skeleton-base),.8);
           box-shadow: none;
@@ -271,4 +246,73 @@
   justify-content: center;
   letter-spacing: 1px;
   font-family: var(--font-family-secondary);
+}
+
+.n-button-wrapper {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.n-main-button {
+  margin-bottom: 7px;
+}
+
+.n-button {
+  height: 25px;
+  width: 25px;
+  background: rgb(18, 25, 43);
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+  opacity: 75%;
+  color: rgb(220, 237, 250);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: 0.25s;
+    opacity: 100%;
+  }
+
+  & .icon-s {
+    width: .5rem;
+  }
+
+  & .icon-m {
+    width: .6rem;
+  }
+
+  & .icon-l {
+    width: .7rem;
+  }
+
+  &.tooltip {
+    &:before {
+      background: rgba(18, 25, 43, .85);
+      border-radius: 4px;
+      box-shadow: var(--box-shadow);
+      color: rgb(220, 237, 250);
+      content: attr(label);
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 28px;
+      transition: opacity .2s ease;
+      width: min-content;
+      padding: 1px 8px;
+      font-size: 9px;
+      font-family: var(--font-family-tertiary);
+      font-weight: 700;
+    }
+
+    &:hover:before {
+      opacity: 1;
+    }
+  }
 }
