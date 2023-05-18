@@ -14,6 +14,9 @@ export class EditComponent implements OnInit {
 
   id: string | null = null;
   item: MAL_AnimeModel | null = null;
+  malBaseUrl: string = 'https://myanimelist.net/anime/';
+
+  isFavorite: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +48,12 @@ export class EditComponent implements OnInit {
           next: (data: MAL_AnimeModel) => { this.item = data; console.log(this.item) },
           error: () => { this.toasterService.notifyError("The item could not be retrieved") }
         });
+  }
+
+  /// Set the show as favorite or remove from favorites
+  // TODO: Call API to Add as favorite
+  setAsFavorite(value: boolean) {
+    this.isFavorite = value;
   }
 
 }

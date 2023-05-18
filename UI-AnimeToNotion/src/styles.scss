@@ -23,7 +23,8 @@
   --font-family-tertiary: 'Montserrat', sans-serif;
   --background-active-item: 61,180,242;
   --color-shadow: 0,5,15;
-  --box-shadow: 0 14px 30px rgba(103,132,187, .1),0 4px 4px rgba(103,132,187, .04);
+  --box-shadow: 0 14px 30px rgba(103,132,187, .15),0 4px 4px rgba(103,132,187, .04);
+  --box-shadow-background: 0 14px 30px rgba(75, 85, 94, .15),0 4px 4px rgba(75, 85, 94, .04);
 }
 
 .dark-theme {
@@ -37,7 +38,8 @@
   --color-text-normal: 191, 206, 217;
   --color-text-hover: 153, 165, 173;
   --color-placeholder: 88, 97, 99;
-  --box-shadow: 0 14px 30px rgba(0, 5, 15, .08),0 12px 12px rgba(0, 5, 15, .05);
+  --box-shadow: 0 14px 30px rgba(0, 5, 15, .08),0 4px 4px rgba(0, 5, 15, .05);
+  --box-shadow-background: 0 14px 30px rgba(0, 5, 15, .15),0 4px 4px rgba(0, 5, 15, .04);
 }
 
 body{
