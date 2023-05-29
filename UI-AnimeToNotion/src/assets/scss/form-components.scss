@@ -1,0 +1,12 @@
+.base-form-component {
+  height: 42px;
+  background: rgb(var(--color-background));
+  min-width: 150px;
+  border-radius: 6px;
+}
+
+.base-form-icon {
+  width: 1rem;
+  margin-top: -2px;
+  color: rgb(var(--color-text-normal), .7);
+}

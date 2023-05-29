@@ -1,0 +1,30 @@
+.mat-form-field-wrapper{
+    padding: 0;
+    height: 100%;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-infix {
+  padding: 3px 0 0 0;
+  height: 100%
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: initial;
+}
+
+.mat-form-field-flex {
+  padding: 0 !important;
+  height: 100%;
+}
+
+.mat-input-element{
+    height:100%;
+}
+
+.mat-form-field-label-wrapper{
+    display:none;
+}
+
+.input.mat-input-element{
+    margin-top: 0!important;
+}

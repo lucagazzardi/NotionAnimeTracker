@@ -1,0 +1,4 @@
+
+<textarea *ngIf="isTextArea" autocomplete="off" class="base-form-component text-area" [formControl]="newValue"></textarea>
+
+<input *ngIf="!isTextArea" class="base-form-component input-area" [formControl]="newValue">

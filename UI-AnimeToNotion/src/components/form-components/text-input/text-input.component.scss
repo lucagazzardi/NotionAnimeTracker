@@ -1,0 +1,31 @@
+.text-area {
+  min-height: 42px;
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+  font-family: var(--font-family-secondary);
+  color: rgb(var(--color-text-normal), .7);
+  width: 100%;
+  padding: 10px 15px 0 15px;
+
+  &:focus, &:focus-visible {
+    border: 0;
+    outline: 0;
+  }
+}
+
+.input-area {
+  min-height: 42px;
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+  font-family: var(--font-family-secondary);
+  color: rgb(var(--color-text-normal), .7);
+  width: 100%;
+  padding: 2px 15px 0 15px;
+
+  &:focus, &:focus-visible {
+    border: 0;
+    outline: 0;
+  }
+}

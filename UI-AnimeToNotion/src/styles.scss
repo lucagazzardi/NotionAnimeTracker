@@ -1,3 +1,40 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$UI-AnimeToNotion-primary: mat.define-palette(mat.$indigo-palette);
+$UI-AnimeToNotion-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$UI-AnimeToNotion-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$UI-AnimeToNotion-theme: mat.define-light-theme((
+  color: (
+    primary: $UI-AnimeToNotion-primary,
+    accent: $UI-AnimeToNotion-accent,
+    warn: $UI-AnimeToNotion-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($UI-AnimeToNotion-theme);
+
+
+
 @import "~mdb-angular-ui-kit/assets/scss/mdb.scss";
 
 @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
@@ -5,7 +42,11 @@
 @import "~@fortawesome/fontawesome-free/scss/regular.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
-@import "assets/scss/divider.scss";
+@import "assets/scss/form-components.scss";
+@import "assets/scss/select-ang-material.scss";
+@import "assets/scss/input-numb-ang-material.scss";
+@import "assets/scss/datepicker-ang-material.scss";
+@import "assets/scss/input-text-ang-material.scss";
 
 :root {
   --color-background: 237, 241, 245;
@@ -14,6 +55,7 @@
   --color-skeleton-base: 217, 222, 219;
   --color-skeleton-outer: 41,61,87;
   --color-skeleton-center: 0, 0, 35;
+  --color-skeleton-contrast: 217, 222, 219;
   --color-text-highlight: 100, 105, 112;
   --color-text-normal: 136, 143, 153;
   --color-text-hover: 100, 105, 112;
@@ -22,6 +64,9 @@
   --font-family-secondary: 'Overpass', sans-serif;
   --font-family-tertiary: 'Montserrat', sans-serif;
   --background-active-item: 61,180,242;
+  --background-danger-item: 235, 69, 64;
+  --background-success-item: 44, 193, 53;
+  --background-warning-item: 230, 210, 36;
   --color-shadow: 0,5,15;
   --box-shadow: 0 14px 30px rgba(103,132,187, .15),0 4px 4px rgba(103,132,187, .04);
   --box-shadow-background: 0 14px 30px rgba(75, 85, 94, .15),0 4px 4px rgba(75, 85, 94, .04);
@@ -34,6 +79,7 @@
   --color-skeleton-base: 20, 30, 45;
   --color-skeleton-outer: 41,61,87;
   --color-skeleton-center: 71, 91, 130;
+  --color-skeleton-contrast: 25, 39, 59;
   --color-text-highlight: 220, 237, 250;
   --color-text-normal: 191, 206, 217;
   --color-text-hover: 153, 165, 173;

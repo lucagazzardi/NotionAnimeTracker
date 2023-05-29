@@ -1,0 +1,9 @@
+<div class="base-form-component select">
+  <mat-form-field>
+    <mat-select [formControl]="status" disableOptionCentering>
+      <mat-option *ngFor="let item of values | keyvalue" [value]="item.key">
+        {{item.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

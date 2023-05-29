@@ -132,9 +132,9 @@
 
   <div (mouseenter)="showEditButton = true" (mouseleave)="showEditButton = false">
 
-    <div *ngIf="list[i]" class="n-button-wrapper">
+    <div *ngIf="list[i]" class="n-button-wrapper" @totalScale_OpacityOnEnter>
 
-      <div class="n-main-button" @totalScale_OpacityOnEnter>
+      <div class="n-main-button">
         <!--ADD BUTTON-->
         <!--TODO: ADD LOGIC FOR REMOVE BUTTON-->
         <div *ngIf="true" class="n-button">

@@ -11,10 +11,9 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\UI-AnimeToNotion</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\components\utility-components\animations\" />
-    <Folder Include="src\components\utility-components\mal\" />
-    <Folder Include="src\components\utility-components\string-manipulation\" />
-    <Folder Include="src\model\" />
+    <Folder Include="src\assets\animations\" />
+    <Folder Include="src\services\mal\" />
+    <Folder Include="src\services\string-manipulation\" />
     <Folder Include="src\demo-data\" />
   </ItemGroup>
   <ItemGroup>

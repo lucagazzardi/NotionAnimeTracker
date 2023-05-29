@@ -1,0 +1,62 @@
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-select-arrow {
+  color: rgb(var(--color-text-normal), .7);
+  transform: rotate(0);
+  transition: .15s;
+}
+
+.mat-form-field-infix{
+    border-top: 0;
+}
+
+.mat-form-field-underline{
+    display: none;
+}
+
+.mat-form-field-appearance-legacy {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.mat-select-value-text {
+  color: rgb(var(--color-text-normal), .7);
+  font-family: var(--font-family-secondary);
+  font-size: 14px;
+}
+
+.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: rgb(var(--color-text-normal), .7);
+  transform: rotate(180deg);
+  transition: .15s;
+}
+
+.mat-option {
+  font-size: 14px!important;
+  font-weight: 500;
+  font-family: var(--font-family-secondary);
+  letter-spacing: 0!important;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: rgb(var(--background-active-item));
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+   background: rgba(0, 0, 0, 0.08); 
+}
+
+.mat-override-cdk {
+  margin-top: 30px;
+  padding: 0 2px;
+}
+
+.mat-select-style {
+  font-size: 14px!important;
+  font-weight: 500;
+  font-family: var(--font-family-secondary);
+}

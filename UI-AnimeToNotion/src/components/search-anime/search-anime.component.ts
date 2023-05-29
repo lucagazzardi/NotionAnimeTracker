@@ -1,13 +1,13 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, Observable, of, switchMap, tap, toArray } from 'rxjs';
+import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable } from 'rxjs';
 import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
 import { SearchAnimeService } from './search-anime.service';
-import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../utility-components/animations/animations';
-import { NotionService } from '../utility-components/notion/notion.service';
+import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../../assets/animations/animations';
+import { NotionService } from '../../services/notion/notion.service';
 import { ToasterService } from 'gazza-toaster';
 import { Router } from '@angular/router';
-import { StringManipulationService } from '../utility-components/string-manipulation/string-manipulation.service';
+import { StringManipulationService } from '../../services/string-manipulation/string-manipulation.service';
 import { EditService } from '../edit/edit.service';
 
 

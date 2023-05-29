@@ -1,0 +1,28 @@
+.datepicker {
+  display: grid;
+  grid-template-columns: 30px auto;
+  padding: 0 8px;
+  align-items: center;
+  justify-items: center;
+  cursor: pointer;
+}
+
+.datepicker-input {
+  padding: 0 6px;
+  height: 100%;
+}
+
+.datepicker-icon{
+    width: .8rem;
+    margin-top: -5px;
+}
+
+.datepicker-trigger{
+    margin-top: 0;
+}
+
+.datepicker-form{
+    width: 100%;
+}
+
+

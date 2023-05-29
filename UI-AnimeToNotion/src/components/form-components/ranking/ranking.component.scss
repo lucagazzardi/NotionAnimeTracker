@@ -1,0 +1,43 @@
+.ranking {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  padding: 5px 8px;
+  align-items: center;
+  justify-items: center;
+}
+
+.good {
+  color: rgb(var(--background-success-item));
+}
+
+.meh {
+  color: rgb(var(--background-warning-item));
+}
+
+.bad {
+  color: rgb(var(--background-danger-item));
+}
+
+.ranking-input {
+  padding: 0 6px;
+  margin-top: 3px;
+}
+
+.ranking-arrows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%
+}
+
+.ranking-arrow {
+  display: flex;
+  width: .65rem;
+  color: rgb(var(--color-text-normal), .7);
+  height: 15px;
+  cursor: pointer;
+}
+
+.value-not-allowed{
+    cursor: not-allowed;
+}
