@@ -53,3 +53,17 @@ export const totalScaleUp_Opacity_MarginOnLeave = animation([
   ]))
 
 ]);
+
+export const YMovement_Opacity = animation([
+  animate('200ms ease-in-out', keyframes([
+    style({ transform: 'translateY(-50px)', opacity: 0, offset: 0 }),
+    style({ transform: 'translateY(0) scale(1)', opacity: 1, offset: 1 })
+  ]))
+])
+
+export const YMovement_Opacity_Leave = animation([
+  animate('200ms ease-in-out', keyframes([
+    style({ transform: 'translateY(0) scale(1)', opacity: 1, offset: 0 }),
+    style({ transform: 'translateY(-50px)', opacity: 0, offset: 1 })
+  ]))
+])

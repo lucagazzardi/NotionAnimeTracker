@@ -1,50 +1,54 @@
 <div class="container" role="main">
 
-  <!--!SEARCHBAR-->
-  <div class="search-area">
-    <div class="search-bar">
-      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" />
+  <div class="browse">
+    Browse
+
+    <span class="browse__mode" (click)="switchMode()">
+      {{searchMode}}
+      <svg class="browse__icon" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M142.9 142.9c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5c0 0 0 0 0 0H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5c7.7-21.8 20.2-42.3 37.8-59.8zM16 312v7.6 .7V440c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2l41.6-41.6c87.6 86.5 228.7 86.2 315.8-1c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.2 62.2-162.7 62.5-225.3 1L185 329c6.9-6.9 8.9-17.2 5.2-26.2s-12.5-14.8-22.2-14.8H48.4h-.7H40c-13.3 0-24 10.7-24 24z" />
       </svg>
-      <div class="search-input-wrapper">
-        <input type="text" placeholder="Search..." class="search-input" [(ngModel)]="searchTerm" (keyup)="search(getEventType($event))">
-      </div>
-      <div class="search-mode">
-        <div class="select" [class.active]="searchById" (click)="switchMode(true)">
-          <span>ID</span>
-        </div>
-        <div class="select" [class.active]="!searchById" (click)="switchMode(false)">
-          <span>TITLE</span>
-        </div>
-      </div>
-    </div>
+    </span>
+
   </div>
 
-  <!--TEST TOAST BUTTON-->
-  <!--<button type="button" class="btn btn-primary" (click)="testToast()">Button</button>-->
+  <!--!SEARCHBAR-->
+  <div class="search-area">
 
+    <div class="search-area__searchbar">
+      <app-searchbar (valueChanged)="search($event)"></app-searchbar>
+    </div>
+
+    <div class="search-area__mode" (click)="switchMode()">
+      <div class="search-area__option" [class.active]="searchById">
+        <span>{{searchMode}}</span>
+      </div>
+      <svg class="search-area__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M142.9 142.9c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5c0 0 0 0 0 0H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5c7.7-21.8 20.2-42.3 37.8-59.8zM16 312v7.6 .7V440c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2l41.6-41.6c87.6 86.5 228.7 86.2 315.8-1c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.2 62.2-162.7 62.5-225.3 1L185 329c6.9-6.9 8.9-17.2 5.2-26.2s-12.5-14.8-22.2-14.8H48.4h-.7H40c-13.3 0-24 10.7-24 24z" />
+      </svg>
+    </div>
+
+  </div>
 
   <ng-container *ngIf="!searching">
     <!--!SEASONAL-->
-    <div class="category-area">
-      <div class="category-container">
-        <span class="category-title">SEASONAL</span>
-        <div class="category-shows">
+    <div class="show-visualization">
+      <div class="show-visualization__container">
+        <span class="show-visualization__title">SEASONAL</span>
+        <div class="show-visualization__shows">
 
           <ng-container *ngIf="seasonalListStatic || (seasonalList$ | async); else skeleton">
-            <div *ngFor="let item of seasonalListStatic; let i = index" class="category-shows-item" (mouseenter)="seasonalListTracker[i] = true" (mouseleave)="seasonalListTracker[i] = false">
-              <a class="cover" (click)="editItem(item)" @opacityOnEnter>
-                <img class="cover-image" src="{{item.main_picture.medium}}">
+            <div *ngFor="let item of seasonalListStatic; let i = index" class="show-visualization__item" (mouseenter)="seasonalListTracker[i] = true" (mouseleave)="seasonalListTracker[i] = false">
+              <a class="show-visualization__cover" (click)="editItem(item)" @opacityOnEnter>
+                <img class="show-visualization__image" src="{{item.main_picture.medium}}">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: seasonalListTracker, index: i }"></ng-container>
 
               </a>
-              <a class="show-title" (click)="editItem(item)">
+              <a class="show-visualization__show-title" (click)="editItem(item)">
                 {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
               </a>
-
-
 
             </div>
           </ng-container>
@@ -54,21 +58,21 @@
     </div>
 
     <!--!NEXT SEASON-->
-    <div class="category-area" style="padding-top: 30px">
-      <div class="category-container">
-        <span class="category-title">NEXT SEASON</span>
+    <div class="show-visualization" style="padding-top: 30px">
+      <div class="show-visualization__container">
+        <span class="show-visualization__title">NEXT SEASON</span>
 
-        <div class="category-shows">
+        <div class="show-visualization__shows">
           <ng-container *ngIf="seasonalList$ | async as seasonalList; else skeleton">
-            <div *ngFor="let item of seasonalList; let i = index" class="category-shows-item" (mouseenter)="nextSeasonTracker[i] = true" (mouseleave)="nextSeasonTracker[i] = false">
-              <a class="cover" (click)="editItem(item)" @opacityOnEnter>
-                <img class="cover-image" src="{{item.main_picture.medium}}">
+            <div *ngFor="let item of seasonalList; let i = index" class="show-visualization__item" (mouseenter)="nextSeasonTracker[i] = true" (mouseleave)="nextSeasonTracker[i] = false">
+              <a class="show-visualization__cover" (click)="editItem(item)" @opacityOnEnter>
+                <img class="show-visualization__image" src="{{item.main_picture.medium}}">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: nextSeasonTracker, index: i }"></ng-container>
 
               </a>
-              <a class="show-title" (click)="editItem(item)">
+              <a class="show-visualization__show-title" (click)="editItem(item)">
                 {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
               </a>
             </div>
@@ -81,21 +85,21 @@
 
   <!--!SEARCH RESULT-->
   <ng-container *ngIf="searching">
-    <div class="category-area" *ngIf="noResults === false; else noResultsCont">
-      <div class="category-container">
-        <div class="category-shows">
+    <div class="show-visualization" *ngIf="noResults === false; else noResultsCont">
+      <div class="show-visualization__container">
+        <div class="show-visualization__shows">
 
           <ng-container *ngIf="searchResult$ | async as searchResult; else skeleton">
             <ng-container *ngIf="searchResult?.list!.length > 0">
-              <div *ngFor="let item of searchResult?.list; let i = index" class="category-shows-item" (mouseenter)="searchResultTracker[i] = true" (mouseleave)="searchResultTracker[i] = false">
-                <a class="cover" (click)="editItem(item)" @opacityOnEnter>
-                  <img class="cover-image" src="{{item.main_picture.medium}}">
+              <div *ngFor="let item of searchResult?.list; let i = index" class="show-visualization__item" (mouseenter)="searchResultTracker[i] = true" (mouseleave)="searchResultTracker[i] = false">
+                <a class="show-visualization__cover" (click)="editItem(item)" @opacityOnEnter>
+                  <img class="show-visualization__image" src="{{item.main_picture.medium}}">
 
                   <!--BUTTONS-->
                   <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: searchResultTracker, index: i }"></ng-container>
 
                 </a>
-                <a class="show-title" (click)="editItem(item)">
+                <a class="show-visualization__show-title" (click)="editItem(item)">
                   {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
                 </a>
               </div>
@@ -116,9 +120,9 @@
 
 <!--SKELETON TEMPLATE-->
 <ng-template #skeleton>
-  <div *ngFor="let item of seasonalSkeleton" class="category-shows-item">
-    <div class="cover loading" @scaleUpOnEnter></div>
-    <div class="show-title loading"></div>
+  <div *ngFor="let item of seasonalSkeleton" class="show-visualization__item">
+    <div class="show-visualization__cover show-visualization__cover--loading" @scaleUpOnEnter></div>
+    <div class="show-visualization__show-title show-visualization__show-title--loading"></div>
   </div>
 </ng-template>
 
@@ -132,23 +136,23 @@
 
   <div (mouseenter)="showEditButton = true" (mouseleave)="showEditButton = false">
 
-    <div *ngIf="list[i]" class="n-button-wrapper" @totalScale_OpacityOnEnter>
+    <div class="show-buttons" *ngIf="list[i]" @totalScale_OpacityOnEnter>
 
-      <div class="n-main-button">
+      <div class="show-buttons__item--main">
         <!--ADD BUTTON-->
         <!--TODO: ADD LOGIC FOR REMOVE BUTTON-->
-        <div *ngIf="true" class="n-button">
+        <div class="show-buttons__item" *ngIf="true">
           <div (click)="addItemToNotion(item)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="icon-s">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="show-buttons__icon--s">
               <path fill="currentColor" d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" />
             </svg>
           </div>
         </div>
 
         <!--REMOVE BUTTON-->
-        <div *ngIf="false" class="n-button">
+        <div class="show-buttons__item" *ngIf="false">
           <div (click)="addItemToNotion(item)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-m">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="show-buttons__icon--m">
               <path fill="currentColor" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
             </svg>
           </div>
@@ -156,9 +160,9 @@
       </div>
 
       <!--EDIT BUTTON-->
-      <div *ngIf="showEditButton" class="n-button tooltip" label="Edit" @totalScaleUp_Opacity_MarginOnEnter>
+      <div class="show-buttons__item show-buttons__item--tooltip" *ngIf="showEditButton" label="Edit" @totalScaleUp_Opacity_MarginOnEnter>
         <div (click)="editItem(item)">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon-l">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="show-buttons__icon--l">
             <path fill="currentColor" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
           </svg>
         </div>

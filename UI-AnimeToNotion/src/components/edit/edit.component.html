@@ -2,57 +2,53 @@
   
   <div class="box-top">
     <div class="container">
-      <div class="top-container">
-        <div class="title-wrapper">
-          <div *ngIf="item != null; else skeletonTitleMain" class="title-main">
+      <div class="box-top__container">
+        <div class="box-top__title">
+          <div class="box-top__title-value" *ngIf="item != null; else skeletonTitleMain" >
             {{item?.alternative_titles?.en ? item?.alternative_titles?.en : item?.title}}
           </div>
         </div>
       </div>
     </div>
   </div>
+
   <div class="container">
 
-    <div class="box-fields">
+    <div class="content">
 
-      <div class="header-wrapper">
-
+      <div class="header">
         <!--COVER-->
-        <div class="cover-wrapper">
-          <div *ngIf="item != null; else skeletonCover" class="cover" @opacityOnEnter>
-            <img class="cover-image" src="{{item?.main_picture?.large}}">
+        <div class="header__cover-wrapper">
+          <div class="header__cover" *ngIf="item != null; else skeletonCover" @opacityOnEnter>
+            <img class="header__image" src="{{item?.main_picture?.large}}">
           </div>
         </div>
-
         <!--TITLE-->
-        <div *ngIf="item != null; else skeletonTitle" class="title-original">
+        <div class="header__title" *ngIf="item != null; else skeletonTitle">
           {{item?.alternative_titles?.ja ? item?.alternative_titles?.ja : item?.title}}
         </div>
-
       </div>
 
 
 
 
-
-
-      <div class="field-wrapper">
+      <div class="main">
 
         <!--INFO-->
-        <div class="info-wrapper">
-          <div class="info-btn-wrapper">
-            <div class="info-btn">
-              <svg class="favorite-icon" [class.selected]="isFavorite" (click)="setAsFavorite(!isFavorite)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <div class="info">
+          <div class="info__buttons">
+            <div class="info__button">
+              <svg class="info__button--icon" [class.info__button-icon--selected]="isFavorite" (click)="setAsFavorite(!isFavorite)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
               </svg>
             </div>
 
-            <div class="info-btn">
-              <a class="mal-id" target="_blank" href="{{malBaseUrl+item?.id}}">MAL</a>
+            <div class="info__button">
+              <a class="info__button--id" target="_blank" href="{{malBaseUrl+item?.id}}">MAL</a>
             </div>
           </div>
 
-          <div class="info">
+          <div class="info__list">
             <ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.title }"></ng-container>
             <ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: item?.start_date }"></ng-container>
             <ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.media_type }"></ng-container>
@@ -63,11 +59,11 @@
         </div>
 
         <!--EDIT FIELDS-->
-        <div class="edit-fields-wrapper">
+        <div class="edit">
 
           <!--STATUS-->
-          <div class="edit-field">
-            <div class="edit-field-name">
+          <div class="edit__item">
+            <div class="edit__name">
               Status
             </div>
 
@@ -75,17 +71,17 @@
           </div>
 
           <!--PERSONAL RATING-->
-          <div class="edit-field">
-            <div class="edit-field-name">
-              Rating
+          <div class="edit__item">
+            <div class="edit__name">
+              Score
             </div>
 
             <app-ranking [initialValue]="item?.mean ?? 0" (valueChanged)="setRank($event)"></app-ranking>
           </div>
 
           <!--START DATE-->
-          <div class="edit-field">
-            <div class="edit-field-name">
+          <div class="edit__item">
+            <div class="edit__name">
               Start Date
             </div>
 
@@ -94,8 +90,8 @@
           </div>
 
           <!--FINISH DATE-->
-          <div class="edit-field">
-            <div class="edit-field-name">
+          <div class="edit__item">
+            <div class="edit__name">
               Finish Date
             </div>
 
@@ -104,8 +100,8 @@
           </div>
 
           <!--NOTES-->
-          <div class="edit-field row-full">
-            <div class="edit-field-name">
+          <div class="edit__item edit__item--row-full">
+            <div class="edit__name">
               Notes
             </div>
 
@@ -113,20 +109,20 @@
           </div>
 
           <!--PARENT SHOW-->
-          <div class="edit-field">
-            <div class="edit-field-name">
+          <div class="edit__item">
+            <div class="edit__name">
               Parent Show
             </div>
 
             <app-text-input (valueChanged)="setParentShow($event)"></app-text-input>
           </div>
 
-          <div class="edit-field">
-            <div class="edit-buttons">
-              <div class="edit-btn delete">
+          <div class="edit__item">
+            <div class="edit__buttons">
+              <div class="edit__button edit__button--delete">
                 <span>Delete</span>
               </div>
-              <div class="edit-btn save">
+              <div class="edit__button edit__button--save">
                 <span>Save</span>
               </div>
             </div>
@@ -142,22 +138,22 @@
 
 <!--INFO DESKTOP-->
 <ng-template #field let-title="title" let-value="value">
-  <div *ngIf="item != null; else skeletonInfo" class="info-set">
-    <div class="info-set-title">
+  <div *ngIf="item != null; else skeletonInfo" class="info__item">
+    <div class="info__title">
       {{title}}
     </div>
-    <div class="info-set-value" [class.upper]="title === 'Format'">
+    <div class="info__value" [class.info__value--upper]="title === 'Format'">
       {{value}}
     </div>
   </div>
 </ng-template>
 
 <ng-template #fieldList let-title="title" let-values="values">
-  <div *ngIf="item != null; else skeletonInfo" class="info-set">
-    <div class="info-set-title">
+  <div *ngIf="item != null; else skeletonInfo" class="info__item">
+    <div class="info__title">
       {{title}}
     </div>
-    <div class="info-set-value">
+    <div class="info__value">
       <span *ngFor="let value of values">
         <span>{{value.name}}</span>
         <br>
@@ -168,43 +164,30 @@
 
 <!--SKELETON TEMPLATE-->
 <ng-template #skeletonCover>
-  <div class="cover loading" @scaleUpOnEnter>
+  <div class="header__cover header__cover--loading" @scaleUpOnEnter>
 
   </div>
 </ng-template>
 
 <ng-template #skeletonTitle>
-  <div class="title-original loading">
+  <div class="header__title header__title--loading">
 
   </div>
 </ng-template>
 
 <ng-template #skeletonTitleMain>
-  <div class="title-main loading">
+  <div class="box-top__title-value box-top__title-value--loading">
     
   </div>
 </ng-template>
 
 <ng-template #skeletonInfo>
-  <div class="info-set">
-    <div class="info-set-title loading">
+  <div class="info__item">
+    <div class="info__title info__title--loading">
       
     </div>
-    <div class="info-set-value loading">
+    <div class="info__value info__value--loading">
       
     </div>
   </div>
 </ng-template>
-
-<!--<ng-template #skeletonInfoList>
-  <div class="info-set">
-    <div class="info-set-title loading">
-      
-    </div>
-    <div class="info-set-value">
-      <div *ngFor="let value of infoSkeleton" class="info-single-value loading">
-        
-      </div>
-    </div>
-  </div>
-</ng-template>-->

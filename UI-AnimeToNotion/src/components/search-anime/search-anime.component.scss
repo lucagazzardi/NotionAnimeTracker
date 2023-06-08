@@ -1,318 +1,99 @@
-@import '../../assets/scss/skeleton.scss';
-@import '../../assets/scss/container.scss';
+@use '../../assets/scss/_container.scss';
+@use '../../assets/scss/_show-visualization.scss';
+@use '../../assets/scss/_show-buttons.scss';
 
-
-.search-area {
-    padding: 60px 0 60px 0;
-    display: flex;  
-}
-
-.search-bar {
-  height: 42px;
-  background: rgb(var(--color-foreground));
-  min-width: 150px;
-  width: 100%;
-  border-radius: 6px;
-  display: grid;
-  grid-template-columns: 26px auto 120px;
-  align-items: center;
-  justify-items: center;
-  padding: 5px 10px;
-  box-shadow: var(--box-shadow);
-
-  & .icon {
-    width: .85em;
-    color: rgb(var(--color-foreground-light));
-  }
-
-  & .search-input-wrapper {
-    justify-self: start;
-    padding: 0 8px;
-    width: 100%;
-
-    & .search-input {
-      color: rgb(var(--color-text-normal));
-      outline: none;
-      background: none;
-      border: none;
-      font-family: var(--font-family-secondary);
-      font-weight: 500;
-      font-size: 13px;
-      width: 100%;
-
-      &::placeholder {
-        color: rgb(var(--color-placeholder));
-      }
-    }
-  }
-
-  .search-mode {
-    width: 100%;
-    background: rgb(var(--color-background));
-    height: 32px;
-    border-radius: 6px;
-    margin-right: -5px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    justify-items: center;
-    align-items: center;
-    padding: 3px 0;
-
-    & .select {
-      font-family: var(--font-family-tertiary);
-      font-weight: 800;
-      font-size: 11px;
-      padding: 3px;
-      width: 90%;
-      display: flex;
-      justify-content: center;
-      border-radius: 6px;
-      color: rgb(var(--color-text-normal));
-      cursor: pointer;
-      user-select: none;
-
-      &.active {
-        background: rgb(var(--background-active-item));
-        box-shadow: var(--box-shadow);
-        color: rgb(var(--color-background));
-        transition: linear .25s;
-      }
-    }
-  }
-}
-
-.category-area {
+.browse {
+  padding-top: 30px;
   font-family: var(--font-family-secondary);
   font-weight: 700;
+  font-size: 2.3rem;
+  color: rgb(var(--color-text-highlight));
+  display: inline-block;
+  margin-bottom: 10px;
 
-}
-
-.category-container {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  & .category-title {
-    letter-spacing: .2em;
-    font-size: 15px;
-    color: rgb(var(--color-text-highlight))
+  @media screen and (min-width: 1040px) {
+    & {
+      display: none;
+    }
   }
 
-  & .category-shows {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 180px);
-    grid-gap: 30px 20px;
-    justify-content: space-between;
-    width: 100%;
-    padding: 20px 0;
+  @at-root &__mode {
+    background: rgb(var(--color-foreground), .7);
+    padding: 0px 12px;
+    padding-top: 7px;
+    border-radius: 6px;
+    align-items: center;
+    cursor: pointer;
+  }
 
-    @media screen and (max-width: 1540px) {
-      & {
-        grid-gap: 30px 17px;
-      }
+  @at-root &__icon {
+    width: 1.1rem;
+    margin-bottom: 4px;
+  }
+}
+
+.search-area {
+  padding: 60px 0 30px 0;
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: auto 100px;
+
+  @media screen and (max-width: 1040px) {
+    & {
+      padding: 0 0 30px 0;
+      display: block;
     }
+  }
+
+  @at-root &__searchbar {
+    box-shadow: var(--box-shadow);
+  }
+
+  @at-root &__mode {
+    width: 100%;
+    background: rgb(var(--color-foreground));
+    height: 42px;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    justify-items: center;
+    align-items: center;
+    padding: 5px 15px;
+    box-shadow: var(--box-shadow);
+    grid-gap: 5px;
+    cursor: pointer;
+    color: rgb(var(--color-text-normal));
+    transition: .25s;
+    user-select: none;
 
     @media screen and (max-width: 1040px) {
       & {
-        grid-gap: 25px 13px;
-        grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
-        padding: 20px 0;
+        display: none;
       }
     }
 
-    @media screen and (max-width: 760px) {
-      & {
-        grid-gap: 20px 10px;
-        grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
-        padding: 10px 0;
-      }
-    }
-
-    & .category-shows-item {
-      width: 180px;
-      display: grid;
-      grid-template-rows: min-content auto;
-      grid-gap: 7px;
-
-      @media screen and (max-width: 1040px) {
-        & {
-          width: 100%;
-        }
-      }
-
-      & .cover {
-        height: 270px;
-        background: rgb(var(--color-foreground));
-        width: 100%;
-        border-radius: 6px;
-        position: relative;
-        overflow: hidden;
-        border-radius: 4px;
-        cursor: pointer;
-        box-shadow: var(--box-shadow);
-
-        &.loading {
-          background: rgba(var(--color-skeleton-base),.8);
-          box-shadow: none;
-          opacity: 1;
-          overflow: hidden;
-
-          &:before {
-            @include skeleton;
-            @include skeleton-animation;
-          }
-        }
-
-        @media screen and (max-width: 1040px) {
-          & {
-            height: auto;
-          }
-
-          &:before {
-            display: block;
-            content: "";
-            height: 0;
-            width: 0;
-            /*
-                Needed to display the cover image. It gives space for the image with position absolute to appear.
-                  It is calculated based on the aspect ratio that is desired to keep, in this case 2:3.
-                  (height / width) * 100
-                  (3 / 2) * 100 = 150%
-            */
-            padding-bottom: 150%;
-          }
-        }
-
-        & .cover-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-      }
-
-      & .show-title {
-        font-weight: 700;
-        font-family: var(--font-family-tertiary);
-        text-align: left;
-        color: rgb(var(--color-text-normal));
-        font-size: 12px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
-        cursor: pointer;
-
-        &.loading {
-          border-radius: 4px;
-          height: 17px;
-          margin-top: 5px;
-          width: 90%;
-          background: rgba(var(--color-skeleton-base),.8);
-          box-shadow: none;
-          opacity: 1;
-          overflow: hidden;
-
-          &:before {
-            @include skeleton;
-            @include skeleton-animation;
-          }
-        }
-
-        @media screen and (max-width: 1040px) {
-          & {
-            font-size: 10px;
-          }
-        }
-
-        &:hover {
-          transition: .25s;
-          color: rgb(var(--color-text-hover));
-        }
-      }
+    &:hover {
+      transition: .25s;
+      color: rgb(var(--background-active-item));
     }
   }
-}
 
-.no-results {
-  display: inline-flex;
-  width: 100%;
-  color: rgb(var(--color-text-normal));
-  font-weight: 600;
-  font-size: 18px;
-  justify-content: center;
-  letter-spacing: 1px;
-  font-family: var(--font-family-secondary);
-}
-
-.n-button-wrapper {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-}
-
-.n-main-button {
-  margin-bottom: 7px;
-}
-
-.n-button {
-  height: 25px;
-  width: 25px;
-  background: rgb(18, 25, 43);
-  border-radius: 4px;
-  box-shadow: var(--box-shadow);
-  opacity: 75%;
-  color: rgb(220, 237, 250);
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.1);
-    transition: 0.25s;
-    opacity: 100%;
+  @at-root &__option {
+    font-family: var(--font-family-tertiary);
+    font-weight: 800;
+    font-size: 11px;
+    padding: 3px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    user-select: none;
+    height: 100%;
+    text-transform: uppercase;
   }
 
-  & .icon-s {
-    width: .5rem;
-  }
-
-  & .icon-m {
-    width: .6rem;
-  }
-
-  & .icon-l {
-    width: .7rem;
-  }
-
-  &.tooltip {
-    &:before {
-      background: rgba(18, 25, 43, .85);
-      border-radius: 4px;
-      box-shadow: var(--box-shadow);
-      color: rgb(220, 237, 250);
-      content: attr(label);
-      display: block;
-      font-size: 1rem;
-      font-weight: 700;
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      right: 28px;
-      transition: opacity .2s ease;
-      width: min-content;
-      padding: 1px 8px;
-      font-size: 9px;
-      font-family: var(--font-family-tertiary);
-      font-weight: 700;
-    }
-
-    &:hover:before {
-      opacity: 1;
-    }
+  @at-root &__icon {
+    width: 1rem;
   }
 }

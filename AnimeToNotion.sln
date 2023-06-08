@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business_AnimeToNotion", "B
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "UI-AnimeToNotion", "UI-AnimeToNotion\UI-AnimeToNotion.esproj", "{1BFC2156-D5E2-4986-BE02-D2DD87D458DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzFunctions_AnimeToNotion", "AzFunzionts_AnimeToNotion\AzFunctions_AnimeToNotion.csproj", "{83F4FC7F-8E14-4E57-9E06-EC7F3236F663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzFunctions_AnimeToNotion", "AzFunzionts_AnimeToNotion\AzFunctions_AnimeToNotion.csproj", "{83F4FC7F-8E14-4E57-9E06-EC7F3236F663}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

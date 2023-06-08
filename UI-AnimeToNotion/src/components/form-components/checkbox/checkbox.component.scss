@@ -1,0 +1,51 @@
+@use "sass:selector";
+
+.checkbox-wrapper {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-gap: 10px;
+  color: rgb(var(--color-text-normal));
+}
+
+.checkbox {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgb(var(--form-checkbox-border));
+  border-radius: 4px;
+  background: rgb(var(--color-foreground));
+  align-self: center;
+
+  @at-root &--active {
+    border: 0;
+  }
+
+  @at-root &__checked {
+    background: rgb(var(--background-active-item));
+    color: rgb(251, 251, 251);
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @at-root &__icon {
+    width: .5rem;
+    margin-left: 1px;
+  }
+}
+
+.label {
+  font-size: 12px;
+  font-family: var(--font-family-secondary);
+  font-weight: 700;
+  
+  margin-top: 3px;
+  width: auto;
+  transition: .25s;
+
+  &:hover {
+    color: rgb(var(--color-text-highlight));
+    transition: .25s
+  }
+}

@@ -42,11 +42,12 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
 @import "~@fortawesome/fontawesome-free/scss/regular.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
-@import "assets/scss/form-components.scss";
-@import "assets/scss/select-ang-material.scss";
-@import "assets/scss/input-numb-ang-material.scss";
-@import "assets/scss/datepicker-ang-material.scss";
-@import "assets/scss/input-text-ang-material.scss";
+@import "assets/scss/_form-components.scss";
+@import "assets/scss/_select-ang-material.scss";
+@import "assets/scss/_input-numb-ang-material.scss";
+@import "assets/scss/_datepicker-ang-material.scss";
+@import "assets/scss/_input-text-ang-material.scss";
+@import "assets/scss/_menu-ang-material.scss";
 
 :root {
   --color-background: 237, 241, 245;
@@ -68,8 +69,11 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
   --background-success-item: 44, 193, 53;
   --background-warning-item: 230, 210, 36;
   --color-shadow: 0,5,15;
-  --box-shadow: 0 14px 30px rgba(103,132,187, .15),0 4px 4px rgba(103,132,187, .04);
+  --box-shadow: 0 14px 30px rgba(103,132,187, .08),0 4px 4px rgba(103,132,187, .04);
   --box-shadow-background: 0 14px 30px rgba(75, 85, 94, .15),0 4px 4px rgba(75, 85, 94, .04);
+  --form-background-color: 255, 255, 255;
+  --form-background-active: 0, 0, 0, 0.08;
+  --form-checkbox-border: 201, 215, 227;
 }
 
 .dark-theme {
@@ -86,6 +90,9 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
   --color-placeholder: 88, 97, 99;
   --box-shadow: 0 14px 30px rgba(0, 5, 15, .08),0 4px 4px rgba(0, 5, 15, .05);
   --box-shadow-background: 0 14px 30px rgba(0, 5, 15, .15),0 4px 4px rgba(0, 5, 15, .04);
+  --form-background-color: 14, 19, 31;
+  --form-background-active: 20, 30, 45, 0.5;
+  --form-checkbox-border: 116, 123, 130;
 }
 
 body{

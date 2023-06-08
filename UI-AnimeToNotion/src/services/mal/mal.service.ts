@@ -11,10 +11,21 @@ export class MalService {
   baseUrl: string = environment.apiKey;
   mainController: string = "main/"
 
+  //MOCK DATA
+  url = 'http://localhost:3000/demolist';
+
   constructor(private client: HttpClient) { }
 
-  get(id: string): Observable<MAL_AnimeModel> {
+  getAll(): Observable<any> {
+    return this.client.get(this.url);
+  }
+
+  getShowById(id: string): Observable<MAL_AnimeModel> {
     return this.client.get<MAL_AnimeModel>(this.baseUrl + this.mainController + "mal/search/" + id);
+  }
+
+  getShowListByName(searchTerm: string) {
+    return this.client.get<MAL_AnimeModel[]>(this.baseUrl + this.mainController + "mal/search/name?searchTerm=" + searchTerm);
   }
 }
 

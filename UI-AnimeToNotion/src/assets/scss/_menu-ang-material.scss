@@ -1,0 +1,20 @@
+
+.mat-menu-panel.mat-menu-style {
+  background: rgb(var(--form-background-color));
+  box-shadow: var(--box-shadow);
+}
+
+.mat-menu-style .mat-menu-content .mat-menu-item {
+  font-size: 12px;
+  font-family: var(--font-family-secondary);
+  font-weight: 700;
+  color: rgb(var(--color-text-highlight));
+  height: 34px;
+  line-height: initial;
+}
+
+.mat-menu-style .mat-menu-content .mat-menu-item:hover:not([disabled]) {
+  background: initial;
+  color: rgb(var(--background-active-item));
+  transition: .15s;
+}

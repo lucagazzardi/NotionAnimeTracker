@@ -12,6 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { MatDialogModule } from '@angular/material/dialog';
 
 //APP COMPONENTS
 import { AppComponent } from './app.component';
@@ -21,15 +24,20 @@ import { SelectComponent } from '../components/form-components/select/select.com
 import { RankingComponent } from '../components/form-components/ranking/ranking.component';
 import { DatepickerComponent } from '../components/form-components/datepicker/datepicker.component';
 import { TextInputComponent } from '../components/form-components/text-input/text-input.component';
+import { LibraryComponent } from '../components/library/library.component';
+import { SearchbarComponent } from '../components/form-components/searchbar/searchbar.component';
+import { SliderComponent } from '../components/form-components/slider/slider.component';
+import { SortComponent } from '../components/sort/sort.component';
+import { CheckboxComponent } from '../components/form-components/checkbox/checkbox.component';
+
 
 //APP SERVICES
 import { ThemeService } from '../services/theme/theme.service';
 import { SearchAnimeService } from '../components/search-anime/search-anime.service';
 import { NotionService } from '../services/notion/notion.service';
 import { StringManipulationService } from '../services/string-manipulation/string-manipulation.service';
-import { EditService } from '../components/edit/edit.service';
+import { EditService } from '../services/edit/edit.service';
 import { MalService } from '../services/mal/mal.service';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +46,12 @@ import { MalService } from '../services/mal/mal.service';
     SelectComponent,
     RankingComponent,
     DatepickerComponent,
-    TextInputComponent
+    TextInputComponent,
+    LibraryComponent,
+    SearchbarComponent,
+    SliderComponent,
+    SortComponent,
+    CheckboxComponent
   ],
   imports: [
     AppRoutingModule,
@@ -53,7 +66,10 @@ import { MalService } from '../services/mal/mal.service';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatMenuModule,
+    NgxSliderModule,
+    MatDialogModule
   ],
   providers: [ThemeService, SearchAnimeService, NotionService, MalService, StringManipulationService, EditService],
   bootstrap: [AppComponent]

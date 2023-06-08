@@ -1,0 +1,63 @@
+@use "sass:selector";
+
+.sort-wrap {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.sort {
+  display: grid;
+  grid-template-columns: max-content max-content max-content;
+  grid-gap: 10px;
+  align-items: center;
+
+  @at-root &__item {
+    cursor: pointer;
+  }
+
+  @at-root &__item--divider {
+    border-left: 1px solid rgb(var(--color-text-normal), .7);
+    height: 80%;
+  }
+
+  @at-root &__select {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 10px;
+    align-items: center;
+    color: rgb(var(--color-text-normal));
+    transition: .25s;
+
+    &:hover {
+      color: rgb(var(--color-text-highlight));
+      transition: .25s;
+    }
+  }
+
+  @at-root &__fields {
+    font-size: 12px;
+    font-family: var(--font-family-secondary);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  @at-root &__icon {
+    margin-top: -3px;
+  }
+
+  @at-root &__value {
+    user-select: none;
+  }
+}
+
+.sliders {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: auto auto;
+  justify-content: end;
+
+  @at-root &__item {
+    width: 100px;
+  }
+}

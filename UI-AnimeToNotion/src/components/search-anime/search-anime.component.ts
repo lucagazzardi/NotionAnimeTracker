@@ -8,7 +8,8 @@ import { NotionService } from '../../services/notion/notion.service';
 import { ToasterService } from 'gazza-toaster';
 import { Router } from '@angular/router';
 import { StringManipulationService } from '../../services/string-manipulation/string-manipulation.service';
-import { EditService } from '../edit/edit.service';
+import { EditService } from '../../services/edit/edit.service';
+import { MalService } from '../../services/mal/mal.service';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class SearchAnimeComponent implements OnInit {
 
   //! ==General fields==
   searchById: boolean = false;
+  searchMode: string = "Title";
   seasonalSkeleton = Array(20).fill(0);
   showEditButton: boolean = false;
 
@@ -70,21 +72,19 @@ export class SearchAnimeComponent implements OnInit {
   noResults: boolean = false;
 
   constructor(
-    private router: Router,
-    private service: SearchAnimeService,
+    private malService: MalService,
     private notionService: NotionService,
     private toasterService: ToasterService,
-    private stringManipulation: StringManipulationService,
     private editService: EditService
   ) { }
 
   ngOnInit(): void {
 
     // MOCK ITEMS
-    this.seasonalList$ = this.service.getAll().pipe(delay(1000));
+    this.seasonalList$ = this.malService.getAll().pipe(delay(1000));
     this.seasonalList$.subscribe((data) => { this.seasonalListStatic = data; this.seasonalListTracker = Array(data.length).fill(false) });
 
-    this.nextSeasonList$ = this.service.getAll().pipe(delay(1000));
+    this.nextSeasonList$ = this.malService.getAll().pipe(delay(1000));
     this.nextSeasonList$.subscribe((data) => { this.nextSeasonListStatic = data; this.nextSeasonTracker = Array(data.length).fill(false) });
 
     //! DEBOUNCING START
@@ -92,8 +92,9 @@ export class SearchAnimeComponent implements OnInit {
   }
 
   /// Alternate search by id or by title
-  switchMode(value: boolean) {
-    this.searchById = value;
+  switchMode() {
+    if (this.searchMode === "Mal ID") this.searchMode = "Title";
+    else this.searchMode = "Mal ID";
   }
 
   /// Triggered when something is typed in the search bar
@@ -140,11 +141,11 @@ export class SearchAnimeComponent implements OnInit {
 
   /// Calls the right API based on the type of search being executed (ID / TITLE)
   querySearch(searchTerm: string) {
-    if (this.searchById) {
-      return this.service.getShowById(searchTerm).pipe(toArray());
+    if (this.searchMode === "Mal ID") {
+      return this.malService.getShowById(searchTerm).pipe(toArray());
     }
     else {
-      return this.service.getShowListByName(searchTerm);
+      return this.malService.getShowListByName(searchTerm);
     }    
   }
 
@@ -165,18 +166,7 @@ export class SearchAnimeComponent implements OnInit {
 
   /// Open Edit Component
   editItem(item: MAL_AnimeModel) {
-    let title: string = this.stringManipulation.normalize(item.alternative_titles.en ? item.alternative_titles.en : item.title);
-
-    this.editService.setItem(item);
-    this.router.navigate(['edit', item.id, title]);
-  }
-
-
-
-
-
-  testToast() {
-    this.toasterService.notifyError("Tanto ciao dai è stato aggiunto con successo");
+    this.editService.editItem(item);
   }
   
 }

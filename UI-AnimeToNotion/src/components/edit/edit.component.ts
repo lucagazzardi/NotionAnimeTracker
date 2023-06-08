@@ -1,14 +1,12 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MAT_SELECT_CONFIG } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'gazza-toaster';
 import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
 import { opacityOnEnter, scaleUpOnEnter } from '../../assets/animations/animations';
 import { MalService } from '../../services/mal/mal.service';
-import { EditService } from './edit.service';
-import { ShowStatus } from '../../model/ShowStatus';
+import { EditService } from '../../services/edit/edit.service';
+import { SelectShowStatus } from '../../model/SelectShowStatus';
 
 @Component({
   selector: 'app-edit',
@@ -25,13 +23,7 @@ import { ShowStatus } from '../../model/ShowStatus';
         useAnimation(scaleUpOnEnter)
       ])
     ]),
-  ],
-  providers: [
-    {
-      provide: MAT_SELECT_CONFIG,
-      useValue: { overlayPanelClass: 'mat-override-cdk' },
-    },
-  ]
+  ]  
 })
 export class EditComponent implements OnInit {
 
@@ -40,7 +32,7 @@ export class EditComponent implements OnInit {
   malBaseUrl: string = 'https://myanimelist.net/anime/';
 
   //STATUS
-  showStatuses = ShowStatus;  
+  showStatuses = SelectShowStatus;  
 
   // FAVORITE
   isFavorite: boolean = false;
@@ -51,7 +43,7 @@ export class EditComponent implements OnInit {
 
 
   //SELECTED PROPERTIES
-  selectedStatus: { id: number, label: string } | null = null;
+  selectedStatus: { id: string, label: string } | null = null;
   selectedRank: number = 0;
   selectedStartDate: Date = new Date();
   selectedFinishDate: Date = new Date();
@@ -82,7 +74,7 @@ export class EditComponent implements OnInit {
 
   /// Load the item from server if the item is not present
   loadItem(id: string) {
-    this.malService.get(id)
+    this.malService.getShowById(id)
       .subscribe(
         {
           next: (data: MAL_AnimeModel) => { this.item = data },
@@ -92,7 +84,7 @@ export class EditComponent implements OnInit {
 
   //STATUS
   /// Set the selected status
-  setStatus(status: { id: number, label: string }) {
+  setStatus(status: { id: string, label: string } | null) {
     this.selectedStatus = status;
   }
 

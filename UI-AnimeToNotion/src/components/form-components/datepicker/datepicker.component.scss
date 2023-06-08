@@ -1,3 +1,5 @@
+@use "sass:selector";
+
 .datepicker {
   display: grid;
   grid-template-columns: 30px auto;
@@ -5,24 +7,19 @@
   align-items: center;
   justify-items: center;
   cursor: pointer;
-}
 
-.datepicker-input {
-  padding: 0 6px;
-  height: 100%;
-}
+  @at-root &__input {
+    padding: 0 6px;
+    height: 100%;
+  }
 
-.datepicker-icon{
+  @at-root &__icon {
     width: .8rem;
     margin-top: -5px;
-}
+  }
 
-.datepicker-trigger{
+  @at-root &__trigger {
     margin-top: 0;
+  }
 }
-
-.datepicker-form{
-    width: 100%;
-}
-
 
