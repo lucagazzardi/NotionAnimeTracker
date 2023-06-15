@@ -1,5 +1,5 @@
-using Business_AnimeToNotion.Main_Integration;
-using Business_AnimeToNotion.Main_Integration.Interfaces;
+//using Business_AnimeToNotion.Main_Integration;
+//using Business_AnimeToNotion.Main_Integration.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,8 +38,8 @@ namespace WEBApi_AnimeToNotion
 
             #region DI
 
-            services.AddScoped<IMAL_Integration, MAL_Integration>();
-            services.AddScoped<INotion_Integration, Notion_Integration>();
+            //services.AddScoped<IMAL_Integration, MAL_Integration>();
+            //services.AddScoped<INotion_Integration, Notion_Integration>();
 
             #endregion
         }
