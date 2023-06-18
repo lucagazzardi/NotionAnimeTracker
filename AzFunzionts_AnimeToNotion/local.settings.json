@@ -1,0 +1,20 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+  },
+  "MAL_Header": "X-MAL-CLIENT-ID",
+  "MAL_BaseURL": "https://api.myanimelist.net/v2/",
+  "MAL_SearchAnime": "anime",
+  "MAL_SearchByName": "q=",
+  "MAL_NotionNeededFields": "fields=id,title,main_picture,alternative_titles,mean,start_date,media_type,genres,studios,num_episodes,related_anime",
+  "MAL_NSFW": "nsfw=true",
+
+  "MALApiKey": "3b8bb8a96e25dbbff650bb6822d0936e",
+  "Notion-DatabaseId": "c192c03daf9d4e0a99322f73218cf0ba",
+  "NotionSecretKey": "secret_Fo9pQYsfu15cPgIH5fL6zs3Ad1vVhCsHtWBNlD4SKMT",
+  "NextCursor": "a202299f-48b7-4ebd-9f7f-7eb50efde7ea",
+  "PageSize": 1,
+  "AppConfiguration-ConnectionString": "Endpoint=https://lg-animetonotion-appconfiguration.azconfig.io;Id=0eGV-l9-s0:eYFs6iI8OKoRvSyq9O7t;Secret=h7bDyOIkqXzUEnqacYfV+j57otP78FbZZdICquHL7nk="
+}

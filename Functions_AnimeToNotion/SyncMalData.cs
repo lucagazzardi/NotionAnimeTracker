@@ -42,10 +42,10 @@ namespace Functions_AnimeToNotion
         }
 
         [Function("SyncMalData")]
-        public async Task Run([TimerTrigger("0 0 1 * * *",
-            #if DEBUG
-                RunOnStartup= true
-            #endif
+        public async Task Run([TimerTrigger("0 0 1 * * *"
+            //#if DEBUG
+            //    RunOnStartup= true
+            //#endif
             )] MyInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
@@ -55,7 +55,7 @@ namespace Functions_AnimeToNotion
 
             #region Notion Client
 
-            NotionClient NotionClient = NotionClientFactory.Create(new ClientOptions
+            NotionClient = NotionClientFactory.Create(new ClientOptions
             {
                 AuthToken = Notion_Auth_Token
             });

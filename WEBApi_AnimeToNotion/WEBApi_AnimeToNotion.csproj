@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Business_AnimeToNotion\Business_OLD_AnimeToNotion.csproj" />
+    <ProjectReference Include="..\Business_AnimeToNotion\Business_AnimeToNotion.csproj" />
   </ItemGroup>
 
 

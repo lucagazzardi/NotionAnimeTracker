@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_AnimeToNotion", "API_An
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business_AnimeToNotion", "Business_AnimeToNotion\Business_AnimeToNotion.csproj", "{A518BEB4-D03B-40F9-9947-306714F3EC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Functions_AnimeToNotion", "Functions_AnimeToNotion\Functions_AnimeToNotion.csproj", "{D449F43D-0DB1-441F-A017-A912598D633D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions_AnimeToNotion", "Functions_AnimeToNotion\Functions_AnimeToNotion.csproj", "{D449F43D-0DB1-441F-A017-A912598D633D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
