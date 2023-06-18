@@ -1,11 +1,15 @@
 {
   "dependencies": {
     "appInsights1": {
-      "type": "appInsights"
+      "type": "appInsights",
+      "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
+    },
+    "secrets1": {
+      "type": "secrets"
     },
     "storage1": {
       "type": "storage",
-      "connectionId": "AzureWebJobsStorage"
+      "connectionId": "StorageConnectionString"
     }
   }
 }

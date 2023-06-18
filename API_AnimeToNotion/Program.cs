@@ -3,6 +3,7 @@ using Data_AnimeToNotion.Context;
 using Microsoft.EntityFrameworkCore;
 using Data_AnimeToNotion.Repository;
 using Business_AnimeToNotion.Notion;
+using Business_AnimeToNotion.MAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,8 @@ builder.Services.AddCors(options =>
 #region DI
 
 builder.Services.AddScoped<INotion_Integration, Notion_Integration>();
+builder.Services.AddScoped<IMAL_Integration, MAL_Integration>();
 builder.Services.AddScoped<IAnimeShowRepository, AnimeShowRepository>();
-builder.Services.AddScoped<IRelationRepository, RelationRepository>();
 
 #endregion
 

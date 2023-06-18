@@ -21,7 +21,6 @@ namespace Data_AnimeToNotion.Context
         public DbSet<Year> Year { get; set; }
 
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AnimeShow>().ToTable("AnimeShow");

@@ -1,7 +1,7 @@
 ﻿namespace Data_AnimeToNotion.Model
 {
     public class AnimeShowDto
-    {       
+    {   
         public string NotionPageId { get; set; }        
         public int MalId { get; set; }        
         public string NameOriginal { get; set; }        
@@ -16,6 +16,7 @@
         public NoteDto Note { get; set; }
         public Dictionary<int, string> Genres { get; set; }
         public Dictionary<int, string> Studios { get; set; }
+        public List<RelationDto> Relations { get; set; }
     }
 
     public class ScoreDto

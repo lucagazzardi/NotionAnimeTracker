@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_AnimeToNotion.DataModel

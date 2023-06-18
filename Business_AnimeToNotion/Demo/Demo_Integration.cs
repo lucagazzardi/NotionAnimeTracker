@@ -1,17 +1,10 @@
-﻿using AutoMapper;
-using Business_AnimeToNotion.MAL;
-using Business_AnimeToNotion.Mapper;
-using Business_AnimeToNotion.Model;
+﻿using Business_AnimeToNotion.MAL;
+using Business_AnimeToNotion.Mapper.Config;
 using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Model;
 using Data_AnimeToNotion.Repository;
 using Microsoft.Extensions.Configuration;
 using Notion.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business_AnimeToNotion.Demo
 {
@@ -21,7 +14,6 @@ namespace Business_AnimeToNotion.Demo
 
         private readonly IConfiguration _configuration;
         private readonly IAnimeShowRepository _animeShowRepository;
-        private readonly IRelationRepository _relationRepository;
         private readonly IMAL_Integration _malIntegration;
 
         #endregion
@@ -32,14 +24,12 @@ namespace Business_AnimeToNotion.Demo
         public Demo_Integration(
                 IConfiguration configuration,
                 IAnimeShowRepository animeShowRepository,
-                IRelationRepository relationRepository,
                 IMAL_Integration malIntegration
             )
         {
             #region DI
             _configuration = configuration;
             _animeShowRepository = animeShowRepository;
-            _relationRepository = relationRepository;
             _malIntegration = malIntegration;
             #endregion
 
@@ -49,13 +39,18 @@ namespace Business_AnimeToNotion.Demo
             });
         }
 
+        /// <summary>
+        /// Add Notion entries to database
+        /// </summary>
+        /// <param name="cursor"></param>
+        /// <returns></returns>
         public async Task FromNotionToDB(string cursor)
         {
             await Notion_GetDataBaseId();
 
             Dictionary<string, string> differences = new Dictionary<string, string>();
 
-            await RetrieveAllPages(DataBaseId, cursor);
+            await AddToDB(DataBaseId, cursor);
         }
 
         #region Private
@@ -73,7 +68,7 @@ namespace Business_AnimeToNotion.Demo
             }
         }
 
-        private async Task RetrieveAllPages(string DataBaseId, string cursor)
+        private async Task AddToDB(string DataBaseId, string cursor)
         {
             List<Page> result = new List<Page>();
             PaginatedList<Page> retrievedNotionPages = null;
@@ -92,11 +87,11 @@ namespace Business_AnimeToNotion.Demo
                 {
                     try
                     {
-                        await MapDBProperties(show);
+                        await MappingAndAdding(show);
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Show rotto: " + show.Id);
+                        throw new Exception("Error for: " + show.Id);
                     }
 
                 }
@@ -104,39 +99,29 @@ namespace Business_AnimeToNotion.Demo
             while (retrievedNotionPages.HasMore);
         }
 
-        private async Task MapDBProperties(Page page)
+        private async Task MappingAndAdding(Page page)
         {
             AnimeShowDto anime = Mapping.Mapper.Map<AnimeShowDto>(page);
 
-            if (_animeShowRepository.IsAlreadyExisting(anime.MalId))
+            if (_animeShowRepository.Exists(anime.MalId))
                 return;
 
             var malAnime = await _malIntegration.MAL_SearchAnimeByIdAsync(anime.MalId);
 
-            anime.Genres = new Dictionary<int, string>();
-            foreach (var genre in malAnime.genres)
-            {
-                anime.Genres.Add(genre.id, genre.name);
-            }
-
-            anime.Studios = new Dictionary<int, string>();
-            foreach (var studio in malAnime.studios)
-            {
-                anime.Studios.Add(studio.id, studio.name);
-            }
-
             AnimeShow animeShow = MapAnimeShow(anime);
-            var addedAnime = _animeShowRepository.Add(animeShow);
 
-            _animeShowRepository.AddStudios(anime.Studios, addedAnime);
-            _animeShowRepository.AddGenres(anime.Genres, addedAnime);
-            if (anime.WatchingTime != null) _animeShowRepository.AddWatchingTime(Mapping.Mapper.Map<WatchingTime>(anime.WatchingTime), anime.WatchingTime.YearNotionPageId, animeShow);
-            if (anime.Score != null) _animeShowRepository.AddScore(Mapping.Mapper.Map<Score>(anime.Score), animeShow);
-            if (anime.Note != null) _animeShowRepository.AddNote(Mapping.Mapper.Map<Note>(anime.Note), animeShow);
-
-            HandleRelations(malAnime.related_anime, addedAnime.Id);
+            _animeShowRepository.AddFromNotion(
+                animeShow, 
+                genres: Mapping.Mapper.Map<Dictionary<int, string>>(malAnime.genres), 
+                studios: Mapping.Mapper.Map<Dictionary<int, string>>(malAnime.studios), 
+                relations: Mapping.Mapper.Map<List<Relation>>(malAnime.related_anime));
         }
 
+        /// <summary>
+        /// Maps a DTO to the actual AnimeShow entity
+        /// </summary>
+        /// <param name="showDto"></param>
+        /// <returns></returns>
         private AnimeShow MapAnimeShow(AnimeShowDto showDto)
         {
             AnimeShow result = new AnimeShow();
@@ -150,40 +135,14 @@ namespace Business_AnimeToNotion.Demo
             result.NameEnglish = showDto.NameEnglish;
             result.NameOriginal = showDto.NameOriginal;
             result.StartedAiring = showDto.StartedAiring;
+            result.Score = showDto.Score != null ? Mapping.Mapper.Map<Score>(showDto.WatchingTime) : null;
+            result.WatchingTime = showDto.WatchingTime != null ? Mapping.Mapper.Map<WatchingTime>(showDto.Score) : null;
+            result.Note = showDto.Note != null ? Mapping.Mapper.Map<Note>(showDto.Note) : null;
+
+            if (showDto.WatchingTime != null && showDto.WatchingTime.YearNotionPageId != null)
+                result.WatchingTime.CompletedYear = _animeShowRepository.GetCompletedYearId(showDto.WatchingTime.YearNotionPageId);
 
             return result;
-        }
-
-        private void HandleRelations(List<MAL_RelatedShow> relations, Guid animeShowId)
-        {
-            if (relations.Count == 0)
-                return;
-
-            //bool isAnimeParent = !relations.Any(x => x.relation_type == "parent_story" || x.relation_type == "prequel" || x.relation_type == "other");
-            //var malIdInvolved = relations.Select(x => x.node.id).ToList();
-            //malIdInvolved.Add(malId);
-
-            //Guid? animeParentId = isAnimeParent ? animeShowId : _relationRepository.SearchParentRelation(malIdInvolved);
-
-
-            foreach (var rel in relations)
-            {
-                RelationDto newRel = new RelationDto();
-                newRel.AnimeShowId = animeShowId;
-                newRel.AnimeRelatedMalId = rel.node.id;
-                newRel.RelationType = rel.relation_type;
-
-                var relation = Mapping.Mapper.Map<Data_AnimeToNotion.DataModel.Relation>(newRel);
-
-                _relationRepository.AddRelation(relation);
-            }
-
-            //if (isAnimeParent)
-            //{
-            //    int randomMalRelatedId = relations[0].node.id;
-            //    _relationRepository.UpdateParentAnimeShowId(malId, randomMalRelatedId, animeParentId.Value);
-            //}
-
         }
 
         #endregion

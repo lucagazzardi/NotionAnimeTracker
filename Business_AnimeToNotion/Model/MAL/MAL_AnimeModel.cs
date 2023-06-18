@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Business_AnimeToNotion.Model
+﻿namespace Business_AnimeToNotion.Model.MAL
 {
     public class MAL_ApiResponseModel
     {
@@ -11,10 +7,10 @@ namespace Business_AnimeToNotion.Model
 
     public class MAL_NodeResponseModel
     {
-        public MAL_AnimeModel node { get; set; }
+        public MAL_AnimeShow node { get; set; }
     }
 
-    public class MAL_AnimeModel
+    public class MAL_AnimeShow
     {
         public int id { get; set; }
         public string title { get; set; }
@@ -27,7 +23,6 @@ namespace Business_AnimeToNotion.Model
         public List<MAL_GeneralObject> studios { get; set; } = new List<MAL_GeneralObject>();
         public int num_episodes { get; set; }
         public List<MAL_RelatedShow> related_anime { get; set; } = new List<MAL_RelatedShow>();
-        public string showHidden { get; set; } = null;
     }
 
     public class MAL_MainPicture

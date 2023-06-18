@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business_AnimeToNotion.Mapper
+namespace Business_AnimeToNotion.Mapper.Config
 {
     public static class Mapping
     {
@@ -15,7 +15,11 @@ namespace Business_AnimeToNotion.Mapper
             {
                 // This line ensures that internal properties are also mapped over.
                 cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
-                cfg.AddProfile<AnimeProfile>();
+                cfg.AddProfile<Demo_Profile>();
+                cfg.AddProfile<AnimeShowDto_AnimeShow_Profile>();
+                cfg.AddProfile<MAL_AnimeShow_NotionProperties_Profile>();
+                cfg.AddProfile<MAL_AnimeShow_AnimeShowDto_Profile>();
+                cfg.AddProfile<MAL_AnimeShow_AnimeShow_Profile>();
             });
             var mapper = config.CreateMapper();
             return mapper;

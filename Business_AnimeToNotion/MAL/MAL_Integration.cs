@@ -1,6 +1,5 @@
-﻿using Business_AnimeToNotion.Model;
+﻿using Business_AnimeToNotion.Model.MAL;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Client;
 using System.Text.Json;
 
 namespace Business_AnimeToNotion.MAL
@@ -16,7 +15,7 @@ namespace Business_AnimeToNotion.MAL
         public const string SearchByIdException = "Error: show with id \"[id]\" not found";
     }
 
-    public class MAL_Integration
+    public class MAL_Integration : IMAL_Integration
     {
         #region DI
 
@@ -39,9 +38,9 @@ namespace Business_AnimeToNotion.MAL
                 StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Add(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"]);
         }
 
-        public async Task<MAL_AnimeModel> MAL_SearchAnimeByIdAsync(int id)
+        public async Task<MAL_AnimeShow> MAL_SearchAnimeByIdAsync(int id)
         {
-            MAL_AnimeModel result = null;
+            MAL_AnimeShow result = null;
 
             try
             {
@@ -56,9 +55,9 @@ namespace Business_AnimeToNotion.MAL
             return result;
         }
 
-        public async Task<List<MAL_AnimeModel>> MAL_SearchAnimeByNameAsync(string searchTerm)
+        public async Task<List<MAL_AnimeShow>> MAL_SearchAnimeByNameAsync(string searchTerm)
         {
-            List<MAL_AnimeModel> result = new List<MAL_AnimeModel>();
+            List<MAL_AnimeShow> result = new List<MAL_AnimeShow>();
             try
             {
                 var httpResponse = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALUrl_SearchByName(searchTerm));
@@ -112,13 +111,13 @@ namespace Business_AnimeToNotion.MAL
             return result;
         }
 
-        private MAL_AnimeModel DeserializeResponse(string httpResponse)
+        private MAL_AnimeShow DeserializeResponse(string httpResponse)
         {
-            MAL_AnimeModel result = JsonSerializer.Deserialize<MAL_AnimeModel>(httpResponse);
+            MAL_AnimeShow result = JsonSerializer.Deserialize<MAL_AnimeShow>(httpResponse);
             return result;
         }
 
-        private List<MAL_AnimeModel> DeserializeResponseList(string httpResponse)
+        private List<MAL_AnimeShow> DeserializeResponseList(string httpResponse)
         {
             MAL_ApiResponseModel response = JsonSerializer.Deserialize<MAL_ApiResponseModel>(httpResponse);
 
