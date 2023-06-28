@@ -74,7 +74,7 @@ namespace Functions_AnimeToNotion
             foreach (var notionEntry in notionEntries)
             {
                 // Retrieve MAL anime record by Id
-                MAL_AnimeShow MALEntry = await GetMALById(Mapping.Mapper.Map<string>(notionEntry.Properties["MAL Id"]));
+                MAL_AnimeShowRaw MALEntry = await GetMALById(Mapping.Mapper.Map<string>(notionEntry.Properties["MAL Id"]));
 
                 // Check if there are differences
                 var differences = CheckDifferences(MALEntry, notionEntry);
@@ -113,10 +113,10 @@ namespace Functions_AnimeToNotion
             return notionEntries.Results;
         }
 
-        private async Task<MAL_AnimeShow> GetMALById(string id)
+        private async Task<MAL_AnimeShowRaw> GetMALById(string id)
         {
             var response = await MALClient.GetStringAsync(BuildMALUrl_SearchById(id));
-            return JsonSerializer.Deserialize<MAL_AnimeShow>(response);
+            return JsonSerializer.Deserialize<MAL_AnimeShowRaw>(response);
         }
 
         private string BuildMALUrl_SearchById(string id)
@@ -124,19 +124,19 @@ namespace Functions_AnimeToNotion
             return $"{MAL_BaseURL}anime/{id}?{MAL_NotionNeededFields}";
         }
 
-        private Dictionary<string, PropertyValue> CheckDifferences(MAL_AnimeShow MALEntry, Page notionEntry)
+        private Dictionary<string, PropertyValue> CheckDifferences(MAL_AnimeShowRaw MALEntry, Page notionEntry)
         {
             var differences = new Dictionary<string, PropertyValue>();
             Common_Utilities.Equals(MALEntry, notionEntry, out differences);
             return differences;
         }
 
-        private async Task UpdateItem(string title, Dictionary<string, PropertyValue> differences, Page notionEntry, MAL_AnimeShow malAnimeShow, ILogger log)
+        private async Task UpdateItem(string title, Dictionary<string, PropertyValue> differences, Page notionEntry, MAL_AnimeShowRaw malAnimeShow, ILogger log)
         {
             if (differences.Count > 0)
             {
                 // Update SQL Database
-                UpdateDatabase(notionEntry.Id, differences, malAnimeShow);
+                await UpdateDatabase(notionEntry.Id, differences, malAnimeShow);
 
                 // Update Notion entry
                 await NotionClient.Pages.UpdateAsync(notionEntry.Id, new PagesUpdateParameters() { Properties = differences });
@@ -159,13 +159,13 @@ namespace Functions_AnimeToNotion
             log.LogInformation($"***************");
         }
 
-        private void UpdateDatabase(string notionPageId, Dictionary<string, PropertyValue> differences, MAL_AnimeShow malAnimeShow)
+        private async Task UpdateDatabase(string notionPageId, Dictionary<string, PropertyValue> differences, MAL_AnimeShowRaw malAnimeShow)
         {
             // Retrieve AnimeShow by NotionPageId and maps the differences to the entity
-            AnimeShow animeShow = Common_Utilities.MapFromNotionToAnimeShow(_animeRepository.GetByNotionPageId(notionPageId), differences);
+            AnimeShow animeShow = Common_Utilities.MapFromNotionToAnimeShow(await _animeRepository.GetByNotionPageId(notionPageId), differences);
 
             // Update anime show with the current info retrieved from MAL
-            _animeRepository.SyncFromMal(
+            await _animeRepository.SyncFromMal(
                 animeShow,
                 studios: Mapping.Mapper.Map<Dictionary<int, string>>(malAnimeShow.studios),
                 genres: Mapping.Mapper.Map<Dictionary<int, string>>(malAnimeShow.genres),

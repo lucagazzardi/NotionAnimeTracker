@@ -12,14 +12,15 @@ namespace Business_AnimeToNotion.Model.Notion
     {
         public string NameEnglish { get; set; }
         public string NameOriginal { get; set; }
+        public string? Format { get; set; }
         public int MalScore { get; set; }
-        public DateTime StartedAiring { get; set; }
+        public DateTime? StartedAiring { get; set; }
         public string Cover { get; set; }
         public int Episodes { get; set; }
         public int MalId { get; set; }
         public List<NotionAddKeyValue> Genres { get; set; }
         public List<NotionAddKeyValue> Studios { get; set; }
-        public NotionEditObject NotionEditObject { get; set; }
+        public NotionEditObject? NotionEditObject { get; set; }
     }
 
     public class NotionAddKeyValue
@@ -27,3 +28,4 @@ namespace Business_AnimeToNotion.Model.Notion
         public int Id { get; set; }
         public string Value { get; set; }
     }
+}

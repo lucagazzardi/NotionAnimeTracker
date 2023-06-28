@@ -1,6 +1,9 @@
 ﻿using Data_AnimeToNotion.Context;
 using Data_AnimeToNotion.DataModel;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Data_AnimeToNotion.Repository
 {
@@ -13,52 +16,121 @@ namespace Data_AnimeToNotion.Repository
             _animeShowContext = animeShowContext;
         }
 
-        public List<AnimeShow> GetAll()
+        public IQueryable<AnimeShow> GetAllByIds(List<int> malIds)
         {
-            return _animeShowContext.AnimeShows.ToList();
-        }        
+            return _animeShowContext.AnimeShows.Where(x => malIds.Contains(x.MalId)).AsNoTracking().AsQueryable();
+        }
 
-        public AnimeShow Add(AnimeShow animeShow)
+        public async Task<AnimeShow> Add(AnimeShow animeShow)
         {
-            var anime =_animeShowContext.Add(animeShow);
-            _animeShowContext.SaveChanges();
+            var anime = await _animeShowContext.AddAsync(animeShow);
+            await _animeShowContext.SaveChangesAsync();
             return anime.Entity;
         }
 
-        public void Update(AnimeShow animeShow)
+        public async Task Update(AnimeShow animeShow)
         {
             _animeShowContext.Update(animeShow);
-            _animeShowContext.SaveChanges();
+            await _animeShowContext.SaveChangesAsync();
         }
 
-        public void Remove(AnimeShow animeShow)
+        public async Task Remove(AnimeShow animeShow)
         {
             _animeShowContext.Remove(animeShow);
-            _animeShowContext.SaveChanges();
-        }        
+            await _animeShowContext.SaveChangesAsync();
+        }
+
+        #region Internal ADD
+
+        public async Task<AnimeShow> AddInternalAnimeShow(AnimeShow animeShow, List<Studio> studios, List<Genre> genres, List<Relation> relations)
+        {
+            using var transaction = _animeShowContext.Database.BeginTransaction();
+
+            AnimeShow added = (await _animeShowContext.AddAsync(animeShow)).Entity;
+
+            await HandleStudios(studios, animeShow);
+            await HandleGenres(genres, animeShow);
+            await HandleRelations(relations, animeShow);
+
+            await _animeShowContext.SaveChangesAsync();
+
+            transaction.Commit();
+
+            return added;
+        }
+
+        #endregion
+
+        #region Internal REMOVE
+
+        public async Task RemoveInternalAnimeShow(Guid id)
+        {
+            using var transaction = _animeShowContext.Database.BeginTransaction();
+
+            await _animeShowContext.Relations.Where(x => x.AnimeShowId == id).ExecuteDeleteAsync();
+            await _animeShowContext.GenreOnAnimeShows.Where(x => x.AnimeShowId == id).ExecuteDeleteAsync();
+            await _animeShowContext.StudioOnAnimeShows.Where(x => x.AnimeShowId == id).ExecuteDeleteAsync();
+            await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteDeleteAsync();
+
+            transaction.Commit();
+        }
+
+        #endregion
+
+        private async Task HandleStudios(List<Studio> studios, AnimeShow show)
+        {
+            var syncedStudios = await FillMissingStudios(studios);
+
+            List<StudioOnAnimeShow> studioOnAnime = new List<StudioOnAnimeShow>();
+            foreach(var studio in syncedStudios)
+            {
+                studioOnAnime.Add(new StudioOnAnimeShow() { Id = Guid.NewGuid(), AnimeShowId = show.Id, StudioId = studio.Id });
+            }
+
+            await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
+        }
+
+        private async Task HandleGenres(List<Genre> genres, AnimeShow show)
+        {
+            var syncedGenres = await FillMissingGenres(genres);
+
+            List<GenreOnAnimeShow> genreOnAnime = new List<GenreOnAnimeShow>();
+            foreach (var genre in syncedGenres)
+            {
+                genreOnAnime.Add(new GenreOnAnimeShow() { Id = Guid.NewGuid(), AnimeShowId = show.Id, GenreId = genre.Id });
+            }
+
+            await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
+        }
+
+        private async Task HandleRelations(List<Relation> relations, AnimeShow show)
+        {
+            foreach(var relation in relations) { relation.AnimeShowId = show.Id; }
+            await _animeShowContext.Relations.AddRangeAsync(relations);
+        }
 
         /// <summary>
         /// Sync studios with the current studios from MAL
         /// </summary>
         /// <param name="animeStudios"></param>
         /// <param name="animeShow"></param>
-        public void AddOrUpdateStudios(Dictionary<int, string> animeStudios, AnimeShow animeShow)
+        public async Task AddOrUpdateStudios(Dictionary<int, string> animeStudios, AnimeShow animeShow)
         {
             // Remove all the studios links that are present in DB but not in the studios passed as argument (that are always all the studios from MAL)
             var malIds = animeStudios.Keys;
-            var toRemove = _animeShowContext.StudioOnAnimeShows.Include(x => x.Studio).Where(x => x.AnimeShowId == animeShow.Id && !malIds.Contains(x.Studio.MalId)).ToList();
+            var toRemove = await _animeShowContext.StudioOnAnimeShows.Include(x => x.Studio).Where(x => x.AnimeShowId == animeShow.Id && !malIds.Contains(x.Studio.MalId)).ToListAsync();
             _animeShowContext.StudioOnAnimeShows.RemoveRange(toRemove);
 
             // Check if the Studio is already present in DB, if not adds it, then check if the link with the show is present, if not adds it
             foreach (var studio in animeStudios)
             {
-                var studioId = _animeShowContext.Studios.SingleOrDefault(x => x.MalId == studio.Key)?.Id;
+                var studioId = (await _animeShowContext.Studios.SingleOrDefaultAsync(x => x.MalId == studio.Key))?.Id;
 
                 if (studioId == null)
-                    studioId = _animeShowContext.Studios.Add(new Studio() { Id = new Guid(), MalId = studio.Key, Description = studio.Value }).Entity.Id;                
+                    studioId = (await _animeShowContext.Studios.AddAsync(new Studio() { Id = new Guid(), MalId = studio.Key, Description = studio.Value })).Entity.Id;
 
-                if (!_animeShowContext.StudioOnAnimeShows.Any(x => x.AnimeShowId == animeShow.Id && x.StudioId == studioId))
-                    _animeShowContext.StudioOnAnimeShows.Add(new StudioOnAnimeShow() { Id = new Guid(), AnimeShowId = animeShow.Id, StudioId = studioId.Value });
+                if (!await _animeShowContext.StudioOnAnimeShows.AnyAsync(x => x.AnimeShowId == animeShow.Id && x.StudioId == studioId))
+                    await _animeShowContext.StudioOnAnimeShows.AddAsync(new StudioOnAnimeShow() { Id = new Guid(), AnimeShowId = animeShow.Id, StudioId = studioId.Value });
             }
         }
 
@@ -67,23 +139,23 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="animeGenres"></param>
         /// <param name="animeShow"></param>
-        public void AddOrUpdateGenres(Dictionary<int, string> animeGenres, AnimeShow animeShow)
+        public async Task AddOrUpdateGenres(Dictionary<int, string> animeGenres, AnimeShow animeShow)
         {
             // Remove all the genres links that are present in DB but not in the genres passed as argument (that are always all the genres from MAL)
             var malIds = animeGenres.Keys;
-            var toRemove = _animeShowContext.GenreOnAnimeShows.Include(x => x.Genre).Where(x => x.AnimeShowId == animeShow.Id && !malIds.Contains(x.Genre.MalId)).ToList();
+            var toRemove = await _animeShowContext.GenreOnAnimeShows.Include(x => x.Genre).Where(x => x.AnimeShowId == animeShow.Id && !malIds.Contains(x.Genre.MalId)).ToListAsync();
             _animeShowContext.GenreOnAnimeShows.RemoveRange(toRemove);
 
             // Check if the Genre is already present in DB, if not adds it, then check if the link with the show is present, if not adds it
             foreach (var genre in animeGenres)
             {
-                var genreId = _animeShowContext.Genres.SingleOrDefault(x => x.MalId == genre.Key)?.Id;
+                var genreId = (await _animeShowContext.Genres.SingleOrDefaultAsync(x => x.MalId == genre.Key))?.Id;
 
                 if (genreId == null)
-                    genreId = _animeShowContext.Genres.Add(new Genre() { Id = new Guid(), MalId = genre.Key, Description = genre.Value }).Entity.Id;
+                    genreId = (await _animeShowContext.Genres.AddAsync(new Genre() { Id = new Guid(), MalId = genre.Key, Description = genre.Value })).Entity.Id;
 
-                if(!_animeShowContext.GenreOnAnimeShows.Any(x => x.AnimeShowId == animeShow.Id && x.GenreId == genreId))
-                    _animeShowContext.GenreOnAnimeShows.Add(new GenreOnAnimeShow() { Id = new Guid(), AnimeShowId = animeShow.Id, GenreId = genreId.Value });
+                if (!await _animeShowContext.GenreOnAnimeShows.AnyAsync(x => x.AnimeShowId == animeShow.Id && x.GenreId == genreId))
+                    await _animeShowContext.GenreOnAnimeShows.AddAsync(new GenreOnAnimeShow() { Id = new Guid(), AnimeShowId = animeShow.Id, GenreId = genreId.Value });
             }
         }
 
@@ -92,62 +164,62 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="animeRelations"></param>
         /// <param name="animeShow"></param>
-        public void AddOrUpdateRelations(List<Relation> animeRelations, AnimeShow animeShow)
+        public async Task AddOrUpdateRelations(List<Relation> animeRelations, AnimeShow animeShow)
         {
             var malIds = animeRelations.Select(x => x.AnimeRelatedMalId);
-            var toRemove = _animeShowContext.Relations.Where(x => x.AnimeShowId == animeShow.Id && !malIds.Contains(x.AnimeRelatedMalId)).ToList();
+            var toRemove = await _animeShowContext.Relations.Where(x => x.AnimeShowId == animeShow.Id && !malIds.Contains(x.AnimeRelatedMalId)).ToListAsync();
             _animeShowContext.RemoveRange(toRemove);
 
-            foreach(var relation in animeRelations)
+            foreach (var relation in animeRelations)
             {
                 relation.AnimeShowId = animeShow.Id;
-                if (!_animeShowContext.Relations.Any(x => x.AnimeShowId == animeShow.Id && relation.AnimeRelatedMalId == x.AnimeRelatedMalId))
-                    _animeShowContext.Relations.Add(relation);
+                if (!await _animeShowContext.Relations.AnyAsync(x => x.AnimeShowId == animeShow.Id && relation.AnimeRelatedMalId == x.AnimeRelatedMalId))
+                    await _animeShowContext.Relations.AddAsync(relation);
             }
         }
 
-        public void AddWatchingTime(WatchingTime watchingTime, AnimeShow animeShow)
-        {    
-            _animeShowContext.WatchingTimes.Add(watchingTime);
+        public async Task AddWatchingTime(WatchingTime watchingTime, AnimeShow animeShow)
+        {
+            await _animeShowContext.WatchingTimes.AddAsync(watchingTime);
             animeShow.WatchingTime = watchingTime;
-            _animeShowContext.SaveChanges();
+            //await _animeShowContext.SaveChangesAsync();
         }
 
-        public void AddScore(Score score, AnimeShow animeShow)
+        public async Task AddScore(Score score, AnimeShow animeShow)
         {
-            _animeShowContext.Scores.Add(score);
+            await _animeShowContext.Scores.AddAsync(score);
             animeShow.Score = score;
-            _animeShowContext.SaveChanges();            
+            //await _animeShowContext.SaveChangesAsync();            
         }
 
-        public void AddNote(Note note, AnimeShow animeShow)
+        public async Task AddNote(Note note, AnimeShow animeShow)
         {
-            _animeShowContext.Notes.Add(note);
+            await _animeShowContext.Notes.AddAsync(note);
             animeShow.Note = note;
-            _animeShowContext.SaveChanges();
+            //await _animeShowContext.SaveChangesAsync();
         }
 
-        public int GetCompletedYearValue(WatchingTime watchingTime)
+        public async Task<int> GetCompletedYearValue(WatchingTime watchingTime)
         {
-            return _animeShowContext.Year.Single(x => x.Id == watchingTime.CompletedYear).YearValue;
+            return await _animeShowContext.Year.AsNoTracking().Where(x => x.Id == watchingTime.CompletedYear).Select(x => x.YearValue).SingleOrDefaultAsync();
         }
 
-        public Guid GetCompletedYearId(string notionPageId)
+        public async Task<Guid> GetCompletedYearId(string notionPageId)
         {
-            return _animeShowContext.Year.Single(x => x.NotionPageId == notionPageId).Id;
+            return await _animeShowContext.Year.AsNoTracking().Where(x => x.NotionPageId == notionPageId).Select(x => x.Id).SingleOrDefaultAsync();
         }
 
-        public bool Exists(int malId)
+        public async Task<bool> Exists(int malId)
         {
-            return _animeShowContext.AnimeShows.Any(x => x.MalId == malId);
+            return await _animeShowContext.AnimeShows.AsNoTracking().AnyAsync(x => x.MalId == malId);
         }
 
         #region Sync MAL
-        public AnimeShow GetByNotionPageId(string notionPageId)
+        public async Task<AnimeShow> GetByNotionPageId(string notionPageId)
         {
-            return _animeShowContext.AnimeShows
+            return await _animeShowContext.AnimeShows
                 .Include(x => x.Score)
-                .Single(x => x.NotionPageId == notionPageId);
+                .SingleAsync(x => x.NotionPageId == notionPageId);
         }
 
         /// <summary>
@@ -157,19 +229,18 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="studios"></param>
         /// <param name="genres"></param>
         /// <param name="relations"></param>
-        public void SyncFromMal(AnimeShow animeShow, Dictionary<int, string> studios, Dictionary<int, string> genres, List<Relation> relations)
+        public async Task SyncFromMal(AnimeShow animeShow, Dictionary<int, string> studios, Dictionary<int, string> genres, List<Relation> relations)
         {
             _animeShowContext.Update(animeShow);
 
-            AddOrUpdateStudios(studios, animeShow);
-            AddOrUpdateGenres(genres, animeShow);
-            AddOrUpdateRelations(relations, animeShow);
-            AddWatchingTime(animeShow.WatchingTime, animeShow);
-            AddScore(animeShow.Score, animeShow);
-            AddNote(animeShow.Note, animeShow);
+            await AddOrUpdateStudios(studios, animeShow);
+            await AddOrUpdateGenres(genres, animeShow);
+            await AddOrUpdateRelations(relations, animeShow);
+            await AddWatchingTime(animeShow.WatchingTime, animeShow);
+            await AddScore(animeShow.Score, animeShow);
+            await AddNote(animeShow.Note, animeShow);
 
-
-            _animeShowContext.SaveChanges();
+            await _animeShowContext.SaveChangesAsync();
         }
 
         #endregion
@@ -183,16 +254,47 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="studios"></param>
         /// <param name="genres"></param>
         /// <param name="relations"></param>
-        public void AddFromNotion(AnimeShow animeShow, Dictionary<int, string> studios, Dictionary<int, string> genres, List<Relation> relations)
+        public async Task AddFromNotion(AnimeShow animeShow, Dictionary<int, string> studios, Dictionary<int, string> genres, List<Relation> relations)
         {
-            _animeShowContext.Add(animeShow);
+            await _animeShowContext.AddAsync(animeShow);
 
-            AddOrUpdateStudios(studios, animeShow);
-            AddOrUpdateGenres(genres, animeShow);
-            AddOrUpdateRelations(relations, animeShow);
-            
+            await AddOrUpdateStudios(studios, animeShow);
+            await AddOrUpdateGenres(genres, animeShow);
+            await AddOrUpdateRelations(relations, animeShow);            
 
-            _animeShowContext.SaveChanges();
+            await _animeShowContext.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region Private
+
+        private async Task<List<Studio>> FillMissingStudios(List<Studio> studios)
+        {
+            var studioMalIds = studios.Select(x => x.MalId).ToList();
+            var existingStudios = await _animeShowContext.Studios.AsNoTracking().Where(x => studioMalIds.Contains(x.MalId)).ToListAsync();
+
+            if (existingStudios.All(x => studioMalIds.Contains(x.MalId)))
+                return existingStudios;
+
+            List<Studio> newStudios = studios.Where(x => !existingStudios.Select(x => x.MalId).Contains(x.MalId)).ToList();
+            await _animeShowContext.AddRangeAsync(newStudios);
+
+            return existingStudios.Union(newStudios).ToList();
+        }
+
+        private async Task<List<Genre>> FillMissingGenres(List<Genre> genres)
+        {
+            var genreMalIds = genres.Select(x => x.MalId).ToList();
+            var existingGenres = await _animeShowContext.Genres.AsNoTracking().Where(x => genreMalIds.Contains(x.MalId)).ToListAsync();
+
+            if (existingGenres.All(x => genreMalIds.Contains(x.MalId)))
+                return existingGenres;
+
+            List<Genre> newGenres = genres.Where(x => !existingGenres.Select(x => x.MalId).Contains(x.MalId)).ToList();
+            await _animeShowContext.AddRangeAsync(newGenres);
+
+            return existingGenres.Union(newGenres).ToList();
         }
 
         #endregion

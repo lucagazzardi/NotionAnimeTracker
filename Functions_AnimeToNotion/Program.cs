@@ -13,6 +13,7 @@ var host = new HostBuilder()
             options => options.UseSqlServer(Environment.GetEnvironmentVariable("SqlConnectionString"))
         );
         s.AddSingleton<IAnimeShowRepository, AnimeShowRepository>();
+        s.AddSingleton<ISyncToNotionRepository, SyncToNotionRepository>();
         s.Configure<LoggerFilterOptions>(options =>
         {
             // The Application Insights SDK adds a default logging filter that instructs ILogger to capture only Warning and more severe logs. Application Insights requires an explicit override.

@@ -2,8 +2,12 @@ using Azure.Identity;
 using Data_AnimeToNotion.Context;
 using Microsoft.EntityFrameworkCore;
 using Data_AnimeToNotion.Repository;
-using Business_AnimeToNotion.Notion;
-using Business_AnimeToNotion.MAL;
+using System.Text.Json.Serialization;
+using JikanDotNet;
+using Business_AnimeToNotion.Integrations.MAL;
+using Business_AnimeToNotion.Integrations.Notion;
+using Business_AnimeToNotion.Integrations.Demo;
+using Business_AnimeToNotion.Integrations.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +26,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<INotion_Integration, Notion_Integration>();
 builder.Services.AddScoped<IMAL_Integration, MAL_Integration>();
 builder.Services.AddScoped<IAnimeShowRepository, AnimeShowRepository>();
+builder.Services.AddScoped<IDemo_Integration, Demo_Integration>();
+builder.Services.AddScoped<IInternal_Integration, Internal_Integration>();
+builder.Services.AddSingleton<IJikan, Jikan>();
 
 #endregion
-
 
 if (builder.Environment.IsProduction())
 {
@@ -41,6 +47,17 @@ builder.Services
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+//{
+//    options.SerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+//    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+//});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    //options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
 
 var app = builder.Build();
 

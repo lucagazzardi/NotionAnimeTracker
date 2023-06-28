@@ -11,7 +11,9 @@ namespace Data_AnimeToNotion.DataModel
         [Column(Order = 2)]
         public int AnimeRelatedMalId { get; set; }
         [Column(Order = 3)]
-        public string RelationType { get; set; }  
+        public string RelationType { get; set; } 
+        public string Cover { get; set; }
+
         
         public AnimeShow AnimeShow { get; set; }
     }

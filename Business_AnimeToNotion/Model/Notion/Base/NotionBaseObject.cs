@@ -8,6 +8,6 @@ namespace Business_AnimeToNotion.Model.Notion.Base
 {
     public class NotionBaseObject
     {
-        public string NotionPageId { get; set; }
+        public string? NotionPageId { get; set; }
     }
 }

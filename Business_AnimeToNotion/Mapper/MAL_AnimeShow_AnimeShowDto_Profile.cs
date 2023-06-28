@@ -12,7 +12,7 @@ namespace Business_AnimeToNotion.Mapper
         public MAL_AnimeShow_AnimeShowDto_Profile()
         {
             // Map from MAL to Entity
-            CreateMap<MAL_AnimeShow, AnimeShowDto>()
+            CreateMap<MAL_AnimeShowRaw, AnimeShowDto>()
                 .ForMember(dto => dto.MalId, map => map.MapFrom(source => source.id))
                 .ForMember(dto => dto.NameOriginal, map => map.MapFrom(source => source.title))
                 .ForMember(dto => dto.Cover, map => map.MapFrom(source => source.main_picture.large))

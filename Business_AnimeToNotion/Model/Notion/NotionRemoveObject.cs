@@ -9,6 +9,6 @@ namespace Business_AnimeToNotion.Model.Notion
 {
     public class NotionRemoveObject : NotionBaseObject
     {
-        public string NotionPageId { get; set; } 
+
     }
 }

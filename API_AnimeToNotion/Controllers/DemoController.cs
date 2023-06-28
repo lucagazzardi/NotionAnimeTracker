@@ -1,6 +1,11 @@
-﻿using Business_AnimeToNotion.Demo;
+﻿using Business_AnimeToNotion.Integrations.Demo;
+using Business_AnimeToNotion.Integrations.Notion;
+using Business_AnimeToNotion.Model.Notion.Base;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 
 namespace API_AnimeToNotion.Controllers
 {
@@ -10,10 +15,12 @@ namespace API_AnimeToNotion.Controllers
     public class DemoController : ControllerBase
     {
         private readonly IDemo_Integration _demo;
+        private readonly INotion_Integration _notion;
 
-        public DemoController(IDemo_Integration demo)
+        public DemoController(IDemo_Integration demo, INotion_Integration notion)
         {
             _demo = demo;
+            _notion = notion;
         }
 
         #region DEMO
@@ -33,9 +40,26 @@ namespace API_AnimeToNotion.Controllers
             catch (Exception ex)
             {
                 throw ex;
-            }
+            }        
+        }
 
-            return Ok();             
+        /// <summary>
+        /// Demo temp
+        /// </summary>
+        /// <param name="cursor"></param>
+        /// <returns></returns>
+        [HttpPost("sync")]
+        public async Task<IActionResult> SyncToNotion([FromBody] NotionSyncAdd notionSync)
+        {
+            try
+            {
+                _notion.SendSyncToNotion(notionSync);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion

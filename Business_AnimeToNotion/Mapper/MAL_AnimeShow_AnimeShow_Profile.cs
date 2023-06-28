@@ -8,7 +8,7 @@ namespace Business_AnimeToNotion.Mapper
     {
         public MAL_AnimeShow_AnimeShow_Profile()
         {
-            CreateMap<MAL_AnimeShow, List<Relation>>().ConvertUsing((src, dest) =>
+            CreateMap<MAL_AnimeShowRaw, List<Relation>>().ConvertUsing((src, dest) =>
             {
                 dest = new List<Relation>();
                 foreach (var relation in src.related_anime)

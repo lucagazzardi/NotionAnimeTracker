@@ -1,5 +1,6 @@
 ﻿using Data_AnimeToNotion.DataModel;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace Data_AnimeToNotion.Context
 {
@@ -7,6 +8,7 @@ namespace Data_AnimeToNotion.Context
     {
         public AnimeShowContext(DbContextOptions<AnimeShowContext> options) : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
         public DbSet<AnimeShow> AnimeShows { get; set; }
@@ -20,6 +22,11 @@ namespace Data_AnimeToNotion.Context
         public DbSet<Relation> Relations { get; set; }
         public DbSet<Year> Year { get; set; }
 
+        #region SyncToNotion
+
+        public DbSet<SyncToNotionLog> SyncToNotionLogs { get; set; }
+
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,7 +40,19 @@ namespace Data_AnimeToNotion.Context
             modelBuilder.Entity<WatchingTime>().ToTable("WatchingTime");
             modelBuilder.Entity<Relation>().ToTable("Relation");
             modelBuilder.Entity<Year>().ToTable("Year");
+            modelBuilder.Entity<SyncToNotionLog>().ToTable("SyncToNotionLog");
 
+            modelBuilder
+                .Entity<GenreOnAnimeShow>()
+                .HasOne(e => e.Genre)
+                .WithMany(e => e.GenreOnAnimeShows)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+                .Entity<StudioOnAnimeShow>()
+                .HasOne(e => e.Studio)
+                .WithMany(e => e.StudioOnAnimeShows)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

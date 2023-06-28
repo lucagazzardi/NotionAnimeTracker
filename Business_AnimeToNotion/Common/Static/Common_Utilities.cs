@@ -3,6 +3,7 @@ using Business_AnimeToNotion.Model.MAL;
 using Business_AnimeToNotion.Model.SyncMAL;
 using Data_AnimeToNotion.DataModel;
 using Notion.Client;
+using System.ComponentModel;
 
 namespace Business_AnimeToNotion.Functions.Static
 {
@@ -31,13 +32,39 @@ namespace Business_AnimeToNotion.Functions.Static
         }
 
         /// <summary>
+        /// Get enum value from description
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        public static T GetValueFromDescription<T>(string description) where T : Enum
+        {
+            foreach (var field in typeof(T).GetFields())
+            {
+                if (Attribute.GetCustomAttribute(field,
+                typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
+                {
+                    if (attribute.Description == description)
+                        return (T)field.GetValue(null);
+                }
+                else
+                {
+                    if (field.Name == description)
+                        return (T)field.GetValue(null);
+                }
+            }
+
+            throw new ArgumentException("Not found.", nameof(description));
+        }
+
+        /// <summary>
         /// Checks differences for SyncMalData azure function
         /// </summary>
         /// <param name="MAL_Entry"></param>
         /// <param name="Notion_Entry"></param>
         /// <param name="differences"></param>
         /// <returns></returns>
-        public static bool Equals(MAL_AnimeShow MAL_Entry, Page Notion_Entry, out Dictionary<string, PropertyValue> differences)
+        public static bool Equals(MAL_AnimeShowRaw MAL_Entry, Page Notion_Entry, out Dictionary<string, PropertyValue> differences)
         {
             differences = new Dictionary<string, PropertyValue>();
             bool isEquals = true;
@@ -81,7 +108,7 @@ namespace Business_AnimeToNotion.Functions.Static
                 switch (prop.Key)
                 {
                     case "Name Original":
-                        input.NameOriginal = Mapping.Mapper.Map<string>(prop.Value);
+                        input.NameDefault = Mapping.Mapper.Map<string>(prop.Value);
                         break;
 
                     case "Name English":

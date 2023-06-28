@@ -1,16 +1,8 @@
-﻿namespace Business_AnimeToNotion.Model.MAL
+﻿using Business_AnimeToNotion.Model.MAL.MAL_BasicObjects;
+
+namespace Business_AnimeToNotion.Model.MAL
 {
-    public class MAL_ApiResponseModel
-    {
-        public MAL_NodeResponseModel[] data { get; set; }
-    }
-
-    public class MAL_NodeResponseModel
-    {
-        public MAL_AnimeShow node { get; set; }
-    }
-
-    public class MAL_AnimeShow
+    public class MAL_AnimeShowRaw
     {
         public int id { get; set; }
         public string title { get; set; }
@@ -31,12 +23,7 @@
         public string large { get; set; }
     }
 
-    public class MAL_AlternativeTitle
-    {
-        public string[] synonyms { get; set; }
-        public string en { get; set; }
-        public string ja { get; set; }
-    }
+    
 
     public class MAL_GeneralObject
     {
@@ -48,7 +35,7 @@
     {
         public MAL_RelatedAnime_Node node { get; set; }
         public string relation_type { get; set; }
-        public string relation_type_formatter { get; set; }
+        public string relation_type_formatted { get; set; }
     }
 
     public class MAL_RelatedAnime_Node

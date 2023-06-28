@@ -26,62 +26,51 @@ namespace Data_AnimeToNotion.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Cover")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(9);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Episodes")
-                        .HasColumnType("int")
-                        .HasColumnOrder(6);
+                        .HasColumnType("int");
 
                     b.Property<string>("Format")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(5);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MalId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(2);
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameDefault")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEnglish")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(4);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NameOriginal")
+                    b.Property<string>("NameJapanese")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(3);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("NoteId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(12);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NotionPageId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(1);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("ScoreId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(10);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("StartedAiring")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(8);
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(7);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("WatchingTimeId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(11);
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -93,7 +82,8 @@ namespace Data_AnimeToNotion.Migrations
                         .HasFilter("[NoteId] IS NOT NULL");
 
                     b.HasIndex("NotionPageId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[NotionPageId] IS NOT NULL");
 
                     b.HasIndex("ScoreId")
                         .IsUnique()
@@ -264,6 +254,34 @@ namespace Data_AnimeToNotion.Migrations
                     b.ToTable("StudioOnAnimeShow", (string)null);
                 });
 
+            modelBuilder.Entity("Data_AnimeToNotion.DataModel.SyncToNotionLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SyncToNotionLog", (string)null);
+                });
+
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.WatchingTime", b =>
                 {
                     b.Property<Guid>("Id")
@@ -340,7 +358,7 @@ namespace Data_AnimeToNotion.Migrations
                     b.HasOne("Data_AnimeToNotion.DataModel.Genre", "Genre")
                         .WithMany("GenreOnAnimeShows")
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AnimeShow");
@@ -370,7 +388,7 @@ namespace Data_AnimeToNotion.Migrations
                     b.HasOne("Data_AnimeToNotion.DataModel.Studio", "Studio")
                         .WithMany("StudioOnAnimeShows")
                         .HasForeignKey("StudioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AnimeShow");

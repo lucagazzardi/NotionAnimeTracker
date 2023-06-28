@@ -1,4 +1,4 @@
-﻿namespace Business_AnimeToNotion.MAL
+﻿namespace Business_AnimeToNotion.Integrations.MAL
 {
     public static class StaticHttpClient
     {
