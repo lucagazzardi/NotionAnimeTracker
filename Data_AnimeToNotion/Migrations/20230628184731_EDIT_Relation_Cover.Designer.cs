@@ -4,6 +4,7 @@ using Data_AnimeToNotion.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_AnimeToNotion.Migrations
 {
     [DbContext(typeof(AnimeShowContext))]
-    partial class AnimeShowContextModelSnapshot : ModelSnapshot
+    [Migration("20230628184731_EDIT_Relation_Cover")]
+    partial class EDIT_Relation_Cover
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,7 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Cover")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Episodes")
@@ -41,12 +45,15 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NameDefault")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameEnglish")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameJapanese")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("NoteId")
@@ -55,11 +62,6 @@ namespace Data_AnimeToNotion.Migrations
                     b.Property<string>("NotionPageId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("PlanToWatch")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<Guid?>("ScoreId")
                         .HasColumnType("uniqueidentifier");
 
@@ -67,6 +69,7 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("WatchingTimeId")
@@ -104,6 +107,7 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(2);
 
@@ -148,6 +152,7 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("Notes")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(1);
 
@@ -172,9 +177,11 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnOrder(1);
 
                     b.Property<string>("Cover")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RelationType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(3);
 
@@ -217,6 +224,7 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(2);
 
@@ -265,12 +273,15 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Result")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -311,6 +322,7 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NotionPageId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YearValue")
@@ -416,12 +428,14 @@ namespace Data_AnimeToNotion.Migrations
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.Note", b =>
                 {
-                    b.Navigation("AnimeShow");
+                    b.Navigation("AnimeShow")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.Score", b =>
                 {
-                    b.Navigation("AnimeShow");
+                    b.Navigation("AnimeShow")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.Studio", b =>
@@ -431,7 +445,8 @@ namespace Data_AnimeToNotion.Migrations
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.WatchingTime", b =>
                 {
-                    b.Navigation("AnimeShow");
+                    b.Navigation("AnimeShow")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.Year", b =>

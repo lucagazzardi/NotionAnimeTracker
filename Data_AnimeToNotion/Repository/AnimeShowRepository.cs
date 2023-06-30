@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace Data_AnimeToNotion.Repository
 {
@@ -39,6 +40,26 @@ namespace Data_AnimeToNotion.Repository
             _animeShowContext.Remove(animeShow);
             await _animeShowContext.SaveChangesAsync();
         }
+
+        #region Internal GET
+
+        public async Task<AnimeShow> GetFull(Guid Id)
+        {
+            return await _animeShowContext.AnimeShows
+                .Include(x => x.Score)
+                .Include(x => x.WatchingTime)
+                .ThenInclude(x => x.Year)
+                .Include(x => x.Note)
+                .Include(x => x.GenreOnAnimeShows)
+                .ThenInclude(x => x.Genre)
+                .Include(x => x.StudioOnAnimeShows)
+                .ThenInclude(x => x.Studio)
+                .Include(x => x.Relations)
+                .AsSplitQuery()
+                .Where(x => x.Id == Id).AsNoTracking().SingleOrDefaultAsync();
+        }
+
+        #endregion
 
         #region Internal ADD
 

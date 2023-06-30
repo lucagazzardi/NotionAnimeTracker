@@ -1,9 +1,4 @@
 ﻿using Data_AnimeToNotion.DataModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data_AnimeToNotion.Repository
 {
@@ -14,7 +9,7 @@ namespace Data_AnimeToNotion.Repository
         Task Update(AnimeShow animeShow);
         Task Remove(AnimeShow animeShow);
 
-
+        Task<AnimeShow> GetFull(Guid Id);
         Task<AnimeShow> AddInternalAnimeShow(AnimeShow animeShow, List<Studio> studios, List<Genre> genres, List<Relation> relations);
         Task RemoveInternalAnimeShow(Guid id);
 

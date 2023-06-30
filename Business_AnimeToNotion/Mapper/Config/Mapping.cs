@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business_AnimeToNotion.Mapper.Entity_Internal;
 using Business_AnimeToNotion.Mapper.FromMal;
 using Business_AnimeToNotion.Mapper.Internal_Entity;
 using Business_AnimeToNotion.Mapper.Internal_Notion;
@@ -28,7 +29,8 @@ namespace Business_AnimeToNotion.Mapper.Config
                 cfg.AddProfile<FrontEnd_NotionProperties_Profile>();
                 cfg.AddProfile<JIKAN_Internal_Profile>();
                 cfg.AddProfile<Internal_Entity_Profile>();
-                cfg.AddProfile<Internal_Notion_Profile>();                
+                cfg.AddProfile<Internal_Notion_Profile>();
+                cfg.AddProfile<Entity_Internal_Profile>();                
             });
             var mapper = config.CreateMapper();
             return mapper;

@@ -1,4 +1,5 @@
-﻿using Business_AnimeToNotion.Integrations.Notion;
+﻿using Business_AnimeToNotion.Integrations.MAL;
+using Business_AnimeToNotion.Integrations.Notion;
 using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.Notion;
@@ -6,6 +7,7 @@ using Business_AnimeToNotion.Model.Notion.Base;
 using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,29 @@ namespace Business_AnimeToNotion.Integrations.Internal
         private readonly IAnimeShowRepository _animeRepository;
         private readonly INotion_Integration _notion;
         private readonly IHostEnvironment _hostEnvironment;
+        private readonly IMAL_Integration _mal;
 
-        public Internal_Integration(IAnimeShowRepository animeRepository, INotion_Integration notion, IHostEnvironment hostEnvironment)
+        public Internal_Integration(IAnimeShowRepository animeRepository, INotion_Integration notion, IHostEnvironment hostEnvironment, IMAL_Integration mal)
         {
             _animeRepository = animeRepository;
             _notion = notion;
             _hostEnvironment = hostEnvironment;
+            _mal = mal;
 
             _jikan = new Jikan();
         }
 
         /// <summary>
-        /// Add new anime 
+        /// Add new anime base
         /// </summary>
         /// <param name="animeAdd"></param>
         /// <returns></returns>
-        public async Task AddNewAnimeBase(INT_AnimeShowAddBase animeAdd)
-        { 
-            var relations = Mapping.Mapper.Map<List<INT_AnimeShowRelation>>((await _jikan.GetAnimeRelationsAsync(animeAdd.MalId)).Data.ToList());
+        public async Task AddNewAnimeBase(INT_AnimeShowBase animeAdd)
+        {
+            if (animeAdd.Info != null)
+                return;
+
+            var relations = Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await _mal.GetRelationsFromMAL(animeAdd.MalId)).related_anime.AsQueryable()).ToList();
 
             await _animeRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(animeAdd),
@@ -56,7 +63,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeAdd"></param>
         /// <returns></returns>
-        public async Task AddNewAnimeFull(INT_AnimeShowAddFull animeAdd)
+        public async Task AddNewAnimeFull(INT_AnimeShowFull animeAdd)
         {
             await _animeRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(animeAdd),
@@ -67,6 +74,16 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
             if (_hostEnvironment.IsProduction())
                 _notion.SendSyncToNotion(new NotionSyncAdd() { Type = OperationType.Add, NotionAddObject = Mapping.Mapper.Map<NotionAddObject>(animeAdd) });
+        }
+
+        /// <summary>
+        /// Get anime full for editing
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<INT_AnimeShowFull> GetAnimeForEdit(Guid Id)
+        {
+            return Mapping.Mapper.Map<INT_AnimeShowFull>(await _animeRepository.GetFull(Id));
         }
 
         /// <summary>
@@ -81,7 +98,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
         #region Demo
 
-        public async Task<NotionSyncAdd> AddNewAnimeBaseDemo(INT_AnimeShowAddBase animeAdd)
+        public async Task<NotionSyncAdd> AddNewAnimeBaseDemo(INT_AnimeShowBase animeAdd)
         {
             var relations = Mapping.Mapper.Map<List<INT_AnimeShowRelation>>((await _jikan.GetAnimeRelationsAsync(animeAdd.MalId)).Data.ToList());
 

@@ -2,14 +2,13 @@ import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable } from 'rxjs';
 import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
-import { SearchAnimeService } from './search-anime.service';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../../assets/animations/animations';
 import { NotionService } from '../../services/notion/notion.service';
 import { ToasterService } from 'gazza-toaster';
-import { Router } from '@angular/router';
-import { StringManipulationService } from '../../services/string-manipulation/string-manipulation.service';
 import { EditService } from '../../services/edit/edit.service';
 import { MalService } from '../../services/mal/mal.service';
+import { IAnimeBase } from '../../model/IAnimeBase';
+import { IAnimeFull } from '../../model/IAnimeFull';
 
 
 @Component({
@@ -50,23 +49,23 @@ export class SearchAnimeComponent implements OnInit {
   //! ==General fields==
   searchById: boolean = false;
   searchMode: string = "Title";
-  seasonalSkeleton = Array(20).fill(0);
+  seasonalSkeleton = Array(12).fill(0);
   showEditButton: boolean = false;
 
   //! ==SEASONAL==
-  seasonalList$!: Observable<MAL_AnimeModel[]>;
-  seasonalListStatic!: MAL_AnimeModel[];
+  seasonalList$!: Observable<IAnimeBase[]>;
+  seasonalListStatic!: IAnimeBase[];
   seasonalListTracker!: boolean[];
 
   //! ==NEXT SEASON==
-  nextSeasonList$!: Observable<MAL_AnimeModel[]>;
-  nextSeasonListStatic!: MAL_AnimeModel[];
+  nextSeasonList$!: Observable<IAnimeBase[]>;
+  nextSeasonListStatic!: IAnimeBase[];
   nextSeasonTracker!: boolean[];
 
   //! ==SEARCH==
   searchTerm: string = "";
   private searchTerm$ = new BehaviorSubject<string>('');
-  searchResult$!: Observable<{ loading: boolean, list?: MAL_AnimeModel[] }>;
+  searchResult$!: Observable<{ loading: boolean, list?: IAnimeBase[] }>;
   searchResultTracker!: boolean[];
   searching: boolean = false;
   noResults: boolean = false;
@@ -80,11 +79,10 @@ export class SearchAnimeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // MOCK ITEMS
-    this.seasonalList$ = this.malService.getAll().pipe(delay(1000));
+    this.seasonalList$ = this.malService.getCurrentSeason();
     this.seasonalList$.subscribe((data) => { this.seasonalListStatic = data; this.seasonalListTracker = Array(data.length).fill(false) });
 
-    this.nextSeasonList$ = this.malService.getAll().pipe(delay(1000));
+    this.nextSeasonList$ = this.malService.getUpcomingSeason();
     this.nextSeasonList$.subscribe((data) => { this.nextSeasonListStatic = data; this.nextSeasonTracker = Array(data.length).fill(false) });
 
     //! DEBOUNCING START
@@ -142,10 +140,10 @@ export class SearchAnimeComponent implements OnInit {
   /// Calls the right API based on the type of search being executed (ID / TITLE)
   querySearch(searchTerm: string) {
     if (this.searchMode === "Mal ID") {
-      return this.malService.getShowById(searchTerm).pipe(toArray());
+      return this.malService.getShowFullById(searchTerm).pipe(toArray());
     }
     else {
-      return this.malService.getShowListByName(searchTerm);
+      return this.malService.searchByName(searchTerm);
     }    
   }
 
@@ -165,7 +163,7 @@ export class SearchAnimeComponent implements OnInit {
   }
 
   /// Open Edit Component
-  editItem(item: MAL_AnimeModel) {
+  editItem(item: IAnimeBase) {
     this.editService.editItem(item);
   }
   

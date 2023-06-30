@@ -1,5 +1,6 @@
 ﻿using Data_AnimeToNotion.DataModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Reflection.Metadata;
 
 namespace Data_AnimeToNotion.Context
@@ -41,6 +42,10 @@ namespace Data_AnimeToNotion.Context
             modelBuilder.Entity<Relation>().ToTable("Relation");
             modelBuilder.Entity<Year>().ToTable("Year");
             modelBuilder.Entity<SyncToNotionLog>().ToTable("SyncToNotionLog");
+
+            modelBuilder.Entity<AnimeShow>()
+                .Property(t => t.PlanToWatch)
+                .HasDefaultValue(false);
 
             modelBuilder
                 .Entity<GenreOnAnimeShow>()

@@ -6,7 +6,9 @@ import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
 import { opacityOnEnter, scaleUpOnEnter } from '../../assets/animations/animations';
 import { MalService } from '../../services/mal/mal.service';
 import { EditService } from '../../services/edit/edit.service';
-import { SelectShowStatus } from '../../model/SelectShowStatus';
+import { SelectShowStatus } from '../../model/form-model/SelectShowStatus';
+import { IAnimeFull } from '../../model/IAnimeFull';
+import { IAnimeBase } from '../../model/IAnimeBase';
 
 @Component({
   selector: 'app-edit',
@@ -28,7 +30,7 @@ import { SelectShowStatus } from '../../model/SelectShowStatus';
 export class EditComponent implements OnInit {
 
   id: string | null = null;
-  item: MAL_AnimeModel | null = null;
+  item: IAnimeBase | null = null;
   malBaseUrl: string = 'https://myanimelist.net/anime/';
 
   //STATUS
@@ -68,16 +70,16 @@ export class EditComponent implements OnInit {
     this.item = this.editService.getItem();
 
     // If the last item in the service is null or not the same (for example if the navigation occurred typing the url manually in the searchbar) retrieve the item from Server
-    if ((this.item == null && this.id != null) || (this.item != null && this.id != null && this.id !== this.item.id.toString()))
+    if ((this.item == null && this.id != null) || (this.item != null && this.id != null && this.id !== this.item.malId.toString()))
       this.loadItem(this.id);
   }
 
   /// Load the item from server if the item is not present
   loadItem(id: string) {
-    this.malService.getShowById(id)
+    this.malService.getShowFullById(id)
       .subscribe(
         {
-          next: (data: MAL_AnimeModel) => { this.item = data },
+          next: (data: IAnimeFull) => { this.item = data },
           error: () => { this.toasterService.notifyError("The item could not be retrieved") }
         });
   }

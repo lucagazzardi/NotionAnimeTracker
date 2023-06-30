@@ -8,7 +8,7 @@ namespace Business_AnimeToNotion.Mapper.Internal_Notion
     {
         public Internal_Notion_Profile()
         {
-            CreateMap<INT_AnimeShowAddBase, NotionAddObject>()
+            CreateMap<INT_AnimeShowBase, NotionAddObject>()
                 .ForMember(dto => dto.NameOriginal, map => map.MapFrom(source => source.NameDefault))
                 .ForMember(dto => dto.MalScore, map => map.MapFrom(source => source.Score != null ? source.Score : 0))
                 .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new NotionAddKeyValue() { Id = x.Id, Value = x.Value })))

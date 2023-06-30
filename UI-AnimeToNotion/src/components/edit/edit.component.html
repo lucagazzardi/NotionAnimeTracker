@@ -5,7 +5,7 @@
       <div class="box-top__container">
         <div class="box-top__title">
           <div class="box-top__title-value" *ngIf="item != null; else skeletonTitleMain" >
-            {{item?.alternative_titles?.en ? item?.alternative_titles?.en : item?.title}}
+            {{item?.nameEnglish}}
           </div>
         </div>
       </div>
@@ -20,12 +20,12 @@
         <!--COVER-->
         <div class="header__cover-wrapper">
           <div class="header__cover" *ngIf="item != null; else skeletonCover" @opacityOnEnter>
-            <img class="header__image" src="{{item?.main_picture?.large}}">
+            <img class="header__image" src="{{item?.cover}}">
           </div>
         </div>
         <!--TITLE-->
         <div class="header__title" *ngIf="item != null; else skeletonTitle">
-          {{item?.alternative_titles?.ja ? item?.alternative_titles?.ja : item?.title}}
+          {{item?.nameJapanese}}
         </div>
       </div>
 
@@ -44,15 +44,15 @@
             </div>
 
             <div class="info__button">
-              <a class="info__button--id" target="_blank" href="{{malBaseUrl+item?.id}}">MAL</a>
+              <a class="info__button--id" target="_blank" href="{{malBaseUrl+item?.malId}}">MAL</a>
             </div>
           </div>
 
           <div class="info__list">
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.title }"></ng-container>
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: item?.start_date }"></ng-container>
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.media_type }"></ng-container>
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Episodes', value: item?.num_episodes }"></ng-container>
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.nameDefault }"></ng-container>
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: item?.startedAiring }"></ng-container>
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.format }"></ng-container>
+            <ng-container *ngTemplateOutlet="field; context: { title: 'Episodes', value: item?.episodes }"></ng-container>
             <ng-container *ngTemplateOutlet="fieldList; context: { title: 'Studios', values: item?.studios?.slice(0,4) }"></ng-container>
             <ng-container *ngTemplateOutlet="fieldList; context: { title: 'Genres', values: item?.genres?.slice(0,4) }"></ng-container>
           </div>
@@ -76,7 +76,7 @@
               Score
             </div>
 
-            <app-ranking [initialValue]="item?.mean ?? 0" (valueChanged)="setRank($event)"></app-ranking>
+            <app-ranking [initialValue]="item?.score ?? 0" (valueChanged)="setRank($event)"></app-ranking>
           </div>
 
           <!--START DATE-->

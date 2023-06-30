@@ -8,30 +8,16 @@ namespace Business_AnimeToNotion.Mapper.Internal_Entity
     {
         public Internal_Entity_Profile()
         {
-            CreateMap<INT_AnimeShowAddBase, AnimeShow>()
+            CreateMap<INT_AnimeShowBase, AnimeShow>()
                 .ForMember(dto => dto.Id, map => map.MapFrom(source => Guid.NewGuid()))
-                .ForMember(dto => dto.Status, map => map.MapFrom(source => source.Edit != null && source.Edit.Status != null ? source.Edit.Status : "To Watch"))
+                .ForMember(dto => dto.Status, map => map.MapFrom(source => "To Watch"))
                 .ForMember(dto => dto.Score, map => map.MapFrom(source => source.Score != null ? new Score()
                 {
                     Id = Guid.NewGuid(),
-                    MalScore = source.Score.Value,
-                    PersonalScore = source.Edit != null && source.Edit.PersonalScore != null ? source.Edit.PersonalScore : null,
-                    Favorite = source.Edit != null ? source.Edit.Favorite : null,
-                } : null))
-                .ForMember(dto => dto.WatchingTime, map => map.MapFrom(source => source.Edit != null && source.Edit.StartedOn != null ? new WatchingTime()
-                {
-                    Id = Guid.NewGuid(),
-                    StartedOn = source.Edit.StartedOn.Value,
-                    FinishedOn = source.Edit.FinishedOn != null ? source.Edit.FinishedOn.Value : null,
-                    CompletedYear = source.Edit.CompletedYear != null ? source.Edit.CompletedYear.Id : null,
-                } : null))
-                .ForMember(dto => dto.Note, map => map.MapFrom(source => source.Edit != null && source.Edit.Notes != null ? new Note()
-                {
-                    Id = Guid.NewGuid(),
-                    Notes = source.Edit.Notes
-                } : null));
+                    MalScore = source.Score.Value
+                } : null));                
 
-            CreateMap<INT_AnimeShowAddFull, AnimeShow>()
+            CreateMap<INT_AnimeShowFull, AnimeShow>()
                 .ForMember(dto => dto.Id, map => map.MapFrom(source => Guid.NewGuid()))
                 .ForMember(dto => dto.Status, map => map.MapFrom(source => source.Edit != null && source.Edit.Status != null ? source.Edit.Status : "To Watch"))
                 .ForMember(dto => dto.Score, map => map.MapFrom(source => source.Score != null ? new Score()

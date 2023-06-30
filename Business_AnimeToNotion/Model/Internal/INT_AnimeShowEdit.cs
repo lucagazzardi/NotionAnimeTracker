@@ -9,7 +9,8 @@ namespace Business_AnimeToNotion.Model.Internal
 {
     public class INT_AnimeShowEdit
     {
-        public bool NextToWatch { get; set; }
+        public Guid? Id { get; set; }
+        public bool PlanToWatch { get; set; }
         public string? Status { get; set; }
         public int? PersonalScore { get; set; }
         public DateTime? StartedOn { get; set; }

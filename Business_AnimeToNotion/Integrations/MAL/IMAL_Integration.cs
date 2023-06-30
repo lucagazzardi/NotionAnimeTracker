@@ -7,8 +7,10 @@ namespace Business_AnimeToNotion.Integrations.MAL
 {
     public interface IMAL_Integration
     {
-        Task<List<INT_AnimeShowBase>> GetSeasonalAnimeShow(int year, Season season);
+        Task<List<INT_AnimeShowBase>> GetCurrentSeasonAnimeShow();
+        Task<List<INT_AnimeShowBase>> GetUpcomingSeasonAnimeShow();
         Task<List<INT_AnimeShowBase>> SearchAnimeByName(string searchTerm);
-        Task<INT_AnimeShowFull> SearchAnimeById(int malId);
+        Task<INT_AnimeShowFull> GetAnimeById(int malId);
+        Task<MAL_AnimeShowRelations> GetRelationsFromMAL(int malId);
     }
 }

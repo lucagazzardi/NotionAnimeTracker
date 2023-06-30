@@ -68,14 +68,14 @@
             <div *ngFor="let item of libraryListStatic; let i = index" class="show-visualization__item" (mouseenter)="libraryListTracker[i] = true" (mouseleave)="libraryListTracker[i] = false">
 
               <a class="show-visualization__cover" (click)="editItem(item)" @opacityOnEnter>
-                <img class="show-visualization__image" src="{{item.main_picture.medium}}">
+                <img class="show-visualization__image" src="{{item.cover}}">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: libraryListTracker, index: i }"></ng-container>
 
               </a>
               <a class="show-visualization__show-title" (click)="editItem(item)">
-                {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
+                {{item.nameEnglish}}
               </a>
 
             </div>

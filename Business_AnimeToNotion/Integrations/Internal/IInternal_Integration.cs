@@ -10,13 +10,14 @@ namespace Business_AnimeToNotion.Integrations.Internal
 {
     public interface IInternal_Integration
     {
-        Task AddNewAnimeBase(INT_AnimeShowAddBase animeAdd);
-        Task AddNewAnimeFull(INT_AnimeShowAddFull animeAdd);
+        Task AddNewAnimeBase(INT_AnimeShowBase animeAdd);
+        Task AddNewAnimeFull(INT_AnimeShowFull animeAdd);
+        Task<INT_AnimeShowFull> GetAnimeForEdit(Guid Id);
         Task RemoveAnime(Guid id);
 
         #region Demo
 
-        Task<NotionSyncAdd> AddNewAnimeBaseDemo(INT_AnimeShowAddBase animeAdd);
+        Task<NotionSyncAdd> AddNewAnimeBaseDemo(INT_AnimeShowBase animeAdd);
 
         #endregion
     }

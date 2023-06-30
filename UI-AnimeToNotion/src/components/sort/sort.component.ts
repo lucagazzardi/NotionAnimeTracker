@@ -1,6 +1,6 @@
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { SelectSort } from '../../model/SelectSort';
+import { SelectSort } from '../../model/form-model/SelectSort';
 
 @Component({
   selector: 'app-sort',

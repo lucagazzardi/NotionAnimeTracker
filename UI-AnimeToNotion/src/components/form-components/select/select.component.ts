@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MAT_SELECT_CONFIG } from '@angular/material/select';
-import { SelectItem } from '../../../model/SelectInterface';
+import { SelectItem } from '../../../model/form-model/SelectInterface';
 
 @Component({
   selector: 'app-select',

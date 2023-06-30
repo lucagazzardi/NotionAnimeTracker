@@ -18,17 +18,27 @@ namespace API_AnimeToNotion.Controllers
         }
 
         [HttpPost("add/base")]
-        public async Task<IActionResult> AddAnimeBase([FromBody] INT_AnimeShowAddBase animeBase)
+        public async Task<IActionResult> AddAnimeBase([FromBody] INT_AnimeShowBase animeBase)
         {
             await _main.AddNewAnimeBase(animeBase);
             return Ok();
         }
 
         [HttpPost("add/full")]
-        public async Task<IActionResult> AddAnimeFull([FromBody] INT_AnimeShowAddFull animeBase)
+        public async Task<IActionResult> AddAnimeFull([FromBody] INT_AnimeShowFull animeBase)
         {
             await _main.AddNewAnimeFull(animeBase);
             return Ok();
+        }
+
+        [HttpGet("get/full/{id}")]
+        public async Task<IActionResult> GetAnimeFull(Guid id)
+        {
+            var anime = await _main.GetAnimeForEdit(id);
+            if(anime != null)
+                return Ok(anime);
+
+            return NotFound();
         }
 
         [HttpDelete("delete/{id}")]
@@ -41,7 +51,7 @@ namespace API_AnimeToNotion.Controllers
         #region Demo
 
         [HttpPost("add/base/demo")]
-        public async Task<IActionResult> GetSeasonalAnimeShowDemo([FromBody] INT_AnimeShowAddBase animeBase)
+        public async Task<IActionResult> GetSeasonalAnimeShowDemo([FromBody] INT_AnimeShowBase animeBase)
         {            
             return Ok(await _main.AddNewAnimeBaseDemo(animeBase));
         }

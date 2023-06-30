@@ -40,14 +40,14 @@
           <ng-container *ngIf="seasonalListStatic || (seasonalList$ | async); else skeleton">
             <div *ngFor="let item of seasonalListStatic; let i = index" class="show-visualization__item" (mouseenter)="seasonalListTracker[i] = true" (mouseleave)="seasonalListTracker[i] = false">
               <a class="show-visualization__cover" (click)="editItem(item)" @opacityOnEnter>
-                <img class="show-visualization__image" src="{{item.main_picture.medium}}">
+                <img class="show-visualization__image" src="{{item.cover}}">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: seasonalListTracker, index: i }"></ng-container>
 
               </a>
               <a class="show-visualization__show-title" (click)="editItem(item)">
-                {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
+                {{item.nameEnglish}}
               </a>
 
             </div>
@@ -63,17 +63,17 @@
         <span class="show-visualization__title">NEXT SEASON</span>
 
         <div class="show-visualization__shows">
-          <ng-container *ngIf="seasonalList$ | async as seasonalList; else skeleton">
-            <div *ngFor="let item of seasonalList; let i = index" class="show-visualization__item" (mouseenter)="nextSeasonTracker[i] = true" (mouseleave)="nextSeasonTracker[i] = false">
+          <ng-container *ngIf="nextSeasonList$ | async as nextSeasonList; else skeleton">
+            <div *ngFor="let item of nextSeasonListStatic; let i = index" class="show-visualization__item" (mouseenter)="nextSeasonTracker[i] = true" (mouseleave)="nextSeasonTracker[i] = false">
               <a class="show-visualization__cover" (click)="editItem(item)" @opacityOnEnter>
-                <img class="show-visualization__image" src="{{item.main_picture.medium}}">
+                <img class="show-visualization__image" src="{{item.cover}}">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: nextSeasonTracker, index: i }"></ng-container>
 
               </a>
               <a class="show-visualization__show-title" (click)="editItem(item)">
-                {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
+                {{item.nameEnglish}}
               </a>
             </div>
           </ng-container>
@@ -93,14 +93,14 @@
             <ng-container *ngIf="searchResult?.list!.length > 0">
               <div *ngFor="let item of searchResult?.list; let i = index" class="show-visualization__item" (mouseenter)="searchResultTracker[i] = true" (mouseleave)="searchResultTracker[i] = false">
                 <a class="show-visualization__cover" (click)="editItem(item)" @opacityOnEnter>
-                  <img class="show-visualization__image" src="{{item.main_picture.medium}}">
+                  <img class="show-visualization__image" src="{{item.cover}}">
 
                   <!--BUTTONS-->
                   <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: searchResultTracker, index: i }"></ng-container>
 
                 </a>
                 <a class="show-visualization__show-title" (click)="editItem(item)">
-                  {{item.alternative_titles.en ? item.alternative_titles.en : item.title}}
+                  {{item.nameEnglish}}
                 </a>
               </div>
             </ng-container>
@@ -136,9 +136,9 @@
 
   <div (mouseenter)="showEditButton = true" (mouseleave)="showEditButton = false">
 
-    <div class="show-buttons" *ngIf="list[i]" @totalScale_OpacityOnEnter>
+    <div class="show-buttons" *ngIf="list[i]">
 
-      <div class="show-buttons__item--main">
+      <div class="show-buttons__item--main" @totalScale_OpacityOnEnter>
         <!--ADD BUTTON-->
         <!--TODO: ADD LOGIC FOR REMOVE BUTTON-->
         <div class="show-buttons__item" *ngIf="true">

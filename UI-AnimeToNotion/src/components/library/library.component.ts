@@ -5,12 +5,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, Observable, of, switchMap, tap } from 'rxjs';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave, YMovement_Opacity, YMovement_Opacity_Leave } from '../../assets/animations/animations';
 import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
-import { SelectShowStatus } from '../../model/SelectShowStatus';
-import { SelectYear } from '../../model/SelectYear';
-import { SelectFormat } from '../../model/SelectFormat';
+import { SelectShowStatus } from '../../model/form-model/SelectShowStatus';
+import { SelectYear } from '../../model/form-model/SelectYear';
+import { SelectFormat } from '../../model/form-model/SelectFormat';
 import { EditService } from '../../services/edit/edit.service';
 import { MalService } from '../../services/mal/mal.service';
 import { NotionService } from '../../services/notion/notion.service';
+import { IAnimeFull } from '../../model/IAnimeFull';
+import { IAnimeBase } from '../../model/IAnimeBase';
 
 export interface DialogData {
   animal: string;
@@ -73,8 +75,8 @@ export class LibraryComponent implements OnInit {
   loadingSkeleton = Array(20).fill(0);
   showImmersionButton: boolean = false;
 
-  libraryList$!: Observable<MAL_AnimeModel[]>;
-  libraryListStatic!: MAL_AnimeModel[];
+  libraryList$!: Observable<IAnimeBase[]>;
+  libraryListStatic!: IAnimeBase[];
   libraryListTracker!: boolean[];
 
   //! GENERAL FIELDS
@@ -84,7 +86,7 @@ export class LibraryComponent implements OnInit {
   //! SEARCH RESULTS
   searchTerm: string = "";
   private searchTerm$ = new BehaviorSubject<string>('');
-  searchResult$!: Observable<{ loading: boolean, list?: MAL_AnimeModel[] }>;
+  searchResult$!: Observable<{ loading: boolean, list?: IAnimeBase[] }>;
   searchResultTracker!: boolean[];
   searching: boolean = false;
   noResults: boolean = false;
@@ -144,7 +146,7 @@ export class LibraryComponent implements OnInit {
   }
 
   /// Open Edit Component
-  editItem(item: MAL_AnimeModel) {
+  editItem(item: IAnimeBase) {
     this.editService.editItem(item);
   }
 

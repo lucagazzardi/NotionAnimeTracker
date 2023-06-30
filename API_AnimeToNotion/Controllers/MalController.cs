@@ -1,6 +1,4 @@
-﻿using Business_AnimeToNotion.Functions.Static;
-using Business_AnimeToNotion.Integrations.MAL;
-using JikanDotNet;
+﻿using Business_AnimeToNotion.Integrations.MAL;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +16,16 @@ namespace API_AnimeToNotion.Controllers
             _mal = mal;
         }
 
-        [HttpGet("get/seasonal/{year}/{season}")]
-        public async Task<IActionResult> GetSeasonalAnimeShow(int year, string season)
+        [HttpGet("get/season/current")]
+        public async Task<IActionResult> GetCurrentSeasonAnimeShow()
         {
-            return Ok(await _mal.GetSeasonalAnimeShow(year, Common_Utilities.GetValueFromDescription<Season>(season)));
+            return Ok(await _mal.GetCurrentSeasonAnimeShow());
+        }
+
+        [HttpGet("get/season/upcoming")]
+        public async Task<IActionResult> GetUpcomingSeasonAnimeShow()
+        {
+            return Ok(await _mal.GetUpcomingSeasonAnimeShow());
         }
 
         [HttpGet("search/anime/{query}")]
@@ -31,9 +35,9 @@ namespace API_AnimeToNotion.Controllers
         }
 
         [HttpGet("get/anime/{malId}")]
-        public async Task<IActionResult> SearchAnimeByName(int malId)
+        public async Task<IActionResult> GetAnimeById(int malId)
         {
-            return Ok(await _mal.SearchAnimeById(malId));
+            return Ok(await _mal.GetAnimeById(malId));
         }
 
     }
