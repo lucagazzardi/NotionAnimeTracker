@@ -136,9 +136,9 @@
 
   <div (mouseenter)="showEditButton = true" (mouseleave)="showEditButton = false">
 
-    <div class="show-buttons" *ngIf="list[i]">
+    <div class="show-buttons" *ngIf="list[i]" @totalScale_OpacityOnEnter>
 
-      <div class="show-buttons__item--main" @totalScale_OpacityOnEnter>
+      <div class="show-buttons__item--main" >
         <!--ADD BUTTON-->
         <!--TODO: ADD LOGIC FOR REMOVE BUTTON-->
         <div class="show-buttons__item" *ngIf="true">

@@ -7,6 +7,7 @@ using Business_AnimeToNotion.Model.MAL.MAL_BasicObjects;
 using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
+using JikanDotNet.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Configuration;
@@ -50,7 +51,11 @@ namespace Business_AnimeToNotion.Integrations.MAL
 
             #endregion
 
-            _jikan = new Jikan();
+            var config = new JikanClientConfiguration()
+            {
+                LimiterConfigurations = TaskLimiterConfiguration.None
+            };
+            _jikan = new Jikan(config);
 
             // Add MAL Secret Api Key as header
             if (!StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Contains(_configuration["MAL_ApiConfig:MAL_Header"]))

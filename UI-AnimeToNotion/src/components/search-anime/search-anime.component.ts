@@ -27,20 +27,21 @@ import { IAnimeFull } from '../../model/IAnimeFull';
       ])
     ]),
     trigger('totalScale_OpacityOnEnter', [
-      transition(':enter', [
-        useAnimation(totalScaleUp_OpacityOnEnter)
-      ]),
       transition(':leave', [
         useAnimation(totalScaleDown_OpacityOnLeave)
-      ])
+      ]),
+      transition(':enter', [
+        useAnimation(totalScaleUp_OpacityOnEnter)
+      ])      
     ]),
     trigger('totalScaleUp_Opacity_MarginOnEnter', [
-      transition(':enter', [
-        useAnimation(totalScaleUp_Opacity_MarginOnEnter)
-      ]),
       transition(':leave', [
         useAnimation(totalScaleUp_Opacity_MarginOnLeave)
+      ]),
+      transition(':enter', [
+        useAnimation(totalScaleUp_Opacity_MarginOnEnter)
       ])
+      
     ])
   ]
 })
@@ -79,11 +80,9 @@ export class SearchAnimeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.seasonalList$ = this.malService.getCurrentSeason();
-    this.seasonalList$.subscribe((data) => { this.seasonalListStatic = data; this.seasonalListTracker = Array(data.length).fill(false) });
-
-    this.nextSeasonList$ = this.malService.getUpcomingSeason();
-    this.nextSeasonList$.subscribe((data) => { this.nextSeasonListStatic = data; this.nextSeasonTracker = Array(data.length).fill(false) });
+    this.seasonalList$ = this.malService.getCurrentSeason().pipe(tap(value => { this.seasonalListStatic = value; this.seasonalListTracker = Array(value.length).fill(false) }));
+    
+    this.nextSeasonList$ = this.malService.getUpcomingSeason().pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false) }));
 
     //! DEBOUNCING START
     this.debouncingPipe();    
