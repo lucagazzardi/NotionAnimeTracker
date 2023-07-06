@@ -56,6 +56,18 @@ namespace API_AnimeToNotion.Controllers
             return Ok();
         }
 
+        [HttpPut("set/favorite/{id}/{favorite}")]
+        public async Task<IActionResult> SetAnimeFavorite(Guid id, bool favorite)
+        {
+            return Ok(await _main.SetAnimeFavorite(id, favorite));
+        }
+
+        [HttpPut("set/plantowatch/{id}/{plantowatch}")]
+        public async Task<IActionResult> SetPlanToWatch(Guid id, bool plantowatch)
+        {
+            return Ok(await _main.SetAnimePlanToWatch(id, plantowatch));
+        }
+
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> RemoveAnimeShow(Guid id)
         {

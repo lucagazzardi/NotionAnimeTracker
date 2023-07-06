@@ -122,38 +122,16 @@ namespace Data_AnimeToNotion.Repository
             transaction.Commit();
         }
 
-        #endregion
+        #endregion        
 
-        private async Task HandleStudios(List<Studio> studios, AnimeShow show)
+        public async Task SetAnimeFavorite(Guid id)
         {
-            var syncedStudios = await FillMissingStudios(studios);
-
-            List<StudioOnAnimeShow> studioOnAnime = new List<StudioOnAnimeShow>();
-            foreach(var studio in syncedStudios)
-            {
-                studioOnAnime.Add(new StudioOnAnimeShow() { Id = Guid.NewGuid(), AnimeShowId = show.Id, StudioId = studio.Id });
-            }
-
-            await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
+            await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.Favorite, a => !a.Favorite));
         }
 
-        private async Task HandleGenres(List<Genre> genres, AnimeShow show)
+        public async Task SetPlanToWatch(Guid id)
         {
-            var syncedGenres = await FillMissingGenres(genres);
-
-            List<GenreOnAnimeShow> genreOnAnime = new List<GenreOnAnimeShow>();
-            foreach (var genre in syncedGenres)
-            {
-                genreOnAnime.Add(new GenreOnAnimeShow() { Id = Guid.NewGuid(), AnimeShowId = show.Id, GenreId = genre.Id });
-            }
-
-            await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
-        }
-
-        private async Task HandleRelations(List<Relation> relations, AnimeShow show)
-        {
-            foreach(var relation in relations) { relation.AnimeShowId = show.Id; }
-            await _animeShowContext.Relations.AddRangeAsync(relations);
+            await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.PlanToWatch, a => !a.PlanToWatch));
         }
 
         /// <summary>
@@ -339,6 +317,38 @@ namespace Data_AnimeToNotion.Repository
             await _animeShowContext.AddRangeAsync(newGenres);
 
             return existingGenres.Union(newGenres).ToList();
+        }
+
+        private async Task HandleStudios(List<Studio> studios, AnimeShow show)
+        {
+            var syncedStudios = await FillMissingStudios(studios);
+
+            List<StudioOnAnimeShow> studioOnAnime = new List<StudioOnAnimeShow>();
+            foreach (var studio in syncedStudios)
+            {
+                studioOnAnime.Add(new StudioOnAnimeShow() { Id = Guid.NewGuid(), AnimeShowId = show.Id, StudioId = studio.Id });
+            }
+
+            await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
+        }
+
+        private async Task HandleGenres(List<Genre> genres, AnimeShow show)
+        {
+            var syncedGenres = await FillMissingGenres(genres);
+
+            List<GenreOnAnimeShow> genreOnAnime = new List<GenreOnAnimeShow>();
+            foreach (var genre in syncedGenres)
+            {
+                genreOnAnime.Add(new GenreOnAnimeShow() { Id = Guid.NewGuid(), AnimeShowId = show.Id, GenreId = genre.Id });
+            }
+
+            await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
+        }
+
+        private async Task HandleRelations(List<Relation> relations, AnimeShow show)
+        {
+            foreach (var relation in relations) { relation.AnimeShowId = show.Id; }
+            await _animeShowContext.Relations.AddRangeAsync(relations);
         }
 
         #endregion

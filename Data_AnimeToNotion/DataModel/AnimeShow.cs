@@ -17,6 +17,7 @@ namespace Data_AnimeToNotion.DataModel
         public int? Episodes { get; set; }
         public string Status { get; set; }
         public bool PlanToWatch { get; set; }
+        public bool Favorite { get; set; }
         public DateTime? StartedAiring { get; set; }            
         public string Cover { get; set; }
         public Guid? ScoreId { get; set; }

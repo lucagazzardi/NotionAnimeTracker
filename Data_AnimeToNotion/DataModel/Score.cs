@@ -13,9 +13,6 @@ namespace Data_AnimeToNotion.DataModel
         [Column(Order = 2)]
         public int? PersonalScore { get; set; }
 
-        [Column(Order = 3)]
-        public bool? Favorite { get; set; }
-
 
         public AnimeShow AnimeShow { get; set; }
     }

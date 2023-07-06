@@ -17,6 +17,8 @@ namespace Data_AnimeToNotion.Repository
         Task<AnimeShow> AddInternalAnimeShow(AnimeShow animeShow, List<Studio> studios, List<Genre> genres, List<Relation> relations);
         Task RemoveInternalAnimeShow(Guid id);
 
+        Task SetAnimeFavorite(Guid id);
+        Task SetPlanToWatch(Guid id);
         Task AddOrUpdateStudios(Dictionary<int, string> animeStudios, AnimeShow animeShow);
         Task AddOrUpdateGenres(Dictionary<int, string> animeGenres, AnimeShow animeShow);
         Task AddOrUpdateRelations(List<Relation> animeRelations, AnimeShow animeShow);

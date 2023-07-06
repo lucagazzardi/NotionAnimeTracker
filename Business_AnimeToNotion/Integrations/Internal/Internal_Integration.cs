@@ -130,6 +130,30 @@ namespace Business_AnimeToNotion.Integrations.Internal
         }
 
         /// <summary>
+        /// Switch anime favorite
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="favorite"></param>
+        /// <returns></returns>
+        public async Task<bool> SetAnimeFavorite(Guid id, bool favorite)
+        {
+            await _animeRepository.SetAnimeFavorite(id);
+            return !favorite;
+        }
+
+        /// <summary>
+        /// Switch anime plan to watch
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="favorite"></param>
+        /// <returns></returns>
+        public async Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch)
+        {
+            await _animeRepository.SetPlanToWatch(id);
+            return !planToWatch;
+        }
+
+        /// <summary>
         /// Remove anime
         /// </summary>
         /// <param name="id"></param>

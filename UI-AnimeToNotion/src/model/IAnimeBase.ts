@@ -10,6 +10,8 @@ export interface IAnimeBase {
   startedAiring: Date | null;
   format: string | null;
   episodes: number | null;
+  planToWatch: boolean;
+  favorite: boolean;
   genres: IKeyValue[];
   studios: IKeyValue[];
   info: IAnimePersonal | null;

@@ -16,6 +16,8 @@ namespace Business_AnimeToNotion.Integrations.Internal
         Task<INT_AnimeShowFull> GetAnimeFull(int MalId);
         Task<INT_AnimeShowFull> GetAnimeForEdit(Guid Id);
         Task EditAnime(INT_AnimeShowEdit animeEdit);
+        Task<bool> SetAnimeFavorite(Guid id, bool favorite);
+        Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch);
         Task RemoveAnime(Guid id);
         Task<List<INT_AnimeShowRelation>> GetAnimeRelations(int malId);
 

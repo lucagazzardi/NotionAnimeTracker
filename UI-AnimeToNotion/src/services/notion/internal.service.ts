@@ -44,6 +44,14 @@ export class InternalService {
     return this.client.post(this.baseUrl + this.internalController + "edit", animeEdit);
   }
 
+  setFavorite(id: string, favorite: boolean): Observable<any> {
+    return this.client.put(this.baseUrl + this.internalController + "set/favorite/" + id + "/" + favorite, null);
+  }
+
+  setPlanToWatch(id: string, planttowatch: boolean): Observable<any> {
+    return this.client.put(this.baseUrl + this.internalController + "set/plantowatch/" + id + "/" + planttowatch, null);
+  }
+
   getAnimeRelations(id: number): Observable<any> {
     return this.client.get(this.baseUrl + this.internalController + "get/relations/" + id);
   }

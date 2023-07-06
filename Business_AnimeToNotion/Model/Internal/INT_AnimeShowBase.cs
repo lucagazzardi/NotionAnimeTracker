@@ -13,6 +13,8 @@ namespace Business_AnimeToNotion.Model.Internal
         public DateTime? StartedAiring { get; set; }
         public string? Format { get; set; }
         public int? Episodes { get; set; }
+        public bool Favorite { get; set; }
+        public bool PlanToWatch { get; set; }
         public INT_KeyValue[] Studios { get; set; }
         public INT_KeyValue[] Genres { get; set; }
         public INT_AnimeShowPersonal? Info { get; set; }

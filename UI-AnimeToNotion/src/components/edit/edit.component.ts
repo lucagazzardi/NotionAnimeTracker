@@ -173,6 +173,7 @@ export class EditComponent implements OnInit {
     this.item!.edit!.notes = notes ?? null;
   }
 
+  /// Save the edits based on the changes and on the presence of the item in the server
   save() {
 
     // If there are no changes
@@ -194,12 +195,7 @@ export class EditComponent implements OnInit {
     console.log(this.item!.edit);
   }
 
-  /// Set the show as favorite or remove from favorites
-  // TODO: Call API to Add as favorite
-  setAsFavorite(value: boolean) {
-    this.isFavorite = value;
-  }
-
+  /// Update the item with the new values
   updateItem() {
     this.internalService.editAnime(this.item!.edit!)
       .subscribe(
@@ -209,11 +205,48 @@ export class EditComponent implements OnInit {
         });
   }
 
+  /// Add new item when it is not already existing
   addFull() {
     this.internalService.addFull(this.item!)
       .subscribe(
         {
           next: (data: IAnimePersonal) => { this.item!.info = data; this.toasterService.notifySuccess(this.item!.nameEnglish + " updated") },
+          error: () => { this.toasterService.notifyError("The entry could not be updated") }
+        });
+  }
+
+  /// Switch anime favorite
+  setFavorite() {
+
+    if (this.item!.info?.id == null)
+      return;
+
+    this.internalService.setFavorite(this.item!.info!.id, !this.item!.favorite)
+      .subscribe(
+        {
+          next: (data: boolean) => {
+            this.item!.favorite = data;
+            let message = data ? " added as favorite" : " removed as favorite";
+            this.toasterService.notifySuccess(this.item!.nameEnglish + message)
+          },
+          error: () => { this.toasterService.notifyError("The entry could not be updated") }
+        });
+  }
+
+  /// Switch anime planning to watch
+  setPlanToWatch() {
+
+    if (this.item!.info?.id == null)
+      return;
+
+    this.internalService.setPlanToWatch(this.item!.info!.id, !this.item!.planToWatch)
+      .subscribe(
+        {
+          next: (data: boolean) => {
+            this.item!.planToWatch = data;
+            let message = data ? " planned to watch" : " unplanned to watch";
+            this.toasterService.notifySuccess(this.item!.nameEnglish + message)
+          },
           error: () => { this.toasterService.notifyError("The entry could not be updated") }
         });
   }

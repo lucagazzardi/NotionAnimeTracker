@@ -28,11 +28,9 @@ namespace Business_AnimeToNotion.Mapper.Entity_Internal
             CreateMap<AnimeShow, INT_AnimeShowEdit>()
                 .ForMember(dto => dto.Id, map => map.MapFrom(source => source.Id))
                 .ForMember(dto => dto.Status, map => map.MapFrom(source => source.Status))
-                .ForMember(dto => dto.PlanToWatch, map => map.MapFrom(source => source.PlanToWatch))
                 .ForMember(dto => dto.PersonalScore, map => map.MapFrom(source => source.Score != null ? source.Score.PersonalScore : null))
                 .ForMember(dto => dto.StartedOn, map => map.MapFrom(source => source.WatchingTime != null ? source.WatchingTime.StartedOn : (DateTime?)null))
                 .ForMember(dto => dto.FinishedOn, map => map.MapFrom(source => source.WatchingTime != null ? source.WatchingTime.FinishedOn : (DateTime?)null))
-                .ForMember(dto => dto.Favorite, map => map.MapFrom(source => source.Score != null ? source.Score.Favorite : false))
                 .ForMember(dto => dto.Notes, map => map.MapFrom(source => source.Note != null ? source.Note.Notes : null))
                 .ForMember(dto => dto.CompletedYear, map => map.MapFrom(source => source.WatchingTime != null && source.WatchingTime.CompletedYear != null ?
                     new CompletedYear()

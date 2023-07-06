@@ -24,8 +24,7 @@ namespace Business_AnimeToNotion.Mapper.Internal_Entity
                 {
                     Id = Guid.NewGuid(),
                     MalScore = source.Score.Value,
-                    PersonalScore = source.Edit != null && source.Edit.PersonalScore != null ? source.Edit.PersonalScore : null,
-                    Favorite = source.Edit != null ? source.Edit.Favorite : null,
+                    PersonalScore = source.Edit != null && source.Edit.PersonalScore != null ? source.Edit.PersonalScore : null
                 } : null))
                 .ForMember(dto => dto.WatchingTime, map => map.MapFrom(source => source.Edit != null && source.Edit.StartedOn != null ? new WatchingTime()
                 {
