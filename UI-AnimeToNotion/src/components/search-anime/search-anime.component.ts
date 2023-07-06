@@ -1,13 +1,13 @@
-import { transition, trigger, useAnimation } from '@angular/animations';
+import { animate, query, state, style, transition, trigger, useAnimation } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable } from 'rxjs';
-import { MAL_AnimeModel } from '../../model/MAL_AnimeModel';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../../assets/animations/animations';
-import { NotionService } from '../../services/notion/notion.service';
+import { InternalService } from '../../services/notion/internal.service';
 import { ToasterService } from 'gazza-toaster';
 import { EditService } from '../../services/edit/edit.service';
 import { MalService } from '../../services/mal/mal.service';
 import { IAnimeBase } from '../../model/IAnimeBase';
+import { IAnimePersonal } from '../../model/IAnimePersonal';
 import { IAnimeFull } from '../../model/IAnimeFull';
 
 
@@ -41,7 +41,6 @@ import { IAnimeFull } from '../../model/IAnimeFull';
       transition(':enter', [
         useAnimation(totalScaleUp_Opacity_MarginOnEnter)
       ])
-      
     ])
   ]
 })
@@ -52,6 +51,7 @@ export class SearchAnimeComponent implements OnInit {
   searchMode: string = "Title";
   seasonalSkeleton = Array(12).fill(0);
   showEditButton: boolean = false;
+  suppressEditAnim: boolean = false;
 
   //! ==SEASONAL==
   seasonalList$!: Observable<IAnimeBase[]>;
@@ -73,7 +73,7 @@ export class SearchAnimeComponent implements OnInit {
 
   constructor(
     private malService: MalService,
-    private notionService: NotionService,
+    private internalService: InternalService,
     private toasterService: ToasterService,
     private editService: EditService
   ) { }
@@ -146,24 +146,28 @@ export class SearchAnimeComponent implements OnInit {
     }    
   }
 
-  /// API call to Notion (Add new item)
-  addItemToNotion(newItem: MAL_AnimeModel) {
-    this.notionService.add(newItem)
+  /// API call to add a new anime
+  addBaseItem(newItem: IAnimeBase) {
+    this.internalService.addBase(newItem)
       .subscribe(
         {
-          next: () => { this.toasterService.notifySuccess((newItem.alternative_titles.en ? newItem.alternative_titles.en : newItem.title) + " has been saved") },
+          next: (data: IAnimePersonal) => { newItem.info = data, this.toasterService.notifySuccess((newItem.nameEnglish) + " has been saved") },
           error: (error) => { this.toasterService.notifyError(error.error) }
         });
   }
 
-  removeItemFromNotion(id: number) {
-    // TODO: Add logic of removal
-    this.notionService.remove(id);
+  /// API call to remove an anime
+  removeItem(item: IAnimeBase) {
+    this.internalService.remove(item.info!.id)
+      .subscribe(
+        {
+          next: () => { item.info = null; this.toasterService.notifySuccess((item.nameEnglish) + " has been removed") },
+          error: (error) => { this.toasterService.notifyError(error.error) }
+        });      ;
   }
 
   /// Open Edit Component
-  editItem(item: IAnimeBase) {
+  editItem(item: IAnimeBase | IAnimeFull) {
     this.editService.editItem(item);
   }
-  
 }

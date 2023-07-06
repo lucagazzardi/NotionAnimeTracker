@@ -8,9 +8,9 @@ import { StringManipulationService } from "../string-manipulation/string-manipul
 @Injectable()
 export class EditService {
 
-  item: IAnimeBase | null = null;
+  item: IAnimeBase | IAnimeFull | null = null;
 
-  constructor(private stringManipulation: StringManipulationService, private router: Router,) { }
+  constructor(private stringManipulation: StringManipulationService, private router: Router) { }
 
   setItem(item: IAnimeBase) {
     this.item = item;

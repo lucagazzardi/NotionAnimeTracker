@@ -4,12 +4,16 @@ namespace Data_AnimeToNotion.Repository
 {
     public interface IAnimeShowRepository
     {
+        Task<AnimeShow> GetByMalId(int malId);
         IQueryable<AnimeShow> GetAllByIds(List<int> malIds);
         Task<AnimeShow> Add(AnimeShow animeShow);
         Task Update(AnimeShow animeShow);
         Task Remove(AnimeShow animeShow);
 
+        Task<AnimeShow> GetFull(int MalId);
         Task<AnimeShow> GetFull(Guid Id);
+        Task<AnimeShow> GetForEdit(Guid Id);
+
         Task<AnimeShow> AddInternalAnimeShow(AnimeShow animeShow, List<Studio> studios, List<Genre> genres, List<Relation> relations);
         Task RemoveInternalAnimeShow(Guid id);
 

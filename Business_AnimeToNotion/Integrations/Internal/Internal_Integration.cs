@@ -1,6 +1,7 @@
 ﻿using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Integrations.Notion;
 using Business_AnimeToNotion.Mapper.Config;
+using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.Notion;
 using Business_AnimeToNotion.Model.Notion.Base;
@@ -40,14 +41,14 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeAdd"></param>
         /// <returns></returns>
-        public async Task AddNewAnimeBase(INT_AnimeShowBase animeAdd)
+        public async Task<INT_AnimeShowPersonal> AddNewAnimeBase(INT_AnimeShowBase animeAdd)
         {
             if (animeAdd.Info != null)
-                return;
+                return null;
 
             var relations = Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await _mal.GetRelationsFromMAL(animeAdd.MalId)).related_anime.AsQueryable()).ToList();
 
-            await _animeRepository.AddInternalAnimeShow(
+            var added = await _animeRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(animeAdd),
                 Mapping.Mapper.ProjectTo<Studio>(animeAdd.Studios.AsQueryable()).ToList(),
                 Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(animeAdd.Genres.AsQueryable()).ToList(),
@@ -56,6 +57,8 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
             if(_hostEnvironment.IsProduction())
                 _notion.SendSyncToNotion(new NotionSyncAdd() { Type = OperationType.Add, NotionAddObject = Mapping.Mapper.Map<NotionAddObject>(animeAdd) });
+
+            return new INT_AnimeShowPersonal() { Id = added.Id, Status = added.Status };
         }
 
         /// <summary>
@@ -63,9 +66,9 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeAdd"></param>
         /// <returns></returns>
-        public async Task AddNewAnimeFull(INT_AnimeShowFull animeAdd)
+        public async Task<INT_AnimeShowPersonal> AddNewAnimeFull(INT_AnimeShowFull animeAdd)
         {
-            await _animeRepository.AddInternalAnimeShow(
+            var added = await _animeRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(animeAdd),
                 Mapping.Mapper.ProjectTo<Studio>(animeAdd.Studios.AsQueryable()).ToList(),
                 Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(animeAdd.Genres.AsQueryable()).ToList(),
@@ -74,6 +77,8 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
             if (_hostEnvironment.IsProduction())
                 _notion.SendSyncToNotion(new NotionSyncAdd() { Type = OperationType.Add, NotionAddObject = Mapping.Mapper.Map<NotionAddObject>(animeAdd) });
+
+            return new INT_AnimeShowPersonal() { Id = added.Id, Status = added.Status };
         }
 
         /// <summary>
@@ -81,9 +86,47 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowFull> GetAnimeForEdit(Guid Id)
+        public async Task<INT_AnimeShowFull> GetAnimeFull(int malId)
         {
-            return Mapping.Mapper.Map<INT_AnimeShowFull>(await _animeRepository.GetFull(Id));
+            var animeInt = await _animeRepository.GetFull(malId);
+
+            if (animeInt == null)
+                return Mapping.Mapper.Map<INT_AnimeShowFull>(await _mal.GetAnimeById(malId));
+
+            return Mapping.Mapper.Map<INT_AnimeShowFull>(animeInt);
+        }
+
+        /// <summary>
+        /// Get anime for editing
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<INT_AnimeShowFull> GetAnimeForEdit(Guid id)
+        {
+            return Mapping.Mapper.Map<INT_AnimeShowFull>(await _animeRepository.GetFull(id));
+        }
+
+        /// <summary>
+        /// Edit anime properties
+        /// </summary>
+        /// <param name="animeEdit"></param>
+        /// <returns></returns>
+        public async Task EditAnime(INT_AnimeShowEdit animeEdit)
+        {
+            var anime = await _animeRepository.GetForEdit(animeEdit.Id.Value);
+
+            anime.Status = animeEdit.Status;
+
+            if (animeEdit.PersonalScore != null)
+                SetPersonalScore(anime, animeEdit);
+
+            if (animeEdit.StartedOn != null || animeEdit.FinishedOn != null)
+                await SetWatchingtime(anime, animeEdit);
+
+            if (!string.IsNullOrEmpty(animeEdit.Notes))
+                await SetNotes(anime, animeEdit);
+
+            await _animeRepository.Update(anime);
         }
 
         /// <summary>
@@ -95,6 +138,53 @@ namespace Business_AnimeToNotion.Integrations.Internal
         {
             await _animeRepository.RemoveInternalAnimeShow(id);
         }
+
+        public async Task<List<INT_AnimeShowRelation>> GetAnimeRelations(int malId)
+        {
+            return Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await _mal.GetRelationsFromMAL(malId)).related_anime.AsQueryable()).ToList();
+        }
+
+        #region Private
+
+        private void SetPersonalScore(AnimeShow anime, INT_AnimeShowEdit edit)
+        {
+            if(anime.Score != null)
+                anime.Score.PersonalScore = edit.PersonalScore;
+        }
+
+        private async Task SetWatchingtime(AnimeShow anime, INT_AnimeShowEdit edit)
+        {
+            if (anime.WatchingTime != null)
+            {
+                anime.WatchingTime.StartedOn = edit.StartedOn.Value;
+                anime.WatchingTime.FinishedOn = edit.FinishedOn;
+            }
+            else
+            {
+                var watchingTime = new WatchingTime()
+                {
+                    Id = Guid.NewGuid(),
+                    StartedOn = edit.StartedOn.Value,
+                    FinishedOn = edit.FinishedOn,
+                    CompletedYear = edit.CompletedYear?.Id ?? null
+                };
+                await _animeRepository.AddWatchingTime(watchingTime, anime);
+            }
+
+        }
+
+        private async Task SetNotes(AnimeShow anime, INT_AnimeShowEdit edit)
+        {
+            if (anime.Note != null)
+                anime.Note.Notes = edit.Notes;
+            else
+            {
+                var note = new Note() { Id = Guid.NewGuid(), Notes = edit.Notes };
+                await _animeRepository.AddNote(note, anime);
+            }
+        }
+
+        #endregion
 
         #region Demo
 

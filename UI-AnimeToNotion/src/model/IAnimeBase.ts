@@ -12,7 +12,7 @@ export interface IAnimeBase {
   episodes: number | null;
   genres: IKeyValue[];
   studios: IKeyValue[];
-  info: IAnimePersonal;
+  info: IAnimePersonal | null;
 }
 
 export interface IKeyValue {

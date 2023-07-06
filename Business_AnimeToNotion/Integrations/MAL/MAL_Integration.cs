@@ -31,6 +31,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
     public class MAL_Integration : IMAL_Integration
     {
         private readonly IJikan _jikan;
+        private readonly HttpClient _malHttpClient;
 
         #region DI
 
@@ -57,9 +58,10 @@ namespace Business_AnimeToNotion.Integrations.MAL
             };
             _jikan = new Jikan(config);
 
+            _malHttpClient = new HttpClient();
             // Add MAL Secret Api Key as header
-            if (!StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Contains(_configuration["MAL_ApiConfig:MAL_Header"]))
-                StaticHttpClient.MALHttpClient.DefaultRequestHeaders.Add(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"]);
+            if (!_malHttpClient.DefaultRequestHeaders.Contains(_configuration["MAL_ApiConfig:MAL_Header"]))
+                _malHttpClient.DefaultRequestHeaders.Add(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"]);
         }
 
         /// <summary>
@@ -110,14 +112,27 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <returns></returns>
         public async Task<List<INT_AnimeShowBase>> SearchAnimeByName(string searchTerm)
         {
-            List<INT_AnimeShowBase> foundEntries = Mapping.Mapper.ProjectTo<INT_AnimeShowBase>(
-                    (await _jikan.SearchAnimeAsync(searchTerm)).Data.AsQueryable()
-                )
-                .ToList();
+            AnimeSearchConfig config = new AnimeSearchConfig()
+            {
+                Query = searchTerm,
+                PageSize = 20
+            };
 
-            CheckSavedAnimeShow(foundEntries);
+            try
+            {
+                List<INT_AnimeShowBase> foundEntries = Mapping.Mapper.ProjectTo<INT_AnimeShowBase>(
+                        (await _jikan.SearchAnimeAsync(config)).Data.AsQueryable()
+                    )
+                    .ToList();
 
-            return foundEntries;
+                CheckSavedAnimeShow(foundEntries);
+
+                return foundEntries;
+            }
+            catch
+            {
+                return new List<INT_AnimeShowBase>();
+            }            
         }
 
         /// <summary>
@@ -133,7 +148,9 @@ namespace Business_AnimeToNotion.Integrations.MAL
             await Task.WhenAll(anime, malRelations);
 
             INT_AnimeShowFull found = Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data);
-            found.Relations = Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await malRelations).related_anime.AsQueryable()).ToList();            
+            found.Relations = Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await malRelations).related_anime.AsQueryable()).ToList();
+
+            await CheckSavedAnimeShow(found);
 
             return found;
         }        
@@ -145,7 +162,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <returns></returns>
         public async Task<MAL_AnimeShowRelations> GetRelationsFromMAL(int malId)
         {
-            string relations = await StaticHttpClient.MALHttpClient.GetStringAsync(BuildMALRelationsUrl(malId));
+            string relations = await _malHttpClient.GetStringAsync(BuildMALRelationsUrl(malId));
             return JsonConvert.DeserializeObject<MAL_AnimeShowRelations>(relations);
         }
 
@@ -165,6 +182,19 @@ namespace Business_AnimeToNotion.Integrations.MAL
             }
 
             return animeShows;
+        }
+
+        private async Task<INT_AnimeShowFull> CheckSavedAnimeShow(INT_AnimeShowFull animeShow)
+        {
+            // Retrieves only the items existing in the DB
+            var anime = await _animeRepository.GetByMalId(animeShow.MalId);
+
+            if (anime == null)
+                return null;
+
+            animeShow.Info = new INT_AnimeShowPersonal() { Id = anime.Id, Status = anime.Status };
+
+            return animeShow;
         }
 
         private string BuildMALRelationsUrl(int malId)

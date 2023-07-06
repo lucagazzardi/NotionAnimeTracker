@@ -1,7 +1,7 @@
 <div class="base-form-component select {{background}}">
   <mat-form-field>
     <mat-select [formControl]="status" disableOptionCentering (openedChange)="rotateIcon($event)">
-      <mat-option *ngFor="let item of values" [value]="item">
+      <mat-option *ngFor="let item of values" [value]="item.value">
         {{item.viewValue}}
       </mat-option>
     </mat-select>

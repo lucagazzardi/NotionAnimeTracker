@@ -26,7 +26,10 @@ namespace Business_AnimeToNotion.Mapper.FromMal
                     source.Titles.Single(x => x.Type == "English").Title :
                     source.Titles.Single(x => x.Type == "Default").Title))
                 .ForMember(dto => dto.NameDefault, map => map.MapFrom(source => source.Titles.Single(x => x.Type == "Default").Title))
-                .ForMember(dto => dto.NameJapanese, map => map.MapFrom(source => source.Titles.Single(x => x.Type == "Japanese").Title))
+                .ForMember(dto => dto.NameJapanese, map => map.MapFrom(source =>
+                    source.Titles.SingleOrDefault(x => x.Type == "Japanese") != null ?
+                    source.Titles.Single(x => x.Type == "Japanese").Title :
+                    source.Titles.Single(x => x.Type == "Default").Title))
                 .ForMember(dto => dto.MalId, map => map.MapFrom(source => (int)source.MalId!))
                 .ForMember(dto => dto.Cover, map => map.MapFrom(source => source.Images.JPG.LargeImageUrl))
                 .ForMember(dto => dto.Score, map => map.MapFrom(source => source.Score != null ? Convert.ToInt32(Math.Round(source.Score.Value * 10)) : (int?)null))
@@ -42,7 +45,10 @@ namespace Business_AnimeToNotion.Mapper.FromMal
                     source.Titles.Single(x => x.Type == "English").Title :
                     source.Titles.Single(x => x.Type == "Default").Title))
                 .ForMember(dto => dto.NameDefault, map => map.MapFrom(source => source.Titles.Single(x => x.Type == "Default").Title))
-                .ForMember(dto => dto.NameJapanese, map => map.MapFrom(source => source.Titles.Single(x => x.Type == "Japanese").Title))
+                .ForMember(dto => dto.NameJapanese, map => map.MapFrom(source =>
+                    source.Titles.SingleOrDefault(x => x.Type == "Japanese") != null ?
+                    source.Titles.Single(x => x.Type == "Japanese").Title :
+                    source.Titles.Single(x => x.Type == "Default").Title))
                 .ForMember(dto => dto.MalId, map => map.MapFrom(source => (int)source.MalId!))
                 .ForMember(dto => dto.Cover, map => map.MapFrom(source => source.Images.JPG.LargeImageUrl))
                 .ForMember(dto => dto.Score, map => map.MapFrom(source => source.Score != null ? Convert.ToInt32(Math.Round(source.Score.Value * 10)) : (int?)null))
@@ -51,22 +57,6 @@ namespace Business_AnimeToNotion.Mapper.FromMal
                 .ForMember(dto => dto.Episodes, map => map.MapFrom(source => source.Episodes))
                 .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.Studios.Select(x => new INT_KeyValue((int)x.MalId, x.Name))))
                 .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new INT_KeyValue((int)x.MalId, x.Name))));
-
-
-            //CreateMap<List<RelatedEntry>, List<INT_AnimeShowRelation>>().ConvertUsing((src, dest) =>
-            //{
-            //    List<INT_AnimeShowRelation> result = new List<INT_AnimeShowRelation>();
-            //    foreach (var relation in src)
-            //    {
-            //        foreach (var item in relation.Entry)
-            //        {
-            //            result.Add(new INT_AnimeShowRelation() { Type = relation.Relation, RelatedMalId = (int)item.MalId, Cover = item.c });
-            //        }
-            //    }
-
-            //    return result;
-            //});
-            //
 
             CreateMap<MAL_RelatedShow, INT_AnimeShowRelation>()
                 .ForMember(dto => dto.Type, map => map.MapFrom(source => source.relation_type_formatted))

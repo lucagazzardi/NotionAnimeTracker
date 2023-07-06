@@ -1,8 +1,8 @@
 import { SelectItem } from "./SelectInterface";
 
 export const SelectShowStatus: SelectItem[] = [
-  { value: "towatch", viewValue: "To Watch" },
-  { value: "watching", viewValue: "Watching" },
-  { value: "completed", viewValue: "Completed" },
-  { value: "dropped", viewValue: "Dropped" }
+  { value: "To Watch", viewValue: "To Watch" },
+  { value: "Watching", viewValue: "Watching" },
+  { value: "Completed", viewValue: "Completed" },
+  { value: "Dropped", viewValue: "Dropped" }
 ]

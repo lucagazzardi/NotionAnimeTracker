@@ -12,7 +12,10 @@ namespace Business_AnimeToNotion.Mapper.Entity_Internal
         {
             CreateMap<AnimeShow, INT_AnimeShowFull>()
                 .ForMember(dto => dto.Score, map => map.MapFrom(source => source.Score != null ? source.Score.MalScore : (int?)null))
-                .ForMember(dto => dto.Score, map => map.MapFrom(source => source.Score != null ? source.Score.MalScore : (int?)null))
+                .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.StudioOnAnimeShows != null ? source.StudioOnAnimeShows
+                    .Select(x => new INT_KeyValue(x.Studio.MalId, x.Studio.Description)) : null))
+                .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.GenreOnAnimeShows != null ? source.GenreOnAnimeShows
+                    .Select(x => new INT_KeyValue(x.Genre.MalId, x.Genre.Description)) : null))
                 .ForMember(dto => dto.Relations, map => map.MapFrom(source => source.Relations
                     .Select(x => new INT_AnimeShowRelation()
                     {
@@ -20,8 +23,7 @@ namespace Business_AnimeToNotion.Mapper.Entity_Internal
                         Type = x.RelationType,
                         Cover = x.Cover
                     }).ToList()))
-                .ForMember(dto => dto.Edit, map => map.MapFrom(source => Mapping.Mapper.Map<INT_AnimeShowEdit>(source)));
-
+                .ForMember(dto => dto.Edit, map => map.MapFrom(source => Mapping.Mapper.Map<INT_AnimeShowEdit>(source)));  
 
             CreateMap<AnimeShow, INT_AnimeShowEdit>()
                 .ForMember(dto => dto.Id, map => map.MapFrom(source => source.Id))

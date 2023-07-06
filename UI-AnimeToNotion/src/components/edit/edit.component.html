@@ -49,12 +49,13 @@
           </div>
 
           <div class="info__list">
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.nameDefault }"></ng-container>
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: item?.startedAiring }"></ng-container>
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.format }"></ng-container>
-            <ng-container *ngTemplateOutlet="field; context: { title: 'Episodes', value: item?.episodes }"></ng-container>
-            <ng-container *ngTemplateOutlet="fieldList; context: { title: 'Studios', values: item?.studios?.slice(0,4) }"></ng-container>
-            <ng-container *ngTemplateOutlet="fieldList; context: { title: 'Genres', values: item?.genres?.slice(0,4) }"></ng-container>
+            <ng-container *ngIf="item?.nameDefault != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.nameDefault }"></ng-container></ng-container>
+            <ng-container *ngIf="item?.startedAiring != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: (item?.startedAiring | date:'mediumDate') }"></ng-container></ng-container>
+            <ng-container *ngIf="item?.format != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.format }"></ng-container></ng-container>
+            <ng-container *ngIf="item?.score != null"><ng-container *ngTemplateOutlet="field; context: { title: 'MAL Score', value: item?.score + '%' }"></ng-container></ng-container>
+            <ng-container *ngIf="item?.episodes != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Episodes', value: item?.episodes }"></ng-container></ng-container>
+            <ng-container *ngIf="item?.studios != null"><ng-container *ngTemplateOutlet="fieldList; context: { title: 'Studios', values: item?.studios?.slice(0,4) }"></ng-container></ng-container>
+            <ng-container *ngIf="item?.genres != null"><ng-container *ngTemplateOutlet="fieldList; context: { title: 'Genres', values: item?.genres?.slice(0,4) }"></ng-container></ng-container>
           </div>
         </div>
 
@@ -67,16 +68,16 @@
               Status
             </div>
 
-            <app-select [values]="showStatuses" (valueChanged)="setStatus($event)"></app-select>
+            <app-select [values]="showStatuses" [initialValue]="initialStatus" (valueChanged)="setStatus($event)"></app-select>
           </div>
 
-          <!--PERSONAL RATING-->
+          <!--PERSONAL SCORE-->
           <div class="edit__item">
             <div class="edit__name">
               Score
             </div>
 
-            <app-ranking [initialValue]="item?.score ?? 0" (valueChanged)="setRank($event)"></app-ranking>
+            <app-ranking [initialValue]="initialRank" (valueChanged)="setRank($event)"></app-ranking>
           </div>
 
           <!--START DATE-->
@@ -85,8 +86,7 @@
               Start Date
             </div>
 
-            <!-- TODO: ADD DATE AS INPUT -->
-            <app-datepicker (valueChanged)="setStartDate($event)"></app-datepicker>
+            <app-datepicker [initialValue]="initialStartDate" (valueChanged)="setStartDate($event)"></app-datepicker>
           </div>
 
           <!--FINISH DATE-->
@@ -95,8 +95,7 @@
               Finish Date
             </div>
 
-            <!-- TODO: ADD DATE AS INPUT -->
-            <app-datepicker (valueChanged)="setFinishDate($event)"></app-datepicker>
+            <app-datepicker [initialValue]="initialFinishDate" (valueChanged)="setFinishDate($event)"></app-datepicker>
           </div>
 
           <!--NOTES-->
@@ -105,24 +104,17 @@
               Notes
             </div>
 
-            <app-text-input [isTextArea]="true" (valueChanged)="setNotes($event)"></app-text-input>
+            <app-text-input [initialValue]="initialNotes" [isTextArea]="true" (valueChanged)="setNotes($event)"></app-text-input>
           </div>
 
-          <!--PARENT SHOW-->
-          <div class="edit__item">
-            <div class="edit__name">
-              Parent Show
-            </div>
+          
 
-            <app-text-input (valueChanged)="setParentShow($event)"></app-text-input>
-          </div>
-
-          <div class="edit__item">
+          <div class="edit__item edit__item--row-full">
             <div class="edit__buttons">
               <div class="edit__button edit__button--delete">
                 <span>Delete</span>
               </div>
-              <div class="edit__button edit__button--save">
+              <div class="edit__button edit__button--save" (click)="save()">
                 <span>Save</span>
               </div>
             </div>
@@ -142,7 +134,7 @@
     <div class="info__title">
       {{title}}
     </div>
-    <div class="info__value" [class.info__value--upper]="title === 'Format'">
+    <div class="info__value">
       {{value}}
     </div>
   </div>
@@ -155,7 +147,7 @@
     </div>
     <div class="info__value">
       <span *ngFor="let value of values">
-        <span>{{value.name}}</span>
+        <span>{{value.value}}</span>
         <br>
       </span>
     </div>

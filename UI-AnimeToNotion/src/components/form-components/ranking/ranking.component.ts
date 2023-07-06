@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -8,7 +8,7 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class RankingComponent implements OnInit {
 
-  @Input() initialValue: number = 0;
+  @Input() initialValue: number | null = null;
   iconColor: string = 'rgb(var(--color-text-normal))';
 
   newValue = new FormControl(this.initialValue, [Validators.min(0), Validators.max(100)]);
@@ -17,7 +17,6 @@ export class RankingComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-
     // Automatically handles value over the limits
     this.newValue.valueChanges.subscribe({
       next: (value) => {
@@ -30,6 +29,10 @@ export class RankingComponent implements OnInit {
       }
     })
 
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.newValue.setValue(changes["initialValue"].currentValue);    
   }
 
   upVote() {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 export class TextInputComponent implements OnInit {
 
   @Input() isTextArea: boolean = false;
-  @Input() initialValue: string = '';
+  @Input() initialValue: string | null = null;
 
   newValue = new FormControl(this.initialValue);
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
@@ -18,6 +18,10 @@ export class TextInputComponent implements OnInit {
 
   ngOnInit(): void {
     this.newValue.valueChanges.subscribe(x => this.onChange(x));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.newValue.setValue(changes["initialValue"].currentValue);
   }
 
   onChange(value: string) {

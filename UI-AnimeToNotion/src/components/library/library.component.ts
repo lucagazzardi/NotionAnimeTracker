@@ -10,7 +10,7 @@ import { SelectYear } from '../../model/form-model/SelectYear';
 import { SelectFormat } from '../../model/form-model/SelectFormat';
 import { EditService } from '../../services/edit/edit.service';
 import { MalService } from '../../services/mal/mal.service';
-import { NotionService } from '../../services/notion/notion.service';
+import { InternalService } from '../../services/notion/internal.service';
 import { IAnimeFull } from '../../model/IAnimeFull';
 import { IAnimeBase } from '../../model/IAnimeBase';
 
@@ -94,7 +94,7 @@ export class LibraryComponent implements OnInit {
 
   constructor(
     private malService: MalService,
-    private notionService: NotionService,
+    private notionService: InternalService,
     private editService: EditService
   ) { }
 

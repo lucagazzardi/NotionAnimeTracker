@@ -15,6 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MomentDateModule } from '@angular/material-moment-adapter';
 
 //APP COMPONENTS
 import { AppComponent } from './app.component';
@@ -34,10 +35,11 @@ import { CheckboxComponent } from '../components/form-components/checkbox/checkb
 //APP SERVICES
 import { ThemeService } from '../services/theme/theme.service';
 import { SearchAnimeService } from '../components/search-anime/search-anime.service';
-import { NotionService } from '../services/notion/notion.service';
+import { InternalService } from '../services/notion/internal.service';
 import { StringManipulationService } from '../services/string-manipulation/string-manipulation.service';
 import { EditService } from '../services/edit/edit.service';
 import { MalService } from '../services/mal/mal.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,9 +71,10 @@ import { MalService } from '../services/mal/mal.service';
     MatNativeDateModule,
     MatMenuModule,
     NgxSliderModule,
-    MatDialogModule
+    MatDialogModule,
+    MomentDateModule
   ],
-  providers: [ThemeService, SearchAnimeService, NotionService, MalService, StringManipulationService, EditService],
+  providers: [ThemeService, SearchAnimeService, InternalService, MalService, StringManipulationService, EditService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MAT_SELECT_CONFIG } from '@angular/material/select';
 import { SelectItem } from '../../../model/form-model/SelectInterface';
+import { SelectShowStatus } from '../../../model/form-model/SelectShowStatus';
 
 @Component({
   selector: 'app-select',
@@ -20,11 +21,11 @@ export class SelectComponent implements OnInit {
   valueSelected: boolean = false;
 
   @Input() values: SelectItem[] = [];
-  @Input() initialValue: number | null = null;
+  @Input() initialValue: string | null = null;
   @Input() background: string = "background";
 
   status = new FormControl();
-  @Output() valueChanged: EventEmitter<{ id: string, label: string } | null> = new EventEmitter();  
+  @Output() valueChanged: EventEmitter<SelectItem | null> = new EventEmitter();  
 
   constructor() { }
 
@@ -37,9 +38,13 @@ export class SelectComponent implements OnInit {
     });
   }
 
-  onChange(status: SelectItem) {
+  ngOnChanges(changes: SimpleChanges) {
+    this.status.setValue(changes["initialValue"].currentValue);    
+  }
+
+  onChange(status: string) {
     if (status)
-      this.valueChanged.emit({ id: status.value, label: status.viewValue })
+      this.valueChanged.emit({ value: status, viewValue: status })
     else
       this.valueChanged.emit(null);
   }
