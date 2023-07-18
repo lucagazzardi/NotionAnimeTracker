@@ -95,7 +95,7 @@ namespace Business_AnimeToNotion.Mapper
                             if (((RelationPropertyValue)prop.Value).Relation.Count > 0)
                             {
                                 AnimeShow.WatchingTime = AnimeShow.WatchingTime ?? new WatchingTimeDto();
-                                AnimeShow.WatchingTime.YearNotionPageId = ((RelationPropertyValue)prop.Value).Relation[0].Id;
+                                AnimeShow.WatchingTime.CompletedYear = AnimeShow.WatchingTime.FinishedOn!.Value.Year;
                             }
                             break;
 

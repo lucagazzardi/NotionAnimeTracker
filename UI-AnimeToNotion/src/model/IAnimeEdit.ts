@@ -5,11 +5,5 @@ export interface IAnimeEdit {
   startedOn: Date | null;
   finishedOn: Date | null;
   notes: string | null;
-  completedYear: ICompletedYear;
-}
-
-export interface ICompletedYear {
-  id: number;
-  notionPageId: string;
-  value: number;
+  completedYear: number | null;
 }

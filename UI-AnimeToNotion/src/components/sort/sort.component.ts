@@ -1,4 +1,3 @@
-import { Options } from '@angular-slider/ngx-slider';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SelectSort } from '../../model/form-model/SelectSort';
 
@@ -9,17 +8,17 @@ import { SelectSort } from '../../model/form-model/SelectSort';
 })
 export class SortComponent implements OnInit {
 
-  checkboxLabel: string = "Show Favorites Only";
+  favoritesLabel: string = "Show Favorites Only";
+  planToWatchLabel: string = "Show Planned Only";
   selectSort: string[] = SelectSort;
 
   selectedValue: string = 'Status';
-  @Output() valueChanged: EventEmitter<string> = new EventEmitter(); 
+  selectedValueFavorites: boolean = false;
+  selectedValuePlanToWatch: boolean = false;
+  @Output() valueChanged: EventEmitter<string> = new EventEmitter();
+  @Output() valueChangedFavorites: EventEmitter<boolean> = new EventEmitter();
+  @Output() valueChangedPlanToWatch: EventEmitter<boolean> = new EventEmitter(); 
 
-  value: number = 100;
-  options: Options = {
-    floor: 0,
-    ceil: 250
-  };
 
   constructor() { }
 
@@ -28,7 +27,17 @@ export class SortComponent implements OnInit {
 
   onChange(value: string) {
     this.selectedValue = value;
-    this.valueChanged.emit(value);
+    this.valueChanged.emit(value.replace(/\s/g, ''));
+  }
+
+  onChangeFavorites(value: boolean) {
+    this.selectedValueFavorites = value;
+    this.valueChangedFavorites.emit(value);
+  }
+
+  onChangePlanToWatch(value: boolean) {
+    this.selectedValuePlanToWatch = value;
+    this.valueChangedPlanToWatch.emit(value);
   }
 
 }

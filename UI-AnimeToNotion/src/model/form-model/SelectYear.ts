@@ -1,10 +1,10 @@
 import { SelectItem } from "./SelectInterface";
 
 const createMapYears = (): SelectItem[] => {
-  const currentYear = new Date().getFullYear();
+  const toYear = new Date().getFullYear()+1;
   let years: SelectItem[] = [];
 
-  for (let year = 2020; year <= currentYear; year++) {
+  for (let year = 2020; year <= toYear; year++) {
     years.push({ value: year.toString(), viewValue: year.toString() });
   }
 

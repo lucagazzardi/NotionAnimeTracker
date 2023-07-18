@@ -11,11 +11,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MomentDateModule } from '@angular/material-moment-adapter';
+import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 //APP COMPONENTS
 import { AppComponent } from './app.component';
@@ -35,7 +36,7 @@ import { CheckboxComponent } from '../components/form-components/checkbox/checkb
 //APP SERVICES
 import { ThemeService } from '../services/theme/theme.service';
 import { SearchAnimeService } from '../components/search-anime/search-anime.service';
-import { InternalService } from '../services/notion/internal.service';
+import { InternalService } from '../services/internal/internal.service';
 import { StringManipulationService } from '../services/string-manipulation/string-manipulation.service';
 import { EditService } from '../services/edit/edit.service';
 import { MalService } from '../services/mal/mal.service';
@@ -72,9 +73,18 @@ import { MalService } from '../services/mal/mal.service';
     MatMenuModule,
     NgxSliderModule,
     MatDialogModule,
-    MomentDateModule
+    MatMomentDateModule,
+    InfiniteScrollModule
   ],
-  providers: [ThemeService, SearchAnimeService, InternalService, MalService, StringManipulationService, EditService],
+  providers: [
+    ThemeService,
+    SearchAnimeService,
+    InternalService,
+    MalService,
+    StringManipulationService,
+    EditService,
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

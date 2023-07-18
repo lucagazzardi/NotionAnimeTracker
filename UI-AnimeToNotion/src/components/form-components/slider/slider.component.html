@@ -1,5 +1,5 @@
 <div class="filter-slider">
-  <ngx-slider #slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+  <ngx-slider #slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChangeEnd)="onChange($event)"></ngx-slider>
   <div class="filter-label">   
     {{label}}
   </div>

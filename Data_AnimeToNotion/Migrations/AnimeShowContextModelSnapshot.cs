@@ -34,6 +34,9 @@ namespace Data_AnimeToNotion.Migrations
                     b.Property<int?>("Episodes")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Favorite")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Format")
                         .HasColumnType("nvarchar(max)");
 
@@ -192,10 +195,6 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(0);
 
-                    b.Property<bool?>("Favorite")
-                        .HasColumnType("bit")
-                        .HasColumnOrder(3);
-
                     b.Property<int>("MalScore")
                         .HasColumnType("int")
                         .HasColumnOrder(1);
@@ -282,24 +281,18 @@ namespace Data_AnimeToNotion.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CompletedYear")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(3);
+                    b.Property<int?>("CompletedYear")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("FinishedOn")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(2);
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartedOn")
-                        .HasColumnType("datetime2")
-                        .HasColumnOrder(1);
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompletedYear");
 
                     b.ToTable("WatchingTime", (string)null);
                 });
@@ -391,15 +384,6 @@ namespace Data_AnimeToNotion.Migrations
                     b.Navigation("Studio");
                 });
 
-            modelBuilder.Entity("Data_AnimeToNotion.DataModel.WatchingTime", b =>
-                {
-                    b.HasOne("Data_AnimeToNotion.DataModel.Year", "Year")
-                        .WithMany("WatchingTimes")
-                        .HasForeignKey("CompletedYear");
-
-                    b.Navigation("Year");
-                });
-
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.AnimeShow", b =>
                 {
                     b.Navigation("GenreOnAnimeShows");
@@ -432,11 +416,6 @@ namespace Data_AnimeToNotion.Migrations
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.WatchingTime", b =>
                 {
                     b.Navigation("AnimeShow");
-                });
-
-            modelBuilder.Entity("Data_AnimeToNotion.DataModel.Year", b =>
-                {
-                    b.Navigation("WatchingTimes");
                 });
 #pragma warning restore 612, 618
         }

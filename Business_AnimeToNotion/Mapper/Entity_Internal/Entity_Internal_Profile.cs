@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Common;
+using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.Internal;
 using Data_AnimeToNotion.DataModel;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Business_AnimeToNotion.Mapper.Entity_Internal
 {
@@ -23,22 +25,23 @@ namespace Business_AnimeToNotion.Mapper.Entity_Internal
                         Type = x.RelationType,
                         Cover = x.Cover
                     }).ToList()))
-                .ForMember(dto => dto.Edit, map => map.MapFrom(source => Mapping.Mapper.Map<INT_AnimeShowEdit>(source)));  
+                .ForMember(dto => dto.Edit, map => map.MapFrom(source => new INT_AnimeShowEdit()
+                {
+                    Id = source.Id,
+                    Status = source.Status,
+                    PersonalScore = source.Score != null && source.Score.PersonalScore != null ? source.Score.PersonalScore : null,
+                    StartedOn = source.WatchingTime != null ? source.WatchingTime.StartedOn : (DateTime?)null,
+                    FinishedOn = source.WatchingTime != null ? source.WatchingTime.FinishedOn : (DateTime?)null,
+                    Notes = source.Note != null ? source.Note.Notes : null,
+                    CompletedYear = source.WatchingTime != null && source.WatchingTime.CompletedYear != null ? source.WatchingTime.CompletedYear : null
+                }))
+                .ForMember(dto => dto.Info, map => map.MapFrom(source => new INT_AnimeShowPersonal() { Id = source.Id, Status = source.Status }));
 
-            CreateMap<AnimeShow, INT_AnimeShowEdit>()
+            CreateMap<Year, CompletedYear>()
                 .ForMember(dto => dto.Id, map => map.MapFrom(source => source.Id))
-                .ForMember(dto => dto.Status, map => map.MapFrom(source => source.Status))
-                .ForMember(dto => dto.PersonalScore, map => map.MapFrom(source => source.Score != null ? source.Score.PersonalScore : null))
-                .ForMember(dto => dto.StartedOn, map => map.MapFrom(source => source.WatchingTime != null ? source.WatchingTime.StartedOn : (DateTime?)null))
-                .ForMember(dto => dto.FinishedOn, map => map.MapFrom(source => source.WatchingTime != null ? source.WatchingTime.FinishedOn : (DateTime?)null))
-                .ForMember(dto => dto.Notes, map => map.MapFrom(source => source.Note != null ? source.Note.Notes : null))
-                .ForMember(dto => dto.CompletedYear, map => map.MapFrom(source => source.WatchingTime != null && source.WatchingTime.CompletedYear != null ?
-                    new CompletedYear()
-                    { 
-                        Id = source.WatchingTime.CompletedYear.Value, 
-                        NotionPageId = source.WatchingTime.Year.NotionPageId, 
-                        Value = source.WatchingTime.Year.YearValue 
-                    } : null));                
+                .ForMember(dto => dto.NotionPageId, map => map.MapFrom(source => source.NotionPageId))
+                .ForMember(dto => dto.Value, map => map.MapFrom(source => source.YearValue));
+            
         }
     }
 }

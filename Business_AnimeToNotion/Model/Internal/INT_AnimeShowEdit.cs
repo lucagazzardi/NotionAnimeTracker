@@ -15,6 +15,6 @@ namespace Business_AnimeToNotion.Model.Internal
         public DateTime? StartedOn { get; set; }
         public DateTime? FinishedOn { get; set; }
         public string? Notes { get; set; }
-        public CompletedYear? CompletedYear { get; set; }
+        public int? CompletedYear { get; set; }
     }
 }

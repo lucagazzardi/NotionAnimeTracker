@@ -1,26 +1,29 @@
 ﻿using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Integrations.Notion;
 using Business_AnimeToNotion.Mapper.Config;
+using Business_AnimeToNotion.Model.Common;
 using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.Notion;
 using Business_AnimeToNotion.Model.Notion.Base;
+using Business_AnimeToNotion.Model.Pagination;
+using Business_AnimeToNotion.Model.Query;
+using Business_AnimeToNotion.Model.Query.Filter;
+using Business_AnimeToNotion.QueryLogic.FilterLogic;
+using Business_AnimeToNotion.QueryLogic.PageLogic;
+using Business_AnimeToNotion.QueryLogic.SortLogic;
 using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business_AnimeToNotion.Integrations.Internal
 {
     public class Internal_Integration : IInternal_Integration
     {
         private readonly IJikan _jikan;
+
         private readonly IAnimeShowRepository _animeRepository;
         private readonly INotion_Integration _notion;
         private readonly IHostEnvironment _hostEnvironment;
@@ -35,6 +38,8 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
             _jikan = new Jikan();
         }
+
+        #region Single Operativity
 
         /// <summary>
         /// Add new anime base
@@ -138,7 +143,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         public async Task<bool> SetAnimeFavorite(Guid id, bool favorite)
         {
             await _animeRepository.SetAnimeFavorite(id);
-            return !favorite;
+            return favorite;
         }
 
         /// <summary>
@@ -150,7 +155,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         public async Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch)
         {
             await _animeRepository.SetPlanToWatch(id);
-            return !planToWatch;
+            return planToWatch;
         }
 
         /// <summary>
@@ -163,10 +168,39 @@ namespace Business_AnimeToNotion.Integrations.Internal
             await _animeRepository.RemoveInternalAnimeShow(id);
         }
 
+        /// <summary>
+        /// Retrieve the relation of a single anime
+        /// </summary>
+        /// <param name="malId"></param>
+        /// <returns></returns>
         public async Task<List<INT_AnimeShowRelation>> GetAnimeRelations(int malId)
         {
             return Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await _mal.GetRelationsFromMAL(malId)).related_anime.AsQueryable()).ToList();
         }
+
+        #endregion
+
+        #region Library Operativity
+
+        public async Task<PaginatedResponse<INT_AnimeShowFull>> LibraryQuery(FilterIn filters, SortIn? sort, PageIn page)
+        {
+            IQueryable<AnimeShow> data = _animeRepository.GetAsQueryable();
+
+            FilterManager filterManager = new FilterManager(filters);
+            data = filterManager.ApplyFilters(data);
+
+            SortManager sortManager = new SortManager();
+            data = sortManager.ApplySort(data, sort);
+
+            PageManager pageManager = new PageManager();
+            data = await pageManager.ApplyPaging(data, page);
+
+            return pageManager.GeneratePaginatedResponse(await Mapping.Mapper.ProjectTo<INT_AnimeShowFull>(data).ToListAsync(), page);
+        }
+
+        #endregion
+
+        
 
         #region Private
 
@@ -190,7 +224,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
                     Id = Guid.NewGuid(),
                     StartedOn = edit.StartedOn.Value,
                     FinishedOn = edit.FinishedOn,
-                    CompletedYear = edit.CompletedYear?.Id ?? null
+                    CompletedYear = edit.CompletedYear
                 };
                 await _animeRepository.AddWatchingTime(watchingTime, anime);
             }

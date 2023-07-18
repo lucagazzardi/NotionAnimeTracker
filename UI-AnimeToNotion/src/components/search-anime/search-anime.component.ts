@@ -1,8 +1,8 @@
-import { animate, query, state, style, transition, trigger, useAnimation } from '@angular/animations';
+import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable } from 'rxjs';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../../assets/animations/animations';
-import { InternalService } from '../../services/notion/internal.service';
+import { InternalService } from '../../services/internal/internal.service';
 import { ToasterService } from 'gazza-toaster';
 import { EditService } from '../../services/edit/edit.service';
 import { MalService } from '../../services/mal/mal.service';
@@ -80,9 +80,11 @@ export class SearchAnimeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.seasonalList$ = this.malService.getCurrentSeason().pipe(tap(value => { this.seasonalListStatic = value; this.seasonalListTracker = Array(value.length).fill(false) }));
+    this.seasonalList$ = this.malService.getCurrentSeason()
+      .pipe(tap(value => { this.seasonalListStatic = value; this.seasonalListTracker = Array(value.length).fill(false) }));
     
-    this.nextSeasonList$ = this.malService.getUpcomingSeason().pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false) }));
+    this.nextSeasonList$ = this.malService.getUpcomingSeason()
+      .pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false) }));
 
     //! DEBOUNCING START
     this.debouncingPipe();    

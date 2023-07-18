@@ -20,7 +20,11 @@
     <div class="sort__item--divider"></div>
 
     <div class="sort__item">
-      <app-checkbox [label]="checkboxLabel"></app-checkbox>
+      <app-checkbox [label]="favoritesLabel" (valueChanged)="onChangeFavorites($event)"></app-checkbox>
+    </div>
+
+    <div class="sort__item">
+      <app-checkbox [label]="planToWatchLabel" (valueChanged)="onChangePlanToWatch($event)"></app-checkbox>
     </div>
 
   </div>

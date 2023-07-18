@@ -1,11 +1,11 @@
-import { HttpClient, HttpResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
-import { observable, Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { IAnimeBase } from "../../model/IAnimeBase";
-import { IAnimePersonal } from "../../model/IAnimePersonal";
 import { IAnimeEdit } from "../../model/IAnimeEdit";
 import { IAnimeFull } from "../../model/IAnimeFull";
+import { IQuery } from "../../model/IQuery";
 
 
 @Injectable()
@@ -26,10 +26,6 @@ export class InternalService {
 
   remove(id: string) {
     return this.client.delete(this.baseUrl + this.internalController + "delete/" + id);
-  }
-
-  search(dio: string): Observable<any> {
-    return of(dio);
   }
 
   getAnimeFull(malId: number): Observable<any> {
@@ -54,6 +50,10 @@ export class InternalService {
 
   getAnimeRelations(id: number): Observable<any> {
     return this.client.get(this.baseUrl + this.internalController + "get/relations/" + id);
+  }
+
+  libraryQuery(query: IQuery): Observable<any> {
+    return this.client.post(this.baseUrl + this.internalController + "get/filtered", query);
   }
 }
 

@@ -1,5 +1,7 @@
 ﻿using Business_AnimeToNotion.Integrations.Internal;
 using Business_AnimeToNotion.Model.Internal;
+using Business_AnimeToNotion.Model.Query;
+using Business_AnimeToNotion.Model.Query.Filter;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +18,8 @@ namespace API_AnimeToNotion.Controllers
         {
             _main = main;
         }
+
+        #region AnimeShow
 
         [HttpPost("add/base")]
         public async Task<IActionResult> AddAnimeBase([FromBody] INT_AnimeShowBase animeBase)
@@ -80,6 +84,18 @@ namespace API_AnimeToNotion.Controllers
         {
             return Ok(await _main.GetAnimeRelations(malId));
         }
+
+        #endregion
+
+        #region Library
+
+        [HttpPost("get/filtered")]
+        public async Task<IActionResult> GetLibraryFiltered([FromBody] QueryIn query)
+        {            
+            return Ok(await _main.LibraryQuery(query.filters, query.sort, query.page));
+        }
+
+        #endregion        
 
         #region Demo
 

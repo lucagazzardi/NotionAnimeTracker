@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 import { FormControl } from '@angular/forms';
 import { MAT_SELECT_CONFIG } from '@angular/material/select';
 import { SelectItem } from '../../../model/form-model/SelectInterface';
-import { SelectShowStatus } from '../../../model/form-model/SelectShowStatus';
 
 @Component({
   selector: 'app-select',
@@ -39,7 +38,7 @@ export class SelectComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.status.setValue(changes["initialValue"].currentValue);    
+    this.status.setValue(changes["initialValue"].currentValue);
   }
 
   onChange(status: string) {

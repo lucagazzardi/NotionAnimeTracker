@@ -135,12 +135,12 @@ namespace Business_AnimeToNotion.Integrations.Demo
             result.NameEnglish = showDto.NameEnglish;
             result.NameDefault = showDto.NameOriginal;
             result.StartedAiring = showDto.StartedAiring;
-            result.Score = showDto.Score != null ? Mapping.Mapper.Map<Score>(showDto.WatchingTime) : null;
-            result.WatchingTime = showDto.WatchingTime != null ? Mapping.Mapper.Map<WatchingTime>(showDto.Score) : null;
+            result.Score = showDto.Score != null ? Mapping.Mapper.Map<Score>(showDto.Score) : null;
+            result.WatchingTime = showDto.WatchingTime != null ? Mapping.Mapper.Map<WatchingTime>(showDto.WatchingTime) : null;
             result.Note = showDto.Note != null ? Mapping.Mapper.Map<Note>(showDto.Note) : null;
 
-            if (showDto.WatchingTime != null && showDto.WatchingTime.YearNotionPageId != null)
-                result.WatchingTime.CompletedYear = await _animeShowRepository.GetCompletedYearId(showDto.WatchingTime.YearNotionPageId);
+            if (showDto.WatchingTime != null && showDto.WatchingTime.CompletedYear != null)
+                result.WatchingTime.CompletedYear = showDto.WatchingTime.CompletedYear;
 
             return result;
         }

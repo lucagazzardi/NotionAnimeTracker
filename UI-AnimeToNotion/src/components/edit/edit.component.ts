@@ -7,7 +7,7 @@ import { EditService } from '../../services/edit/edit.service';
 import { SelectShowStatus } from '../../model/form-model/SelectShowStatus';
 import { IAnimeFull } from '../../model/IAnimeFull';
 import { IAnimeEdit } from '../../model/IAnimeEdit';
-import { InternalService } from '../../services/notion/internal.service';
+import { InternalService } from '../../services/internal/internal.service';
 import { IAnimeRelation } from '../../model/IAnimeRelation';
 import { SelectItem } from '../../model/form-model/SelectInterface';
 import { IAnimePersonal } from '../../model/IAnimePersonal';
@@ -36,10 +36,7 @@ export class EditComponent implements OnInit {
   malBaseUrl: string = 'https://myanimelist.net/anime/';
 
   //STATUS
-  showStatuses = SelectShowStatus;  
-
-  // FAVORITE
-  isFavorite: boolean = false;
+  showStatuses = SelectShowStatus;
 
   //SKELETON
   testSkeleton: boolean = true;
@@ -89,6 +86,9 @@ export class EditComponent implements OnInit {
     // If the item is not present retrieves only relations
     else if (this.item != null && this.item.relations == null)
       this.loadItemRelations(Number(this.id))
+
+    else
+      this.setInitialValues(this.item!);
       
   }
 
@@ -123,20 +123,7 @@ export class EditComponent implements OnInit {
           error: () => { this.toasterService.notifyError("The relations could not be retrieved") },
           complete: () => { this.setInitialValues(this.item!) }
         });
-  }
-
-  /// Set initial values for edit
-  setInitialValues(item: IAnimeFull) {
-
-    if (item!.edit == null)
-      item!.edit = {} as IAnimeEdit;
-
-    this.initialStatus = item.edit.status ?? null;
-    this.initialRank = item.edit?.personalScore ?? null;
-    this.initialStartDate = item.edit?.startedOn ?? null;
-    this.initialFinishDate = item.edit?.finishedOn ?? null;
-    this.initialNotes = item.edit?.notes ?? null;
-  }
+  }  
 
   //STATUS
   /// Set the selected status
@@ -191,16 +178,20 @@ export class EditComponent implements OnInit {
       this.updateItem();
     else
       this.addFull();
-    
-    console.log(this.item!.edit);
+
+    console.log(this.item);
   }
 
   /// Update the item with the new values
   updateItem() {
+    this.item!.edit!.id = this.item!.info!.id;
     this.internalService.editAnime(this.item!.edit!)
       .subscribe(
         {
-          next: () => { this.toasterService.notifySuccess(this.item!.nameEnglish + " updated") },
+          next: () => {
+            this.initialStatus = this.item!.edit!.status;
+            this.item!.info!.status = this.item!.edit!.status!;
+            this.toasterService.notifySuccess(this.item!.nameEnglish + " has been updated") },
           error: () => { this.toasterService.notifyError("The entry could not be updated") }
         });
   }
@@ -210,8 +201,12 @@ export class EditComponent implements OnInit {
     this.internalService.addFull(this.item!)
       .subscribe(
         {
-          next: (data: IAnimePersonal) => { this.item!.info = data; this.toasterService.notifySuccess(this.item!.nameEnglish + " updated") },
-          error: () => { this.toasterService.notifyError("The entry could not be updated") }
+          next: (data: IAnimePersonal) => {
+            this.item!.info = data;
+            this.initialStatus = data.status;
+            this.toasterService.notifySuccess(this.item!.nameEnglish + " has been added")
+          },
+          error: () => { this.toasterService.notifyError("The entry could not be added") }
         });
   }
 
@@ -236,7 +231,7 @@ export class EditComponent implements OnInit {
   /// Switch anime planning to watch
   setPlanToWatch() {
 
-    if (this.item!.info?.id == null)
+    if (this.item!.info == null)
       return;
 
     this.internalService.setPlanToWatch(this.item!.info!.id, !this.item!.planToWatch)
@@ -244,11 +239,33 @@ export class EditComponent implements OnInit {
         {
           next: (data: boolean) => {
             this.item!.planToWatch = data;
-            let message = data ? " planned to watch" : " unplanned to watch";
+            let message = data ? " planned to watch" : " removed from planning";
             this.toasterService.notifySuccess(this.item!.nameEnglish + message)
           },
           error: () => { this.toasterService.notifyError("The entry could not be updated") }
         });
+  }
+
+  /// Remove anime
+  remove() {
+
+    if (this.item!.info == null)
+      return;
+
+    this.updateInitialValues();
+
+    this.internalService.remove(this.item!.info!.id)
+      .subscribe(
+        {
+          next: () => {
+            this.item!.info = null;
+            this.item!.edit = null;            
+            this.setInitialValues(this.item!);
+            this.toasterService.notifySuccess(this.item!.nameEnglish + " has been removed")
+          },
+          error: () => { this.toasterService.notifyError("The entry could not be removed") }
+        });    
+
   }
 
   /// Check if edits have been made
@@ -258,5 +275,27 @@ export class EditComponent implements OnInit {
       this.initialStartDate != this.selectedStartDate ||
       this.initialFinishDate != this.selectedFinishDate ||
       this.initialNotes != this.selectedNotes
+  }
+
+  /// Set initial values for edit
+  setInitialValues(item: IAnimeFull) {
+
+    if (item!.edit == null)
+      item!.edit = {} as IAnimeEdit;
+
+    this.initialStatus = item.edit.status ?? null;
+    this.initialRank = item.edit?.personalScore ?? null;
+    this.initialStartDate = item.edit?.startedOn ?? null;
+    this.initialFinishDate = item.edit?.finishedOn ?? null;
+    this.initialNotes = item.edit?.notes ?? null;
+  }
+
+  /// Update values to reset form
+  updateInitialValues() {
+    this.initialStatus = this.selectedStatus;
+    this.initialRank = this.selectedRank;
+    this.initialStartDate = this.selectedStartDate;
+    this.initialFinishDate = this.selectedFinishDate;
+    this.initialNotes = this.selectedNotes;
   }
 }

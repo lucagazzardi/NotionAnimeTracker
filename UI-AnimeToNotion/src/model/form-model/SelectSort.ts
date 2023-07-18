@@ -1,2 +1,2 @@
 
-export const SelectSort: string[] = ["Title", "Status", "MAL Score", "Personal Score", "Date Added", "Start Date", "Finish Date"];
+export const SelectSort: string[] = ["Title", "Status", "MAL Score", "Personal Score", "Start Date", "Finish Date"]; // "Date Added",

@@ -23,6 +23,11 @@ namespace Data_AnimeToNotion.Repository
             return _animeShowContext.AnimeShows.Where(x => malIds.Contains(x.MalId)).AsNoTracking().AsQueryable();
         }
 
+        public IQueryable<AnimeShow> GetAsQueryable()
+        {
+            return _animeShowContext.AnimeShows.AsNoTracking().AsSplitQuery().AsQueryable();
+        }
+
         public async Task<AnimeShow> Add(AnimeShow animeShow)
         {
             var anime = await _animeShowContext.AddAsync(animeShow);
@@ -48,7 +53,6 @@ namespace Data_AnimeToNotion.Repository
             return await _animeShowContext.AnimeShows
                 .Include(x => x.Score)
                 .Include(x => x.WatchingTime)
-                .ThenInclude(x => x.Year)
                 .Include(x => x.Note)
                 .Include(x => x.GenreOnAnimeShows)
                 .ThenInclude(x => x.Genre)
@@ -64,7 +68,6 @@ namespace Data_AnimeToNotion.Repository
             return await _animeShowContext.AnimeShows
                 .Include(x => x.Score)
                 .Include(x => x.WatchingTime)
-                .ThenInclude(x => x.Year)
                 .Include(x => x.Note)
                 .Include(x => x.GenreOnAnimeShows)
                 .ThenInclude(x => x.Genre)
@@ -80,7 +83,6 @@ namespace Data_AnimeToNotion.Repository
             return await _animeShowContext.AnimeShows
                 .Include(x => x.Score)
                 .Include(x => x.WatchingTime)
-                .ThenInclude(x => x.Year)
                 .Include(x => x.Note)
                 .Where(x => x.Id == Id).SingleOrDefaultAsync();
         }
@@ -221,14 +223,14 @@ namespace Data_AnimeToNotion.Repository
             animeShow.Note = note;
         }
 
-        public async Task<int> GetCompletedYearValue(WatchingTime watchingTime)
+        public IQueryable<Year> GetYears()
         {
-            return await _animeShowContext.Year.AsNoTracking().Where(x => x.Id == watchingTime.CompletedYear).Select(x => x.YearValue).SingleOrDefaultAsync();
-        }
+            return _animeShowContext.Years.AsNoTracking().AsQueryable();
+        } 
 
         public async Task<Guid> GetCompletedYearId(string notionPageId)
         {
-            return await _animeShowContext.Year.AsNoTracking().Where(x => x.NotionPageId == notionPageId).Select(x => x.Id).SingleOrDefaultAsync();
+            return await _animeShowContext.Years.AsNoTracking().Where(x => x.NotionPageId == notionPageId).Select(x => x.Id).SingleOrDefaultAsync();
         }
 
         public async Task<bool> Exists(int malId)

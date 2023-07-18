@@ -1,5 +1,5 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-checkbox',
@@ -30,6 +30,8 @@ export class CheckboxComponent implements OnInit {
   checked: boolean = false;
   @Input() label: string = '';
 
+  @Output() valueChanged: EventEmitter<boolean> = new EventEmitter();  
+
   constructor() { }
 
   ngOnInit(): void {
@@ -37,5 +39,6 @@ export class CheckboxComponent implements OnInit {
 
   switchCheckbox() {
     this.checked = !this.checked;
+    this.valueChanged.emit(this.checked);
   }
 }

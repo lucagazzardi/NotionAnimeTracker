@@ -21,7 +21,7 @@ namespace Data_AnimeToNotion.Context
         public DbSet<StudioOnAnimeShow> StudioOnAnimeShows { get; set; }
         public DbSet<WatchingTime> WatchingTimes { get; set; }
         public DbSet<Relation> Relations { get; set; }
-        public DbSet<Year> Year { get; set; }
+        public DbSet<Year> Years { get; set; }
 
         #region SyncToNotion
 

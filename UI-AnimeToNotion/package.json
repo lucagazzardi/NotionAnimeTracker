@@ -26,6 +26,7 @@
     "gazza-toaster": "^0.1.1",
     "jest-editor-support": "*",
     "mdb-angular-ui-kit": "^2.3.0",
+    "ngx-infinite-scroll": "^13.0.0",
     "ngx-skeleton-loader": "^6.0.0",
     "notiflix": "^3.2.5",
     "rxjs": "~7.5.0",

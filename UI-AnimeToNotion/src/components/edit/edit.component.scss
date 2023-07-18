@@ -55,6 +55,29 @@ $cover-height-small: $cover-width-small * 1.5;
     }
   }
 
+  @at-root &__title-circle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 5px;
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    background: rgb(var(--background-active-item));
+  }
+
+  @at-root &__title-circle--towatch {
+    background: #F4C900;
+  }
+
+  @at-root &__title-circle--watching {
+    background: rgb(var(--background-active-item));
+  }
+
+  @at-root &__title-circle--completed {
+    background: green;
+  }
+
   @at-root &__title-value--loading {
     border-radius: 4px;
     height: 30px;
@@ -212,8 +235,12 @@ $cover-height-small: $cover-width-small * 1.5;
 
   @at-root &__buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 15px;    
+  }
+
+  @at-root &__buttons--single-row {
+    grid-template-columns: 1fr;
   }
 
   @at-root &__button {
@@ -231,7 +258,7 @@ $cover-height-small: $cover-width-small * 1.5;
     max-height: 42px;
   }
 
-  @at-root &__button--icon {
+  @at-root &__button-icon {
     width: 1rem;
     cursor: pointer;
 
@@ -246,6 +273,15 @@ $cover-height-small: $cover-width-small * 1.5;
 
     &:hover {
       color: rgb(var(--background-danger-item));
+      transition: .2s;
+    }
+  }
+
+  @at-root &__button-icon--plan-selected {
+    color: rgb(var(--background-active-item), .9);
+
+    &:hover {
+      color: rgb(var(--background-active-item));
       transition: .2s;
     }
   }

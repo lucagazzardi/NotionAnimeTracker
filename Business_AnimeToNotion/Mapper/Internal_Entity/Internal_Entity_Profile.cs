@@ -30,8 +30,8 @@ namespace Business_AnimeToNotion.Mapper.Internal_Entity
                 {
                     Id = Guid.NewGuid(),
                     StartedOn = source.Edit.StartedOn.Value,
-                    FinishedOn = source.Edit.FinishedOn != null ? source.Edit.FinishedOn.Value : null,
-                    CompletedYear = source.Edit.CompletedYear != null ? source.Edit.CompletedYear.Id : null,
+                    FinishedOn = source.Edit.FinishedOn ?? null,
+                    CompletedYear = source.Edit.CompletedYear ?? null,
                 } : null))
                 .ForMember(dto => dto.Note, map => map.MapFrom(source => source.Edit != null && source.Edit.Notes != null ? new Note()
                 {

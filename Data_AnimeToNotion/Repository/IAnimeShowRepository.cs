@@ -6,6 +6,7 @@ namespace Data_AnimeToNotion.Repository
     {
         Task<AnimeShow> GetByMalId(int malId);
         IQueryable<AnimeShow> GetAllByIds(List<int> malIds);
+        IQueryable<AnimeShow> GetAsQueryable();
         Task<AnimeShow> Add(AnimeShow animeShow);
         Task Update(AnimeShow animeShow);
         Task Remove(AnimeShow animeShow);
@@ -25,7 +26,7 @@ namespace Data_AnimeToNotion.Repository
         Task AddWatchingTime(WatchingTime watchingTime, AnimeShow animeShow);
         Task AddScore(Score score, AnimeShow animeShow);
         Task AddNote(Note note, AnimeShow animeShow);
-        Task<int> GetCompletedYearValue(WatchingTime watchingTime);
+        IQueryable<Year> GetYears();
         Task<Guid> GetCompletedYearId(string notionPageId);
         Task<bool> Exists(int malId);
 

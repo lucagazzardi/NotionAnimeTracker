@@ -1,4 +1,3 @@
-@use "sass:selector";
 @use '../../assets/scss/_container.scss';
 @use '../../assets/scss/_show-visualization.scss';
 @use '../../assets/scss/_show-buttons.scss';
@@ -93,7 +92,7 @@
     width: 100%;
     display: grid;
     grid-gap: 20px;
-    grid-template-columns: 150px 150px;
+    grid-template-columns: 150px 150px 150px;
     justify-content: end;
     margin-bottom: 15px;
 }

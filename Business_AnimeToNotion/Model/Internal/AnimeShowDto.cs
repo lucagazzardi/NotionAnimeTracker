@@ -30,7 +30,7 @@
     {
         public DateTime StartedOn { get; set; }
         public DateTime? FinishedOn { get; set; }
-        public string YearNotionPageId { get; set; }
+        public int? CompletedYear { get; set; }
     }
 
     public class NoteDto

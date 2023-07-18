@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToasterService } from 'gazza-toaster';
 import { ThemeService } from '../services/theme/theme.service';
 
 @Component({
@@ -8,8 +9,8 @@ import { ThemeService } from '../services/theme/theme.service';
 })
 export class AppComponent {
   title = 'UI-AnimeToNotion';
-  
-  constructor(private themeService: ThemeService) { }
+
+  constructor(private themeService: ThemeService, private toasterService: ToasterService) { }
 
   ngOnInit(): void {
     
