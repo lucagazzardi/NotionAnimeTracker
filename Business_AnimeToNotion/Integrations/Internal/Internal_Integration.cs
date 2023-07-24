@@ -1,8 +1,10 @@
-﻿using Business_AnimeToNotion.Integrations.MAL;
+﻿using Azure;
+using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Integrations.Notion;
 using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Common;
 using Business_AnimeToNotion.Model.Entities;
+using Business_AnimeToNotion.Model.History;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.Notion;
 using Business_AnimeToNotion.Model.Notion.Base;
@@ -17,6 +19,8 @@ using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Notion.Client;
+using System.ComponentModel.DataAnnotations;
 
 namespace Business_AnimeToNotion.Integrations.Internal
 {
@@ -200,7 +204,38 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
         #endregion
 
-        
+        #region History
+
+        public async Task<List<HistoryYear>> GetHistory()
+        {
+            var data = _animeRepository.GetAsQueryable().Select(x => new { x.WatchingTime.CompletedYear, x.WatchingTime.FinishedOn, x.MalId, x.NameEnglish, x.Favorite, x.Cover });
+
+            var result = await data.Where(x => x.CompletedYear != null).GroupBy(x => x.CompletedYear ?? 0).Select(x => new HistoryYear()
+            {
+                Year = x.Key,
+                WatchedNumber = x.Count(),
+                FavoritesNumber = x.Where(x => x.Favorite).Count(),
+                Data = x.OrderByDescending(x => x.FinishedOn).Take(8).OrderBy(x => x.FinishedOn).Select(y => new HistoryYearPreview() { MalId = y.MalId, NameEnglish = y.NameEnglish, Cover = y.Cover }).ToList()
+            }).OrderByDescending(x => x.Year).ToListAsync();
+
+            return result;
+        }
+
+        public async Task<PaginatedResponse<INT_AnimeShowFull>> GetHistoryYear(int year, int page)
+        {
+            return await LibraryQuery(new FilterIn() { Year = year }, SortIn.FinishDate, new PageIn() { CurrentPage = page, PerPage = 20 });
+        }
+
+        public async Task<INT_YearCount> GetHistoryCount(int year)
+        {
+            var data = _animeRepository.GetAsQueryable()
+                .Where(x => x.WatchingTime.CompletedYear == year)
+                .Select(x => x.Favorite);
+
+            return new INT_YearCount() { Year = year, Completed = await data.CountAsync(), Favorite = await data.Where(x => x).CountAsync() };
+        }
+
+        #endregion
 
         #region Private
 

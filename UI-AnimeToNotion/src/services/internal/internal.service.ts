@@ -55,5 +55,9 @@ export class InternalService {
   libraryQuery(query: IQuery): Observable<any> {
     return this.client.post(this.baseUrl + this.internalController + "get/filtered", query);
   }
+
+  getHistory(): Observable<any> {
+    return this.client.get(this.baseUrl + this.internalController + "get/history");
+  }
 }
 

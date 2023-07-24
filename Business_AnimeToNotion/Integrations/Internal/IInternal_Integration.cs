@@ -1,5 +1,6 @@
 ﻿using Business_AnimeToNotion.Model.Common;
 using Business_AnimeToNotion.Model.Entities;
+using Business_AnimeToNotion.Model.History;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.Notion.Base;
 using Business_AnimeToNotion.Model.Pagination;
@@ -32,6 +33,14 @@ namespace Business_AnimeToNotion.Integrations.Internal
         #region Library Operativity
 
         Task<PaginatedResponse<INT_AnimeShowFull>> LibraryQuery(FilterIn filters, SortIn? sort, PageIn page);
+
+        #endregion
+
+        #region History
+
+        Task<List<HistoryYear>> GetHistory();
+        Task<PaginatedResponse<INT_AnimeShowFull>> GetHistoryYear(int year, int page);
+        Task<INT_YearCount> GetHistoryCount(int year);
 
         #endregion
 

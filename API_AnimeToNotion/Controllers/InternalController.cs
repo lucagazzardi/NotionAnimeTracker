@@ -95,7 +95,29 @@ namespace API_AnimeToNotion.Controllers
             return Ok(await _main.LibraryQuery(query.filters, query.sort, query.page));
         }
 
-        #endregion        
+        #endregion
+
+        #region History
+
+        [HttpGet("get/history")]
+        public async Task<IActionResult> GetHistory()
+        {
+            return Ok(await _main.GetHistory());
+        }
+
+        [HttpGet("get/history/{year}/{page}")]
+        public async Task<IActionResult> GetHistoryYear(int year, int page)
+        {
+            return Ok(await _main.GetHistoryYear(year, page));
+        }
+
+        [HttpGet("get/history/count/{year}")]
+        public async Task<IActionResult> GetHistoryCount(int year)
+        {
+            return Ok(await _main.GetHistoryCount(year));
+        }
+
+        #endregion
 
         #region Demo
 

@@ -31,6 +31,7 @@ import { SearchbarComponent } from '../components/form-components/searchbar/sear
 import { SliderComponent } from '../components/form-components/slider/slider.component';
 import { SortComponent } from '../components/sort/sort.component';
 import { CheckboxComponent } from '../components/form-components/checkbox/checkbox.component';
+import { HistoryComponent } from '../components/history/history.component';
 
 
 //APP SERVICES
@@ -54,7 +55,8 @@ import { MalService } from '../services/mal/mal.service';
     SearchbarComponent,
     SliderComponent,
     SortComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    HistoryComponent
   ],
   imports: [
     AppRoutingModule,
