@@ -1,4 +1,5 @@
 @use '../../assets/scss/_container.scss';
+@import '../../assets/scss/_skeleton.scss';
 
 .year {
   margin-top: 40px;
@@ -15,8 +16,20 @@
     grid-template-columns: 1fr 1fr;
     margin-top: 30px;
     box-shadow: var(--box-shadow);
+    cursor: pointer;
 
-    &::after {
+    @media screen and (max-width: 760px) {
+      & {
+        display: block;
+      }
+
+      &:hover::after {
+        background: rgba(var(--color-foreground), .95);
+        transition: .35s;
+      }
+    }
+
+    &:after {
       border-radius: 6px;
       content: "";
       position: absolute;
@@ -26,6 +39,7 @@
       height: 100%;
       background: rgba(var(--color-foreground), .2);
       opacity: 1;
+      transition: .35s;
 
       @media screen and (max-width: 760px) {
         & {
@@ -34,10 +48,57 @@
       }
     }
 
-    @media screen and (max-width: 760px) {
+    &:hover::after {
+      background: rgba(var(--color-foreground), .8);
+      transition: .35s;
+    }
+  }
+
+  @at-root &__item--loading {
+    min-height: 220px;
+    background: rgba(var(--color-skeleton-base),.8);
+    box-shadow: none;
+    opacity: 1;
+    overflow: hidden;
+    padding: 0;
+    grid-template-columns: 1fr;
+    cursor: initial;
+
+    &:before {
+      @include skeleton;
+      @include skeleton-animation;
+    }
+
+    &:after {
+      display: none;
+    }
+
+    @media screen and (min-width: 1200px) and (max-width: 1540px) {
       & {
-        display: block;
+        min-height: 175px;
       }
+    }
+
+    @media screen and (min-width: 1040px) and (max-width: 1200px) {
+      & {
+        min-height: 154px;
+      }
+    }
+
+    @media screen and (min-width: 400px) and (max-width: 1040px) {
+      & {
+        min-height: 325px;
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      & {
+        min-height: 303px;        
+      }
+    }
+
+    @media screen and (max-width: 760px){
+        display: grid;
     }
   }
 
@@ -199,4 +260,12 @@
     top: 0;
     left: 0;
   }
+}
+
+.year--loading {
+  margin-top: 40px;
+  padding: 20px;
+  display: block;
+
+  
 }

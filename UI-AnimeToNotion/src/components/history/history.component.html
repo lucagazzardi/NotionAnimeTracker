@@ -1,6 +1,6 @@
 <div class="container">
   <div class="year">
-    <ng-container *ngIf="historyYears$ | async as years">
+    <ng-container *ngIf="historyYears$ | async as years; else skeleton">
       <div class="year__item" *ngFor="let item of years">
 
         <div class="year__info">
@@ -9,8 +9,6 @@
             <div class="year__info-year">
               {{item.year}}
             </div>
-
-            <!--<div class="year__info-divider"></div>-->
 
             <div class="year__info-count">
               <div class="year__info-icon-wrapper">
@@ -36,7 +34,7 @@
         <div class="year__preview-wrap">
           <div class="year__preview">
             <div class="year__cover" *ngFor="let show of item.data">
-              <img class="year__image" src="{{show.cover}}">
+              <img class="year__image" src="{{show.cover}}" @opacityOnEnter>
             </div>
           </div>
         </div>
@@ -45,3 +43,11 @@
     </ng-container>
   </div>
 </div>
+
+<ng-template #skeleton>
+
+  <div class="year__item year__item--loading" *ngFor="let item of skeletonYears">
+
+  </div>
+
+</ng-template>
