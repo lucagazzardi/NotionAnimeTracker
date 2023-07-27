@@ -39,8 +39,8 @@
 
           <ng-container *ngIf="seasonalListStatic || (seasonalList$ | async); else skeleton">
             <div *ngFor="let item of seasonalListStatic; let i = index" class="show-visualization__item" (mouseenter)="seasonalListTracker[i] = true" (mouseleave)="seasonalListTracker[i] = false">
-              <a class="show-visualization__cover" @opacityOnEnter>
-                <img class="show-visualization__image" src="{{item.cover}}" (click)="editItem(item)" >
+              <a class="show-visualization__cover">
+                <img class="show-visualization__image" [class.show-visualization__image--loaded]="seasonalListImages[i] == true" src="{{item.cover}}" (click)="editItem(item)" (load)="seasonalListImages[i] = true">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: seasonalListTracker, index: i }"></ng-container>
@@ -69,8 +69,8 @@
         <div class="show-visualization__shows">
           <ng-container *ngIf="nextSeasonList$ | async as nextSeasonList; else skeleton">
             <div *ngFor="let item of nextSeasonListStatic; let i = index" class="show-visualization__item" (mouseenter)="nextSeasonTracker[i] = true" (mouseleave)="nextSeasonTracker[i] = false">
-              <a class="show-visualization__cover" @opacityOnEnter>
-                <img class="show-visualization__image" src="{{item.cover}}" (click)="editItem(item)">
+              <a class="show-visualization__cover">
+                <img class="show-visualization__image" [class.show-visualization__image--loaded]="nextSeasonImages[i] == true" src="{{item.cover}}" (click)="editItem(item)" (load)="nextSeasonImages[i] = true">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: nextSeasonTracker, index: i }"></ng-container>
@@ -100,8 +100,8 @@
           <ng-container *ngIf="searchResult$ | async as searchResult; else skeleton">
             <ng-container *ngIf="searchResult?.list!.length > 0">
               <div *ngFor="let item of searchResult?.list; let i = index" class="show-visualization__item" (mouseenter)="searchResultTracker[i] = true" (mouseleave)="searchResultTracker[i] = false">
-                <a class="show-visualization__cover" @opacityOnEnter>
-                  <img class="show-visualization__image" src="{{item.cover}}" (click)="editItem(item)">
+                <a class="show-visualization__cover">
+                  <img class="show-visualization__image" [class.show-visualization__image--loaded]="searchResultImages[i] == true" src="{{item.cover}}" (click)="editItem(item)" (load)="searchResultImages[i] = true">
 
                   <!--BUTTONS-->
                   <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: searchResultTracker, index: i }"></ng-container>

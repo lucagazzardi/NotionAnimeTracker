@@ -74,8 +74,8 @@
           <ng-container *ngIf="libraryListStatic.length > 0 || (libraryList$ | async); else skeleton">
             <div *ngFor="let item of libraryListStatic; let i = index" class="show-visualization__item" (mouseenter)="libraryListTracker[i] = true" (mouseleave)="libraryListTracker[i] = false">
 
-              <a class="show-visualization__cover" @opacityOnEnter>
-                <img class="show-visualization__image" src="{{item.cover}}" (click)="editItem(item)">
+              <a class="show-visualization__cover">
+                <img class="show-visualization__image" [class.show-visualization__image--loaded]="libraryListImages[i] == true" src="{{item.cover}}" (click)="editItem(item)" (load)="libraryListImages[i] = true">
 
                 <!--BUTTONS-->
                 <ng-container *ngTemplateOutlet="buttons; context: { item: item, list: libraryListTracker, index: i }"></ng-container>

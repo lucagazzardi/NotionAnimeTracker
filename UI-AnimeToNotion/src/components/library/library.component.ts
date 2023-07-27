@@ -73,6 +73,8 @@ export class LibraryComponent implements OnInit {
   libraryList$!: Observable<ILibrary>;
   libraryListStatic!: IAnimeFull[];
   libraryListTracker!: boolean[];
+  libraryListImages!: boolean[];
+
 
   //! GENERAL FIELDS
   filterBackground: string = "foreground";
@@ -143,6 +145,7 @@ export class LibraryComponent implements OnInit {
                 tap(value => {
                   this.noResults = value.data.length == 0;
                   this.libraryListTracker = Array(value.data.length).fill(false);
+                  this.libraryListImages = Array(value.data.length).fill(false);
                   this.libraryListStatic = value.data;
                   this.loading = false;
                 }),
@@ -264,6 +267,7 @@ export class LibraryComponent implements OnInit {
         this.noResults = value.data.length == 0;
         this.libraryListStatic = value.data;
         this.libraryListTracker = Array(value.data.length).fill(false);
+        this.libraryListImages = Array(value.data.length).fill(false);
       }));
   }
 

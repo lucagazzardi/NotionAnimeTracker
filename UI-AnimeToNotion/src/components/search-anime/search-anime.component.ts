@@ -57,17 +57,21 @@ export class SearchAnimeComponent implements OnInit {
   seasonalList$!: Observable<IAnimeBase[]>;
   seasonalListStatic!: IAnimeBase[];
   seasonalListTracker!: boolean[];
+  seasonalListImages!: boolean[];
 
   //! ==NEXT SEASON==
   nextSeasonList$!: Observable<IAnimeBase[]>;
   nextSeasonListStatic!: IAnimeBase[];
   nextSeasonTracker!: boolean[];
+  nextSeasonImages!: boolean[];
+
 
   //! ==SEARCH==
   searchTerm: string = "";
   private searchTerm$ = new BehaviorSubject<string>('');
   searchResult$!: Observable<{ loading: boolean, list?: IAnimeBase[] }>;
   searchResultTracker!: boolean[];
+  searchResultImages!: boolean[];
   searching: boolean = false;
   noResults: boolean = false;
 
@@ -81,10 +85,10 @@ export class SearchAnimeComponent implements OnInit {
   ngOnInit(): void {
 
     this.seasonalList$ = this.malService.getCurrentSeason()
-      .pipe(tap(value => { this.seasonalListStatic = value; this.seasonalListTracker = Array(value.length).fill(false) }));
+      .pipe(tap(value => { this.seasonalListStatic = value; this.seasonalListTracker = Array(value.length).fill(false), this.seasonalListImages = Array(value.length).fill(false) }));
     
     this.nextSeasonList$ = this.malService.getUpcomingSeason()
-      .pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false) }));
+      .pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false), this.nextSeasonImages = Array(value.length).fill(false) }));
 
     //! DEBOUNCING START
     this.debouncingPipe();    
@@ -129,6 +133,7 @@ export class SearchAnimeComponent implements OnInit {
                 tap(value => {
                   this.noResults = value.length == 0;
                   this.searchResultTracker = Array(value.length).fill(false);
+                  this.searchResultImages = Array(value.length).fill(false);
                 }),
                 map(value => ({ loading: false, list: value })),
                 
