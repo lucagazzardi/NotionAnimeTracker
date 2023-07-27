@@ -1,8 +1,12 @@
-﻿using Business_AnimeToNotion.Integrations.MAL;
+﻿using Business_AnimeToNotion.Integrations.Internal;
+using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Mapper.Config;
+using Business_AnimeToNotion.Model.Internal;
 using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Model;
 using Data_AnimeToNotion.Repository;
+using JikanDotNet;
+using JikanDotNet.Config;
 using Microsoft.Extensions.Configuration;
 using Notion.Client;
 
@@ -12,9 +16,12 @@ namespace Business_AnimeToNotion.Integrations.Demo
     {
         #region DI
 
+        private readonly IJikan _jikan;
+
         private readonly IConfiguration _configuration;
         private readonly IAnimeShowRepository _animeShowRepository;
         private readonly IMAL_Integration _malIntegration;
+        private readonly IInternal_Integration _internalIntegration;
 
         #endregion
 
@@ -24,19 +31,27 @@ namespace Business_AnimeToNotion.Integrations.Demo
         public Demo_Integration(
                 IConfiguration configuration,
                 IAnimeShowRepository animeShowRepository,
-                IMAL_Integration malIntegration
+                IMAL_Integration malIntegration,
+                IInternal_Integration internalIntegration
             )
         {
             #region DI
             _configuration = configuration;
             _animeShowRepository = animeShowRepository;
             _malIntegration = malIntegration;
+            _internalIntegration = internalIntegration;
             #endregion
 
             Client = NotionClientFactory.Create(new ClientOptions
             {
                 AuthToken = configuration["Notion-AuthToken"]
             });
+
+            var config = new JikanClientConfiguration()
+            {
+                LimiterConfigurations = TaskLimiterConfiguration.None
+            };
+            _jikan = new Jikan(config);
         }
 
         /// <summary>
@@ -50,7 +65,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
 
             Dictionary<string, string> differences = new Dictionary<string, string>();
 
-            //await AddToDB(DataBaseId, cursor);
+            await AddToDB(DataBaseId, cursor);
         }
 
         #region Private
@@ -64,7 +79,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
                     Filter = new SearchFilter() { Value = SearchObjectType.Database },
                     Query = _configuration["Notion_ApiConfig:Notion_DatabaseName"]
                 });
-                DataBaseId = database.Results[0].Id;
+                DataBaseId = database.Results.Single(x => ((Database)x).Title[0].PlainText == _configuration["Notion_ApiConfig:Notion_DatabaseName"]).Id;
             }
         }
 
@@ -77,7 +92,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
             {
                 retrievedNotionPages = await Client.Databases.QueryAsync(DataBaseId, new DatabasesQueryParameters()
                 {
-                    PageSize = 100,
+                    PageSize = 10,
                     StartCursor = cursor != "null" ? cursor : null
                 });
                 cursor = retrievedNotionPages.NextCursor;
@@ -91,7 +106,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Error for: " + show.Id);
+                        throw new Exception("Error for: " + show.Id + ": " + ex);
                     }
 
                 }
@@ -101,20 +116,26 @@ namespace Business_AnimeToNotion.Integrations.Demo
 
         private async Task MappingAndAdding(Page page)
         {
-            AnimeShowDto anime = Mapping.Mapper.Map<AnimeShowDto>(page);
+            int animeId = (int)((NumberPropertyValue)page.Properties["MAL Id"]).Number.Value;
 
-            if (await _animeShowRepository.Exists(anime.MalId))
+            if (await _animeShowRepository.Exists(animeId))
                 return;
 
-            //var malAnime = await _malIntegration.MAL_SearchAnimeByIdAsync(anime.MalId);
+            var anime = _jikan.GetAnimeAsync(animeId);            
+            var malRelations = _malIntegration.GetRelationsFromMAL(animeId);
+            await Task.Delay(1000);
+            await Task.WhenAll(anime, malRelations);
 
-            AnimeShow animeShow = await MapAnimeShow(anime);
+            var added = await _animeShowRepository.AddInternalAnimeShow(
+                Mapping.Mapper.Map<AnimeShow>(Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data)),
+                Mapping.Mapper.ProjectTo<Studio>(Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data).Studios.AsQueryable()).ToList(),
+                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data).Genres.AsQueryable()).ToList(),
+                Mapping.Mapper.ProjectTo<Relation>(Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await malRelations).related_anime.AsQueryable())).ToList()
+            );
 
-            //await _animeShowRepository.AddFromNotion(
-            //    animeShow, 
-            //    genres: Mapping.Mapper.Map<Dictionary<int, string>>(malAnime.genres), 
-            //    studios: Mapping.Mapper.Map<Dictionary<int, string>>(malAnime.studios), 
-            //    relations: Mapping.Mapper.Map<List<Relation>>(malAnime.related_anime));
+            var edit = Mapping.Mapper.Map<INT_AnimeShowEdit>(page);
+            edit.Id = added.Id;
+            await _internalIntegration.EditAnime(edit);
         }
 
         /// <summary>

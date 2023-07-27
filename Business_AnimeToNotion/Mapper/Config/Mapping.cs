@@ -4,11 +4,6 @@ using Business_AnimeToNotion.Mapper.Entity_Internal;
 using Business_AnimeToNotion.Mapper.FromMal;
 using Business_AnimeToNotion.Mapper.Internal_Entity;
 using Business_AnimeToNotion.Mapper.Internal_Notion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business_AnimeToNotion.Mapper.Config
 {
@@ -32,7 +27,7 @@ namespace Business_AnimeToNotion.Mapper.Config
                 cfg.AddProfile<Internal_Entity_Profile>();
                 cfg.AddProfile<Internal_Notion_Profile>();
                 cfg.AddProfile<Entity_Internal_Profile>();
-                cfg.AddProfile<Entity_History_Profile>();
+                cfg.AddProfile<Entity_History_Profile>();             
 
             });
             var mapper = config.CreateMapper();

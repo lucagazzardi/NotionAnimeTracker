@@ -1,8 +1,6 @@
-﻿using Azure;
-using Business_AnimeToNotion.Integrations.MAL;
+﻿using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Integrations.Notion;
 using Business_AnimeToNotion.Mapper.Config;
-using Business_AnimeToNotion.Model.Common;
 using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.History;
 using Business_AnimeToNotion.Model.Internal;
@@ -19,8 +17,6 @@ using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using Notion.Client;
-using System.ComponentModel.DataAnnotations;
 
 namespace Business_AnimeToNotion.Integrations.Internal
 {
