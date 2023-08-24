@@ -15,6 +15,12 @@ $cover-height-small: $cover-width-small * 1.5;
   justify-content: flex-end;
   padding: 10px 0;
 
+  @media screen and (max-width: 400px) {
+    & {
+      height:150px;
+    }
+  }
+
   @at-root &__container {
     padding-left: 50px+$cover-width;
     padding-right: 50px;
@@ -28,6 +34,13 @@ $cover-height-small: $cover-width-small * 1.5;
     @media screen and (max-width: 1040px) {
       & {
         padding-left: $cover-width-small;
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      & {
+        padding-left: $cover-width-small;
+        padding-right: 0;
       }
     }
   }
@@ -47,6 +60,10 @@ $cover-height-small: $cover-width-small * 1.5;
     color: rgb(var(--color-text-highlight));
     font-size: 26px;
     font-weight: 600;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
 
     @media screen and (max-width: 1040px) {
       & {
@@ -177,6 +194,10 @@ $cover-height-small: $cover-width-small * 1.5;
     color: rgb(var(--color-text-normal));
     font-size: 18px;
     font-weight: 400;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
   }
 
   @at-root &__title--loading {

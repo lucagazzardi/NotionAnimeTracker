@@ -29,31 +29,14 @@
     }
   }
 
-  @at-root &__item--tooltip {
-    &:before {
-      background: rgba(18, 25, 43, .85);
-      border-radius: 4px;
-      box-shadow: var(--box-shadow);
-      color: rgb(220, 237, 250);
-      content: attr(label);
-      display: block;
-      font-size: 1rem;
-      font-weight: 700;
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      right: 28px;
-      transition: opacity .2s ease;
-      width: max-content;
-      padding: 1px 8px;
-      font-size: 9px;
-      font-family: var(--font-family-tertiary);
-      font-weight: 700;
-    }
-
-    &:hover:before {
-      opacity: 1;
-    }
+  @at-root ::ng-deep &__item--tooltip {
+    background: rgba(18, 25, 43, .85);
+    color: rgb(220, 237, 250);
+    font-size: 9px;
+    font-family: var(--font-family-tertiary);
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 3px 8px;
   }
 
   @at-root &__icon--s {

@@ -1,13 +1,18 @@
-using System.Text.Json;
 using Azure.Data.AppConfiguration;
-using Business_AnimeToNotion.Functions.Static;
+using Business_AnimeToNotion.Integrations.Internal;
 using Business_AnimeToNotion.Mapper.Config;
-using Business_AnimeToNotion.Model.MAL;
+using Business_AnimeToNotion.Model.Internal;
+using Business_AnimeToNotion.Model.Query.Filter;
+using Business_AnimeToNotion.Model.Query;
+using Business_AnimeToNotion.QueryLogic.SortLogic;
 using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Notion.Client;
+using Functions_AnimeToNotion.Model;
+using Business_AnimeToNotion.Integrations.MAL;
+using Business_AnimeToNotion.Model.Pagination;
 
 namespace Functions_AnimeToNotion
 {
@@ -20,157 +25,96 @@ namespace Functions_AnimeToNotion
         private static string MAL_ApiKey = Environment.GetEnvironmentVariable("MALApiKey");
         private static string MAL_NotionNeededFields = Environment.GetEnvironmentVariable("MAL_NotionNeededFields");
         private static string MAL_BaseURL = Environment.GetEnvironmentVariable("MAL_BaseURL");
-        private static string NextCursor = Environment.GetEnvironmentVariable("NextCursor");
         private string DataBaseId = Environment.GetEnvironmentVariable("Notion-DataBaseId");
         private int PageSize = Convert.ToInt32(Environment.GetEnvironmentVariable("PageSize"));
         private ConfigurationClient configClient = new ConfigurationClient(Environment.GetEnvironmentVariable("AppConfiguration-ConnectionString"));
 
         private NotionClient NotionClient;
         private HttpClient MALClient;
+        private int currentPage;
 
         #region DI
         private readonly ILogger _logger;
         private readonly IAnimeShowRepository _animeRepository;
-        #endregion
+        private readonly IInternal_Integration _internalIntegration;
+        private readonly IMAL_Integration _malIntegration;
+        private readonly ISyncToNotionRepository _syncToNotionRepository;
 
         #endregion
 
-        public SyncMalData(ILoggerFactory loggerFactory, IAnimeShowRepository animeRepository)
+        #endregion
+
+        public SyncMalData(ILoggerFactory loggerFactory, IMAL_Integration malIntegration, IAnimeShowRepository animeRepository, IInternal_Integration internalIntegration, ISyncToNotionRepository syncToNotionRepository )
         {
             _logger = loggerFactory.CreateLogger<SyncMalData>();
             _animeRepository = animeRepository;
+            _internalIntegration = internalIntegration;
+            _malIntegration = malIntegration;
+            _syncToNotionRepository = syncToNotionRepository;
         }
 
         [Function("SyncMalData")]
-        public async Task Run([TimerTrigger("0 0 1 * * *"
-            //#if DEBUG
-            //    RunOnStartup= true
-            //#endif
+        public async Task Run([TimerTrigger("0 0 3 * * *",
+            #if DEBUG
+                RunOnStartup= false
+            #endif
             )] MyInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
+                        
+            currentPage = Convert.ToInt32(configClient.GetConfigurationSetting("AnimeToNotion-NextCursor").Value.Value);
+            _logger.LogInformation($"Page: {currentPage}");
 
-            _logger.LogInformation($"{configClient.GetConfigurationSetting("AnimeToNotion-NextCursor").Value.Value}");
+            var dbEntries = await GetFromDB();
 
-            #region Notion Client
-
-            NotionClient = NotionClientFactory.Create(new ClientOptions
-            {
-                AuthToken = Notion_Auth_Token
-            });
-
-            #endregion Notion Client
-
-            #region MAL Client
-
-            MALClient = new HttpClient();
-            MALClient.DefaultRequestHeaders.Add(MAL_Header, MAL_ApiKey);
-
-            #endregion
-
-            List<Page> notionEntries = await GetNotionEntries(_logger);
-
-            foreach (var notionEntry in notionEntries)
+            foreach (var dbEntry in dbEntries.Data)
             {
                 // Retrieve MAL anime record by Id
-                MAL_AnimeShowRaw MALEntry = await GetMALById(Mapping.Mapper.Map<string>(notionEntry.Properties["MAL Id"]));
+                INT_AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(MAL_Header, MAL_ApiKey, BuildMALUrl_SearchById(dbEntry.MalId));
 
                 // Check if there are differences
-                var differences = CheckDifferences(MALEntry, notionEntry);
+                var changes = Utility.Utility.CheckDifferences(MalEntry, dbEntry);
 
                 // Update if there are differences
-                await UpdateItem(MALEntry.title, differences, notionEntry, MALEntry, _logger);
+                await UpdateItem(changes, dbEntry);                
             }
+
+            currentPage = dbEntries.PageInfo.HasNextPage ? currentPage + 1 : 1;
+            configClient.SetConfigurationSetting("AnimeToNotion-NextCursor", (currentPage).ToString());
         }
 
         #region Private & Mapping
 
-        private async Task<List<Page>> GetNotionEntries(ILogger log)
+        private async Task<PaginatedResponse<INT_AnimeShowFull>> GetFromDB()
         {
-            var notionEntries = await NotionClient.Databases.QueryAsync(
-                DataBaseId,
-                new DatabasesQueryParameters()
-                {
-                    // Ordered by the oldest modified items
-                    Sorts = new List<Sort>() { new Sort() { Timestamp = Timestamp.LastEditedTime, Direction = Direction.Ascending } },
-                    StartCursor = !string.Equals(configClient.GetConfigurationSetting("AnimeToNotion-NextCursor").Value, "no_cursor") ? NextCursor : null,
-                    PageSize = PageSize
-                }
-            );
-
-            log.LogInformation($"--- Next Cursor: {notionEntries.NextCursor}");
-
-            if (notionEntries.NextCursor != null)
-            {
-                configClient.SetConfigurationSetting("AnimeToNotion-NextCursor", notionEntries.NextCursor);
-            }
-            else
-            {
-                configClient.SetConfigurationSetting("AnimeToNotion-NextCursor", "no_cursor");
-            }
-
-            return notionEntries.Results;
+            return (await _internalIntegration
+                .LibraryQuery(new FilterIn(), SortIn.StartedAiring, new PageIn() { PerPage = PageSize, CurrentPage = currentPage }));
         }
 
-        private async Task<MAL_AnimeShowRaw> GetMALById(string id)
-        {
-            var response = await MALClient.GetStringAsync(BuildMALUrl_SearchById(id));
-            return JsonSerializer.Deserialize<MAL_AnimeShowRaw>(response);
-        }
-
-        private string BuildMALUrl_SearchById(string id)
+        private string BuildMALUrl_SearchById(int id)
         {
             return $"{MAL_BaseURL}anime/{id}?{MAL_NotionNeededFields}";
         }
 
-        private Dictionary<string, PropertyValue> CheckDifferences(MAL_AnimeShowRaw MALEntry, Page notionEntry)
+        private async Task UpdateItem(Changes_MalToInternal changes, INT_AnimeShowFull dbEntry)
         {
-            var differences = new Dictionary<string, PropertyValue>();
-            Common_Utilities.Equals(MALEntry, notionEntry, out differences);
-            return differences;
-        }
+            if (changes.Changes.Count == 0)
+                return;
 
-        private async Task UpdateItem(string title, Dictionary<string, PropertyValue> differences, Page notionEntry, MAL_AnimeShowRaw malAnimeShow, ILogger log)
-        {
-            if (differences.Count > 0)
-            {
-                // Update SQL Database
-                await UpdateDatabase(notionEntry.Id, differences, malAnimeShow);
+            var anime = await _animeRepository.GetForEdit(dbEntry.Info.Id);            
 
-                // Update Notion entry
-                await NotionClient.Pages.UpdateAsync(notionEntry.Id, new PagesUpdateParameters() { Properties = differences });
+            anime = Utility.Utility.SetBasicChanges(anime, changes.ChangedAnime, changes.Changes);
 
-                LogDifferences(title, differences, notionEntry, log);
-            }
-            else
-            {
-                log.LogInformation($"___ {title} ___ No changes");
-            }
-        }
-
-        private void LogDifferences(string title, Dictionary<string, PropertyValue> differences, Page notionEntry, ILogger log)
-        {
-            log.LogInformation($"*** {title} ***");
-            foreach (var difference in differences)
-            {
-                log.LogInformation($"{difference.Key}: {Mapping.Mapper.Map<string>(notionEntry.Properties[difference.Key])} ----> {Mapping.Mapper.Map<string>(difference.Value)}");
-            }
-            log.LogInformation($"***************");
-        }
-
-        private async Task UpdateDatabase(string notionPageId, Dictionary<string, PropertyValue> differences, MAL_AnimeShowRaw malAnimeShow)
-        {
-            // Retrieve AnimeShow by NotionPageId and maps the differences to the entity
-            AnimeShow animeShow = Common_Utilities.MapFromNotionToAnimeShow(await _animeRepository.GetByNotionPageId(notionPageId), differences);
-
-            // Update anime show with the current info retrieved from MAL
             await _animeRepository.SyncFromMal(
-                animeShow,
-                studios: Mapping.Mapper.Map<Dictionary<int, string>>(malAnimeShow.studios),
-                genres: Mapping.Mapper.Map<Dictionary<int, string>>(malAnimeShow.genres),
-                relations: Mapping.Mapper.Map<List<Relation>>(malAnimeShow));
-        }
+                anime,
+                changes.Changes.Contains("Studios") ? Mapping.Mapper.ProjectTo<Studio>(changes.ChangedAnime.Studios.AsQueryable()).ToList() : null,
+                changes.Changes.Contains("Genres") ? Mapping.Mapper.ProjectTo<Genre>(changes.ChangedAnime.Genres.AsQueryable()).ToList() : null,
+                changes.Changes.Contains("Relations") ? Mapping.Mapper.ProjectTo<Relation>(changes.ChangedAnime.Relations.AsQueryable()).ToList() : null
+            );
+
+            await _syncToNotionRepository.SetToSyncNotion(anime.Id, "Edit");
+        }     
 
         #endregion Private & Mapping
     }

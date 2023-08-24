@@ -11,6 +11,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
         Task<List<INT_AnimeShowBase>> GetUpcomingSeasonAnimeShow();
         Task<List<INT_AnimeShowBase>> SearchAnimeByName(string searchTerm);
         Task<INT_AnimeShowFull> GetAnimeById(int malId);
+        Task<INT_AnimeShowFull> GetAnimeById(string header, string key, string url);
         Task<MAL_AnimeShowRelations> GetRelationsFromMAL(int malId);
     }
 }

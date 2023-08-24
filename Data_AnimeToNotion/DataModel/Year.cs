@@ -1,5 +1,8 @@
-﻿namespace Data_AnimeToNotion.DataModel
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Data_AnimeToNotion.DataModel
 {
+    [Index(nameof(NotionPageId))]
     public class Year
     {
         public Guid Id { get; set; }

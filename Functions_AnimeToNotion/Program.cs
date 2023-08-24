@@ -1,3 +1,5 @@
+using Business_AnimeToNotion.Integrations.Internal;
+using Business_AnimeToNotion.Integrations.MAL;
 using Data_AnimeToNotion.Context;
 using Data_AnimeToNotion.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,8 @@ var host = new HostBuilder()
         s.AddDbContext<AnimeShowContext>(
             options => options.UseSqlServer(Environment.GetEnvironmentVariable("SqlConnectionString"))
         );
+        s.AddSingleton<IInternal_Integration, Internal_Integration>();
+        s.AddSingleton<IMAL_Integration, MAL_Integration>();
         s.AddSingleton<IAnimeShowRepository, AnimeShowRepository>();
         s.AddSingleton<ISyncToNotionRepository, SyncToNotionRepository>();
         s.Configure<LoggerFilterOptions>(options =>
@@ -31,4 +35,4 @@ var host = new HostBuilder()
     })
     .Build();
 
-host.Run();
+await host.RunAsync();

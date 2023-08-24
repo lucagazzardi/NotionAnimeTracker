@@ -5,7 +5,6 @@ using Data_AnimeToNotion.Repository;
 using System.Text.Json.Serialization;
 using JikanDotNet;
 using Business_AnimeToNotion.Integrations.MAL;
-using Business_AnimeToNotion.Integrations.Notion;
 using Business_AnimeToNotion.Integrations.Demo;
 using Business_AnimeToNotion.Integrations.Internal;
 
@@ -23,11 +22,12 @@ builder.Services.AddCors(options =>
 
 #region DI
 
-builder.Services.AddScoped<INotion_Integration, Notion_Integration>();
 builder.Services.AddScoped<IMAL_Integration, MAL_Integration>();
 builder.Services.AddScoped<IAnimeShowRepository, AnimeShowRepository>();
 builder.Services.AddScoped<IDemo_Integration, Demo_Integration>();
 builder.Services.AddScoped<IInternal_Integration, Internal_Integration>();
+builder.Services.AddScoped<ISyncToNotionRepository, SyncToNotionRepository>();
+
 builder.Services.AddSingleton<IJikan, Jikan>();
 
 #endregion

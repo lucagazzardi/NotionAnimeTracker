@@ -1,6 +1,6 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable } from 'rxjs';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { BehaviorSubject, concat, debounceTime, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable } from 'rxjs';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../../assets/animations/animations';
 import { InternalService } from '../../services/internal/internal.service';
 import { ToasterService } from 'gazza-toaster';
@@ -75,6 +75,8 @@ export class SearchAnimeComponent implements OnInit {
   searching: boolean = false;
   noResults: boolean = false;
 
+  @ViewChildren("hover") hover: QueryList<ElementRef> = new QueryList<ElementRef>();
+
   constructor(
     private malService: MalService,
     private internalService: InternalService,
@@ -91,7 +93,13 @@ export class SearchAnimeComponent implements OnInit {
       .pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false), this.nextSeasonImages = Array(value.length).fill(false) }));
 
     //! DEBOUNCING START
-    this.debouncingPipe();    
+    this.debouncingPipe();
+  }
+
+  ngAfterViewInit(): void {
+    this.hover.changes.subscribe((x: QueryList<ElementRef>) => {
+      x.toArray().forEach(x => this.isInViewport(x))
+    });
   }
 
   /// Alternate search by id or by title
@@ -176,5 +184,22 @@ export class SearchAnimeComponent implements OnInit {
   /// Open Edit Component
   editItem(item: IAnimeBase | IAnimeFull) {
     this.editService.editItem(item);
+  }
+
+  isInViewport(item: ElementRef) {
+    const rect = item.nativeElement.getBoundingClientRect();
+    if (item.nativeElement.classList.contains('show-visualization__show-hover--right') && rect.right > (window.innerWidth || document.documentElement.clientWidth)) {
+      item.nativeElement.classList.remove('show-visualization__show-hover--right');
+      item.nativeElement.classList.add('show-visualization__show-hover--left');
+    }
+    if (item.nativeElement.classList.contains('show-visualization__show-hover--left') && rect.left < 0) {
+      item.nativeElement.classList.remove('show-visualization__show-hover--left');
+      item.nativeElement.classList.add('show-visualization__show-hover--right');
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.hover.toArray().forEach(x => this.isInViewport(x));
   }
 }

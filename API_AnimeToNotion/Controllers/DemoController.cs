@@ -1,11 +1,6 @@
 ﻿using Business_AnimeToNotion.Integrations.Demo;
-using Business_AnimeToNotion.Integrations.Notion;
-using Business_AnimeToNotion.Model.Notion.Base;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
 
 namespace API_AnimeToNotion.Controllers
 {
@@ -15,15 +10,14 @@ namespace API_AnimeToNotion.Controllers
     public class DemoController : ControllerBase
     {
         private readonly IDemo_Integration _demo;
-        private readonly INotion_Integration _notion;
 
-        public DemoController(IDemo_Integration demo, INotion_Integration notion)
+        public DemoController(IDemo_Integration demo)
         {
             _demo = demo;
-            _notion = notion;
         }
 
         #region DEMO
+
         /// <summary>
         /// Add shows from Notion to database
         /// </summary>
@@ -44,16 +38,15 @@ namespace API_AnimeToNotion.Controllers
         }
 
         /// <summary>
-        /// Demo temp
+        /// Creates all missing NotionSyncs
         /// </summary>
-        /// <param name="cursor"></param>
         /// <returns></returns>
-        [HttpPost("sync")]
-        public async Task<IActionResult> SyncToNotion([FromBody] NotionSyncAdd notionSync)
+        [HttpGet("db/create/sync")]
+        public async Task<IActionResult> CreateNotionSync()
         {
             try
             {
-                _notion.SendSyncToNotion(notionSync);
+                await _demo.CreateNotionSync();
                 return Ok();
             }
             catch (Exception ex)

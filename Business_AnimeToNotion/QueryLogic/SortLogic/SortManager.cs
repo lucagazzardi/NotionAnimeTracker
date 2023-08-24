@@ -29,13 +29,13 @@ namespace Business_AnimeToNotion.QueryLogic.SortLogic
                 case SortIn.Status:
                     return data.OrderByDescending(x => x.Status).ThenBy(x => x.NameEnglish);
                 case SortIn.MalScore:
-                    return data.OrderByDescending(x => x.Score.MalScore).ThenBy(x => x.NameEnglish);
+                    return data.OrderByDescending(x => x.Score).ThenBy(x => x.NameEnglish);
                 case SortIn.PersonalScore:
-                    return data.OrderByDescending(x => x.Score.PersonalScore).ThenBy(x => x.NameEnglish);
+                    return data.OrderByDescending(x => x.AnimeShowProgress.PersonalScore).ThenBy(x => x.NameEnglish);
                 case SortIn.StartDate:
-                    return data.OrderByDescending(x => x.WatchingTime.StartedOn).ThenBy(x => x.NameEnglish);
+                    return data.OrderByDescending(x => x.AnimeShowProgress.StartedOn).ThenBy(x => x.NameEnglish);
                 case SortIn.FinishDate:
-                    return data.OrderByDescending(x => x.WatchingTime.FinishedOn).ThenBy(x => x.NameEnglish);
+                    return data.OrderByDescending(x => x.AnimeShowProgress.FinishedOn).ThenBy(x => x.NameEnglish);
                 case SortIn.StartedAiring:
                     return data.OrderByDescending(x => x.StartedAiring).ThenBy(x => x.NameEnglish);
                 default:

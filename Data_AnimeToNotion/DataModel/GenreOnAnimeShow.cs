@@ -1,18 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Data_AnimeToNotion.DataModel
 {
+    [Index(nameof(AnimeShowId), nameof(GenreId), IsUnique = true)]
     public class GenreOnAnimeShow
-    {
-        [Column(Order = 0)]
+    {        
         public Guid Id { get; set; }
-
-        [Column(Order = 1)]
         public Guid AnimeShowId { get; set; }
-
-        [Column(Order = 2)]
-        public Guid GenreId { get; set; }
-
+        public int GenreId { get; set; }
+        public string Description { get; set; }
 
         public AnimeShow AnimeShow { get; set; }
         public Genre Genre { get; set; }

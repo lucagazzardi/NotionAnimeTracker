@@ -13,7 +13,7 @@ namespace Business_AnimeToNotion.QueryLogic.PageLogic
 
         public async Task<IQueryable<AnimeShow>> ApplyPaging(IQueryable<AnimeShow> data, PageIn page)
         {
-            _totalCount = page.TotalCount ?? await data.CountAsync();
+            _totalCount = page.TotalCount ?? 300;
             return data.Skip((page.CurrentPage - 1) * page.PerPage).Take(page.PerPage);
         }
 

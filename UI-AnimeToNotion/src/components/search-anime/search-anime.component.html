@@ -54,6 +54,55 @@
                 {{item.nameEnglish}}
               </a>
 
+              <div #hover class="show-visualization__show-hover show-visualization__show-hover--right" [class.show-visualization__show-hover--active]="seasonalListTracker[i] == true">
+                   
+
+                <!--HEADER-->
+                <div class="show-visualization__header" *ngIf="item.startedAiring != null">
+                  <div>
+                    {{ item.startedAiring | date: 'longDate' }}
+                  </div>
+                  <div *ngIf="item!.score != null">
+
+                    <!--SMILE-->
+                    <svg class="show-visualization__icon show-visualization__icon--good" *ngIf="item!.score > 70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path fill="currentColor" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                    </svg>
+
+                    <!--MEH-->
+                    <svg class="show-visualization__icon show-visualization__icon--meh" *ngIf="item!.score >= 50 && item!.score <= 70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path fill="currentColor" d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM176.4 240a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm192-32a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM184 328c-13.3 0-24 10.7-24 24s10.7 24 24 24H328c13.3 0 24-10.7 24-24s-10.7-24-24-24H184z" />
+                    </svg>
+
+                    <!--BAD-->
+                    <svg class="show-visualization__icon show-visualization__icon--bad" *ngIf="item!.score > 0 && item!.score < 50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path fill="currentColor" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM174.6 384.1c-4.5 12.5-18.2 18.9-30.7 14.4s-18.9-18.2-14.4-30.7C146.9 319.4 198.9 288 256 288s109.1 31.4 126.6 79.9c4.5 12.5-2 26.2-14.4 30.7s-26.2-2-30.7-14.4C328.2 358.5 297.2 336 256 336s-72.2 22.5-81.4 48.1zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                    </svg>
+                    <span class="show-visualization__percentage">{{item.score}}%</span>
+
+                  </div>
+                </div>
+
+                <!--FORMAT-->
+                <div class="show-visualization__format" *ngIf="item.format != null">
+                  <span>
+                    {{item.format}}
+                  </span>
+                  <ng-container *ngIf="item.episodes! > 1">
+                    <span class="show-visualization__separator">•</span>
+                    <span>
+                      {{item.episodes}} Episodes
+                    </span>
+                  </ng-container>
+                </div>
+
+                <!--STUDIO-->
+                <div class="show-visualization__studio">
+                  <span *ngFor="let studio of item.studios!">{{studio.value}}</span>
+                </div>
+
+              </div>
+
             </div>
           </ng-container>
 
@@ -83,6 +132,54 @@
                                   'show-visualization__show-circle--completed': item.info.status == 'Completed'  }"></div>
                 {{item.nameEnglish}}
               </a>
+
+              <div class="show-visualization__show-hover" [class.show-visualization__show-hover--active]="nextSeasonTracker[i] == true">
+
+                <!--HEADER-->
+                <div class="show-visualization__header" *ngIf="item.startedAiring != null">
+                  <div>
+                    {{ item.startedAiring | date: 'longDate' }}
+                  </div>
+                  <div *ngIf="item!.score != null">
+
+                    <!--SMILE-->
+                    <svg class="show-visualization__icon show-visualization__icon--good" *ngIf="item!.score > 70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path fill="currentColor" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                    </svg>
+
+                    <!--MEH-->
+                    <svg class="show-visualization__icon show-visualization__icon--meh" *ngIf="item!.score >= 50 && item!.score <= 70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path fill="currentColor" d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM176.4 240a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm192-32a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM184 328c-13.3 0-24 10.7-24 24s10.7 24 24 24H328c13.3 0 24-10.7 24-24s-10.7-24-24-24H184z" />
+                    </svg>
+
+                    <!--BAD-->
+                    <svg class="show-visualization__icon show-visualization__icon--bad" *ngIf="item!.score > 0 && item!.score < 50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path fill="currentColor" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM174.6 384.1c-4.5 12.5-18.2 18.9-30.7 14.4s-18.9-18.2-14.4-30.7C146.9 319.4 198.9 288 256 288s109.1 31.4 126.6 79.9c4.5 12.5-2 26.2-14.4 30.7s-26.2-2-30.7-14.4C328.2 358.5 297.2 336 256 336s-72.2 22.5-81.4 48.1zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                    </svg>
+                    <span class="show-visualization__percentage">{{item.score}}%</span>
+
+                  </div>
+                </div>
+
+                <!--FORMAT-->
+                <div class="show-visualization__format" *ngIf="item.format != null">
+                  <span>
+                    {{item.format}}
+                  </span>
+                  <ng-container *ngIf="item.episodes! > 1">
+                    <span class="show-visualization__separator">•</span>
+                    <span>
+                      {{item.episodes}} Episodes
+                    </span>
+                  </ng-container>
+                </div>
+
+                <!--STUDIO-->
+                <div class="show-visualization__studio">
+                  <span *ngFor="let studio of item.studios!">{{studio.value}}</span>
+                </div>
+
+              </div>
             </div>
           </ng-container>
         </div>
@@ -114,6 +211,54 @@
                                   'show-visualization__show-circle--completed': item.info.status == 'Completed'  }"></div>
                   {{item.nameEnglish}}
                 </a>
+
+                <div class="show-visualization__show-hover" [class.show-visualization__show-hover--active]="searchResultTracker[i] == true">
+
+                  <!--HEADER-->
+                  <div class="show-visualization__header" *ngIf="item.startedAiring != null">
+                    <div>
+                      {{ item.startedAiring | date: 'longDate' }}
+                    </div>
+                    <div *ngIf="item!.score != null">
+
+                      <!--SMILE-->
+                      <svg class="show-visualization__icon show-visualization__icon--good" *ngIf="item!.score > 70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="currentColor" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                      </svg>
+
+                      <!--MEH-->
+                      <svg class="show-visualization__icon show-visualization__icon--meh" *ngIf="item!.score >= 50 && item!.score <= 70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="currentColor" d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM176.4 240a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm192-32a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM184 328c-13.3 0-24 10.7-24 24s10.7 24 24 24H328c13.3 0 24-10.7 24-24s-10.7-24-24-24H184z" />
+                      </svg>
+
+                      <!--BAD-->
+                      <svg class="show-visualization__icon show-visualization__icon--bad" *ngIf="item!.score > 0 && item!.score < 50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="currentColor" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM174.6 384.1c-4.5 12.5-18.2 18.9-30.7 14.4s-18.9-18.2-14.4-30.7C146.9 319.4 198.9 288 256 288s109.1 31.4 126.6 79.9c4.5 12.5-2 26.2-14.4 30.7s-26.2-2-30.7-14.4C328.2 358.5 297.2 336 256 336s-72.2 22.5-81.4 48.1zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                      </svg>
+                      <span class="show-visualization__percentage">{{item.score}}%</span>
+
+                    </div>
+                  </div>
+
+                  <!--FORMAT-->
+                  <div class="show-visualization__format" *ngIf="item.format != null">
+                    <span>
+                      {{item.format}}
+                    </span>
+                    <ng-container *ngIf="item.episodes! > 1">
+                      <span class="show-visualization__separator">•</span>
+                      <span>
+                        {{item.episodes}} Episodes
+                      </span>
+                    </ng-container>
+                  </div>
+
+                  <!--STUDIO-->
+                  <div class="show-visualization__studio">
+                    <span *ngFor="let studio of item.studios!">{{studio.value}}</span>
+                  </div>
+
+                </div>
               </div>
             </ng-container>
             <ng-container *ngIf="searchResult?.loading; then skeleton"></ng-container>
@@ -153,14 +298,14 @@
       <div class="show-buttons__item--main">
 
         <!--ADD BUTTON-->
-        <div class="show-buttons__item show-buttons__item--tooltip" *ngIf="!item.info" label="Add to Library" (click)="addBaseItem(item)">
+        <div class="show-buttons__item" matTooltip="Add to Library" matTooltipClass="show-buttons__item--tooltip" matTooltipPosition="left" *ngIf="!item.info" (click)="addBaseItem(item)">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="show-buttons__icon--s">
             <path fill="currentColor" d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z" />
           </svg>
         </div>
 
         <!--REMOVE BUTTON-->
-        <div class="show-buttons__item show-buttons__item--tooltip" *ngIf="item.info" label="Remove from Library" (click)="removeItem(item)">
+        <div class="show-buttons__item" matTooltip="Remove from Library" matTooltipClass="show-buttons__item--tooltip" matTooltipPosition="left" *ngIf="item.info" (click)="removeItem(item)">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="show-buttons__icon--m">
             <path fill="currentColor" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
           </svg>
@@ -169,7 +314,7 @@
 
       <!--EDIT BUTTON-->
       <div [@.disabled]="suppressEditAnim">
-        <div class="show-buttons__item show-buttons__item--tooltip" *ngIf="showEditButton" label="Edit" @totalScaleUp_Opacity_MarginOnEnter>
+        <div class="show-buttons__item" matTooltip="Edit" matTooltipClass="show-buttons__item--tooltip" matTooltipPosition="left" *ngIf="showEditButton" @totalScaleUp_Opacity_MarginOnEnter>
           <div (click)="editItem(item)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="show-buttons__icon--l">
               <path fill="currentColor" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />

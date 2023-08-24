@@ -3,31 +3,14 @@ using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.MAL;
-using Business_AnimeToNotion.Model.MAL.MAL_BasicObjects;
-using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using JikanDotNet.Config;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Notion.Client;
-using System.Runtime.CompilerServices;
 
 namespace Business_AnimeToNotion.Integrations.MAL
-{
-    public class MAL_Exception : Exception
-    {
-        public MAL_Exception(string customMessage) : base(customMessage) { }
-    }
-
-    internal class MAL_ExceptionMessages
-    {
-        public const string SearchByNameException = "Error: couldn't find shows with input \"[searchTerm]\"";
-        public const string SearchByIdException = "Error: show with id \"[id]\" not found";
-    }
-
+{  
     public class MAL_Integration : IMAL_Integration
     {
         private readonly IJikan _jikan;
@@ -58,10 +41,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
             };
             _jikan = new Jikan(config);
 
-            _malHttpClient = new HttpClient();
-            // Add MAL Secret Api Key as header
-            if (!_malHttpClient.DefaultRequestHeaders.Contains(_configuration["MAL_ApiConfig:MAL_Header"]))
-                _malHttpClient.DefaultRequestHeaders.Add(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"]);
+            _malHttpClient = new HttpClient();            
         }
 
         /// <summary>
@@ -153,20 +133,31 @@ namespace Business_AnimeToNotion.Integrations.MAL
             await CheckSavedAnimeShow(found);
 
             return found;
-        }        
+        }
 
         /// <summary>
-        /// Retrieve relations for an anime
+        /// Retrieves anime from Mal
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="key"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public async Task<INT_AnimeShowFull> GetAnimeById(string header, string key, string url)
+        {
+            return Mapping.Mapper.Map<INT_AnimeShowFull>(await GetAnimeFromMal(header, key, url));
+        }
+
+        /// <summary>
+        /// Retrieves relations for an anime
         /// </summary>
         /// <param name="malId"></param>
         /// <returns></returns>
         public async Task<MAL_AnimeShowRelations> GetRelationsFromMAL(int malId)
         {
+            SetHttpHeader(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"]);
             string relations = await _malHttpClient.GetStringAsync(BuildMALRelationsUrl(malId));
             return JsonConvert.DeserializeObject<MAL_AnimeShowRelations>(relations);
         }
-
-
 
         #region Private
 
@@ -197,10 +188,24 @@ namespace Business_AnimeToNotion.Integrations.MAL
             return animeShow;
         }
 
+        private async Task<MAL_AnimeShowRaw> GetAnimeFromMal(string header, string key, string url)
+        {
+            SetHttpHeader(header, key);
+            var response = await _malHttpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<MAL_AnimeShowRaw>(response);
+        }
+
         private string BuildMALRelationsUrl(int malId)
         {
             return string.Concat(_configuration["MAL_ApiConfig:MAL_BaseURL"], "anime/", malId.ToString(), "?fields=related_anime");
-        }        
+        }
+
+        private void SetHttpHeader(string header, string key)
+        { 
+            // Add MAL Secret Api Key as header
+            if (!_malHttpClient.DefaultRequestHeaders.Contains(header))
+                _malHttpClient.DefaultRequestHeaders.Add(header, key);
+        }
 
         #endregion
     }

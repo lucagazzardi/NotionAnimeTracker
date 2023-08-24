@@ -1,7 +1,7 @@
 <div class="container">
   <div class="year">
     <ng-container *ngIf="historyYears$ | async as years; else skeleton">
-      <div class="year__item" *ngFor="let item of years">
+      <div class="year__item" *ngFor="let item of years" (click)="openYear(item.year.toString(), item.watchedNumber, item.favoritesNumber)">
 
         <div class="year__info">
 
@@ -31,10 +31,10 @@
 
         </div>
 
-        <div class="year__preview-wrap">
+        <div class="year__preview-wrapper">
           <div class="year__preview">
-            <div class="year__cover" *ngFor="let show of item.data">
-              <img class="year__image" src="{{show.cover}}" @opacityOnEnter>
+            <div class="year__cover" *ngFor="let show of item.data; let i = index">
+              <img class="year__image" src="{{show.cover}}" (load)="loadImage($event)">
             </div>
           </div>
         </div>

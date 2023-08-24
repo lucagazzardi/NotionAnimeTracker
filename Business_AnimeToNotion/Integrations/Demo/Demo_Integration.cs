@@ -3,7 +3,6 @@ using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Internal;
 using Data_AnimeToNotion.DataModel;
-using Data_AnimeToNotion.Model;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using JikanDotNet.Config;
@@ -22,6 +21,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
         private readonly IAnimeShowRepository _animeShowRepository;
         private readonly IMAL_Integration _malIntegration;
         private readonly IInternal_Integration _internalIntegration;
+        private readonly ISyncToNotionRepository _syncToNotionRepository;
 
         #endregion
 
@@ -32,7 +32,8 @@ namespace Business_AnimeToNotion.Integrations.Demo
                 IConfiguration configuration,
                 IAnimeShowRepository animeShowRepository,
                 IMAL_Integration malIntegration,
-                IInternal_Integration internalIntegration
+                IInternal_Integration internalIntegration,
+                ISyncToNotionRepository syncToNotionRepository
             )
         {
             #region DI
@@ -40,6 +41,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
             _animeShowRepository = animeShowRepository;
             _malIntegration = malIntegration;
             _internalIntegration = internalIntegration;
+            _syncToNotionRepository = syncToNotionRepository;
             #endregion
 
             Client = NotionClientFactory.Create(new ClientOptions
@@ -63,9 +65,16 @@ namespace Business_AnimeToNotion.Integrations.Demo
         {
             await Notion_GetDataBaseId();
 
-            Dictionary<string, string> differences = new Dictionary<string, string>();
-
             await AddToDB(DataBaseId, cursor);
+        }
+
+        /// <summary>
+        /// Creates missing NotionSyncs
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateNotionSync()
+        {
+            await _syncToNotionRepository.CreateNotionSyncs();
         }
 
         #region Private
@@ -133,37 +142,11 @@ namespace Business_AnimeToNotion.Integrations.Demo
                 Mapping.Mapper.ProjectTo<Relation>(Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await malRelations).related_anime.AsQueryable())).ToList()
             );
 
+            await _syncToNotionRepository.CreateNotionSync(added, page.Id);
+
             var edit = Mapping.Mapper.Map<INT_AnimeShowEdit>(page);
             edit.Id = added.Id;
-            await _internalIntegration.EditAnime(edit);
-        }
-
-        /// <summary>
-        /// Maps a DTO to the actual AnimeShow entity
-        /// </summary>
-        /// <param name="showDto"></param>
-        /// <returns></returns>
-        private async Task<AnimeShow> MapAnimeShow(AnimeShowDto showDto)
-        {
-            AnimeShow result = new AnimeShow();
-            result.Id = Guid.NewGuid();
-            result.MalId = showDto.MalId;
-            result.NotionPageId = showDto.NotionPageId;
-            result.Episodes = showDto.Episodes;
-            result.Status = showDto.Status;
-            result.Format = showDto.Format;
-            result.Cover = showDto.Cover;
-            result.NameEnglish = showDto.NameEnglish;
-            result.NameDefault = showDto.NameOriginal;
-            result.StartedAiring = showDto.StartedAiring;
-            result.Score = showDto.Score != null ? Mapping.Mapper.Map<Score>(showDto.Score) : null;
-            result.WatchingTime = showDto.WatchingTime != null ? Mapping.Mapper.Map<WatchingTime>(showDto.WatchingTime) : null;
-            result.Note = showDto.Note != null ? Mapping.Mapper.Map<Note>(showDto.Note) : null;
-
-            if (showDto.WatchingTime != null && showDto.WatchingTime.CompletedYear != null)
-                result.WatchingTime.CompletedYear = showDto.WatchingTime.CompletedYear;
-
-            return result;
+            await _internalIntegration.EditAnime(edit, skipSync: true);
         }
 
         #endregion

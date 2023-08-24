@@ -9,5 +9,6 @@ namespace Business_AnimeToNotion.Integrations.Demo
     public interface IDemo_Integration
     {
         Task FromNotionToDB(string cursor);
+        Task CreateNotionSync();
     }
 }

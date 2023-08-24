@@ -4,11 +4,6 @@
     {
         public PageInfo PageInfo { get; set; }
         public IEnumerable<T> Data { get; set; }
-
-        public PaginatedResponse()
-        {
-            
-        }
     }
 
     public class PageInfo

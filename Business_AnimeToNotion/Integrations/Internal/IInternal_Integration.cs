@@ -1,11 +1,8 @@
-﻿using Business_AnimeToNotion.Model.Common;
-using Business_AnimeToNotion.Model.Entities;
+﻿using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.History;
 using Business_AnimeToNotion.Model.Internal;
-using Business_AnimeToNotion.Model.Notion.Base;
 using Business_AnimeToNotion.Model.Pagination;
 using Business_AnimeToNotion.Model.Query;
-using Business_AnimeToNotion.Model.Query.Filter;
 using Business_AnimeToNotion.QueryLogic.SortLogic;
 using System;
 using System.Collections.Generic;
@@ -22,7 +19,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         Task<INT_AnimeShowPersonal> AddNewAnimeFull(INT_AnimeShowFull animeAdd);
         Task<INT_AnimeShowFull> GetAnimeFull(int MalId);
         Task<INT_AnimeShowFull> GetAnimeForEdit(Guid Id);
-        Task EditAnime(INT_AnimeShowEdit animeEdit);
+        Task EditAnime(INT_AnimeShowEdit animeEdit, bool skipSync = false);
         Task<bool> SetAnimeFavorite(Guid id, bool favorite);
         Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch);
         Task RemoveAnime(Guid id);
@@ -33,6 +30,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         #region Library Operativity
 
         Task<PaginatedResponse<INT_AnimeShowFull>> LibraryQuery(FilterIn filters, SortIn? sort, PageIn page);
+        Task<List<INT_AnimeShowFull>> LibraryQueryDemo(FilterIn filters, SortIn? sort, PageIn page);
 
         #endregion
 
@@ -41,12 +39,6 @@ namespace Business_AnimeToNotion.Integrations.Internal
         Task<List<HistoryYear>> GetHistory();
         Task<PaginatedResponse<INT_AnimeShowFull>> GetHistoryYear(int year, int page);
         Task<INT_YearCount> GetHistoryCount(int year);
-
-        #endregion
-
-        #region Demo
-
-        Task<NotionSyncAdd> AddNewAnimeBaseDemo(INT_AnimeShowBase animeAdd);
 
         #endregion
     }

@@ -13,6 +13,8 @@
   <ItemGroup>
     <Folder Include="src\assets\animations\" />
     <Folder Include="src\services\mal\" />
+    <Folder Include="src\services\history\" />
+    <Folder Include="src\services\base\" />
     <Folder Include="src\services\string-manipulation\" />
     <Folder Include="src\demo-data\" />
   </ItemGroup>

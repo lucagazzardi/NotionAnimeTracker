@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { IAnimeBase } from "../../model/IAnimeBase";
 import { IAnimeFull } from "../../model/IAnimeFull";
+import { BaseService } from "../base/base.service";
 
 
 @Injectable()
@@ -15,26 +16,28 @@ export class MalService {
   //MOCK DATA
   url = 'http://localhost:3000/demolist';
 
-  constructor(private client: HttpClient) { }
+  constructor(private client: HttpClient, private httpService: BaseService) { }
 
+  // MOCK
   getAll(): Observable<any> {
-    return this.client.get(this.url);
+    return this.httpService.get(this.url);
   }
 
   getCurrentSeason(): Observable<IAnimeBase[]> {
-    return this.client.get<IAnimeBase[]>(this.baseUrl + this.malController + "get/season/current");
+    return this.httpService.get(this.malController + "get/season/current");
   }
 
   getUpcomingSeason(): Observable<IAnimeBase[]> {
-    return this.client.get<IAnimeBase[]>(this.baseUrl + this.malController + "get/season/upcoming");
+    return this.httpService.get(this.malController + "get/season/upcoming");
   } 
 
   getShowFullById(id: string): Observable<IAnimeFull> {
-    return this.client.get<IAnimeFull>(this.baseUrl + this.malController + "get/anime/" + id);
+    return this.httpService.get(this.malController + "get/anime/" + id);
+
   }
 
   searchByName(searchTerm: string) {
-    return this.client.get<IAnimeBase[]>(this.baseUrl + this.malController + "search/anime/" + searchTerm);
+    return this.httpService.get(this.malController + "search/anime/" + searchTerm);
   }
 }
 

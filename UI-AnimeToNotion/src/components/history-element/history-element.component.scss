@@ -1,0 +1,72 @@
+@use '../../assets/scss/_show-visualization.scss';
+@import '../../assets/scss/_skeleton.scss';
+
+.main-content {
+  margin-top: 60px;
+
+  @media screen and (max-width: 1040px) {
+    & {
+      margin-top: 30px;
+    }
+  }
+
+  @at-root &__title {
+    display: grid;
+    grid-template-columns: max-content max-content max-content max-content;
+    grid-gap: 10px;
+    color: rgb(var(--color-text-highlight));
+    /*margin-bottom: 20px;*/
+  }
+
+  @at-root &__title--loading {
+    border-radius: 4px;
+    height: 24px;
+    background: rgba(var(--color-skeleton-contrast),.8);
+    box-shadow: none;
+    opacity: 1;
+    overflow: hidden;
+    padding: 0;
+    width: 50%;
+
+    &:before {
+      @include skeleton;
+      @include skeleton-animation;
+    }
+  }
+
+  @at-root &__year {
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  @at-root &__divider {
+    border-left: 1px solid rgb(var(--color-text-normal), .7);
+    height: 80%;
+  }
+
+  @at-root &__count {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 8px;
+    align-items: center;
+    margin-left: 8px;
+    margin-top: -1px;
+  }
+
+  @at-root &__icon {
+    width: 1rem;
+    color: rgb(var(--background-danger-item), .9);
+    margin-bottom: 5px;
+  }
+
+  @at-root &__icon--play {
+    width: .8rem;
+    color: rgb(var(--color-text-normal));
+  }
+
+  @at-root &__icon--title{
+      width: .8rem;
+      margin-top: 3px;
+      margin-right: 3px;
+  }
+}

@@ -1,0 +1,72 @@
+<div class="container" role="main">
+
+  <!--!SHOWS-->
+  <div class="show-visualization main-content" *ngIf="noResults === false; else noResultsCont">
+    <div class="show-visualization__container">
+      <div class="main-content__title" *ngIf="yearCount != null; else skeletonCounts">
+
+        <div class="main-content__year">{{year}}</div>
+        <div class="main-content__divider"></div>
+        <div class="main-content__count">
+          <svg class="main-content__icon main-content__icon--play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+            <path fill="currentColor" d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+          </svg>
+          <div>{{yearCount!.completed!}}</div>
+        </div>
+        <div class="main-content__count">
+          <svg class="main-content__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
+          </svg>
+          <div>{{yearCount!.favorite!}}</div>
+        </div>
+
+      </div>
+      <div class="show-visualization__shows" infiniteScroll
+           [infiniteScrollDistance]="0.3"
+           [infiniteScrollThrottle]="200"
+           (scrolled)="followingPage()">
+
+        <ng-container *ngIf="yearListStatic || (yearList$ | async); else skeleton">
+          <div *ngFor="let item of yearListStatic; let i = index" class="show-visualization__item">
+
+            <a class="show-visualization__cover">
+              <img class="show-visualization__image" [class.show-visualization__image--loaded]="yearListImages[i] == true" src="{{item.cover}}" (click)="editItem(item)" (load)="yearListImages[i] = true">
+            </a>
+            <a class="show-visualization__show-title" (click)="editItem(item)">
+              <span *ngIf="item.favorite">
+                <svg class="show-visualization__icon show-visualization__icon--title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
+                </svg>
+              </span>
+              {{item.nameEnglish}}
+            </a>
+
+          </div>
+        </ng-container>
+        <ng-container *ngIf="loading; then skeleton"></ng-container>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!--!TEMPLATES-->
+<!--SKELETON TEMPLATE-->
+<ng-template #skeleton>
+  <div *ngFor="let item of yearSkeleton" class="show-visualization__item">
+    <div class="show-visualization__cover show-visualization__cover--loading" @scaleUpOnEnter></div>
+    <div class="show-visualization__show-title show-visualization__show-title--loading"></div>
+  </div>
+</ng-template>
+
+<ng-template #skeletonCounts>
+  <div class="main-content__title main-content__title--loading">    
+
+  </div>
+</ng-template>
+
+<!--NO RESULTS TEMPLATE-->
+<ng-template #noResultsCont>
+  <div class="no-results" @opacityOnEnter>No Results</div>
+</ng-template>

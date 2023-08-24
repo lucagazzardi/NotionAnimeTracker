@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.MAL;
 using JikanDotNet;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Business_AnimeToNotion.Mapper.FromMal
 {
@@ -12,14 +9,6 @@ namespace Business_AnimeToNotion.Mapper.FromMal
     {
         public JIKAN_Internal_Profile()
         {
-            CreateMap<Anime, INT_AnimeShowPartial>()
-                .ForMember(dto => dto.Title, map => map.MapFrom(source => 
-                    source.Titles.SingleOrDefault(x => x.Type == "English") != null ?
-                    source.Titles.Single(x => x.Type == "English").Title : 
-                    source.Titles.Single(x => x.Type == "Default").Title))
-                .ForMember(dto => dto.MalId, map => map.MapFrom(source => (int)source.MalId))
-                .ForMember(dto => dto.Cover, map => map.MapFrom(source => source.Images.JPG.LargeImageUrl));
-
             CreateMap<Anime, INT_AnimeShowBase>()
                 .ForMember(dto => dto.NameEnglish, map => map.MapFrom(source =>
                     source.Titles.SingleOrDefault(x => x.Type == "English") != null ?

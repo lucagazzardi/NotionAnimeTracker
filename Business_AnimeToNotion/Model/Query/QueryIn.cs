@@ -1,10 +1,4 @@
-﻿using Business_AnimeToNotion.Model.Query.Filter;
-using Business_AnimeToNotion.QueryLogic.SortLogic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Business_AnimeToNotion.QueryLogic.SortLogic;
 
 namespace Business_AnimeToNotion.Model.Query
 {

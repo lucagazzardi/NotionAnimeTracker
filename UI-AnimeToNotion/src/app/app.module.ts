@@ -1,5 +1,5 @@
 //ANGULAR OR EXTERNAL RELATED
-import { NgModule } from '@angular/core';
+import { ChangeDetectorRef, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 //APP COMPONENTS
 import { AppComponent } from './app.component';
@@ -32,7 +34,8 @@ import { SliderComponent } from '../components/form-components/slider/slider.com
 import { SortComponent } from '../components/sort/sort.component';
 import { CheckboxComponent } from '../components/form-components/checkbox/checkbox.component';
 import { HistoryComponent } from '../components/history/history.component';
-
+import { HistoryElementComponent } from '../components/history-element/history-element.component';
+import { FooterComponent } from '../components/footer/footer.component';
 
 //APP SERVICES
 import { ThemeService } from '../services/theme/theme.service';
@@ -41,6 +44,9 @@ import { InternalService } from '../services/internal/internal.service';
 import { StringManipulationService } from '../services/string-manipulation/string-manipulation.service';
 import { EditService } from '../services/edit/edit.service';
 import { MalService } from '../services/mal/mal.service';
+import { HistoryService } from '../services/history/history.service';
+import { BaseService } from '../services/base/base.service';
+
 
 @NgModule({
   declarations: [
@@ -56,7 +62,9 @@ import { MalService } from '../services/mal/mal.service';
     SliderComponent,
     SortComponent,
     CheckboxComponent,
-    HistoryComponent
+    HistoryComponent,
+    HistoryElementComponent,
+    FooterComponent
   ],
   imports: [
     AppRoutingModule,
@@ -76,15 +84,19 @@ import { MalService } from '../services/mal/mal.service';
     NgxSliderModule,
     MatDialogModule,
     MatMomentDateModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    MatTooltipModule,
+    MatProgressBarModule
   ],
   providers: [
     ThemeService,
+    BaseService,
     SearchAnimeService,
     InternalService,
     MalService,
     StringManipulationService,
     EditService,
+    HistoryService,
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
   bootstrap: [AppComponent]

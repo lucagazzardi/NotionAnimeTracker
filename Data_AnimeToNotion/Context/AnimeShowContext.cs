@@ -1,7 +1,5 @@
 ﻿using Data_AnimeToNotion.DataModel;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection.Metadata;
 
 namespace Data_AnimeToNotion.Context
 {
@@ -15,17 +13,14 @@ namespace Data_AnimeToNotion.Context
         public DbSet<AnimeShow> AnimeShows { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<GenreOnAnimeShow> GenreOnAnimeShows { get; set; }
-        public DbSet<Note> Notes { get; set; }
-        public DbSet<Score> Scores { get; set; }
         public DbSet<Studio> Studios { get; set; }
         public DbSet<StudioOnAnimeShow> StudioOnAnimeShows { get; set; }
-        public DbSet<WatchingTime> WatchingTimes { get; set; }
         public DbSet<Relation> Relations { get; set; }
         public DbSet<Year> Years { get; set; }
 
         #region SyncToNotion
 
-        public DbSet<SyncToNotionLog> SyncToNotionLogs { get; set; }
+        public DbSet<NotionSync> NotionSyncs { get; set; }
 
         #endregion
 
@@ -34,14 +29,11 @@ namespace Data_AnimeToNotion.Context
             modelBuilder.Entity<AnimeShow>().ToTable("AnimeShow");
             modelBuilder.Entity<Genre>().ToTable("Genre");
             modelBuilder.Entity<GenreOnAnimeShow>().ToTable("GenreOnAnimeShow");
-            modelBuilder.Entity<Note>().ToTable("Note");
-            modelBuilder.Entity<Score>().ToTable("Score");
             modelBuilder.Entity<Studio>().ToTable("Studio");
             modelBuilder.Entity<StudioOnAnimeShow>().ToTable("StudioOnAnimeShow");
-            modelBuilder.Entity<WatchingTime>().ToTable("WatchingTime");
             modelBuilder.Entity<Relation>().ToTable("Relation");
             modelBuilder.Entity<Year>().ToTable("Year");
-            modelBuilder.Entity<SyncToNotionLog>().ToTable("SyncToNotionLog");
+            modelBuilder.Entity<NotionSync>().ToTable("NotionSync");
 
             modelBuilder.Entity<AnimeShow>()
                 .Property(t => t.PlanToWatch)
@@ -58,6 +50,12 @@ namespace Data_AnimeToNotion.Context
                 .HasOne(e => e.Studio)
                 .WithMany(e => e.StudioOnAnimeShows)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder
+                .Entity<AnimeShow>()
+                .HasOne(e => e.NotionSync)
+                .WithOne(e => e.AnimeShow)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

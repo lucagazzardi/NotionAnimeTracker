@@ -1,6 +1,6 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, map, Observable, of, switchMap, tap } from 'rxjs';
+import { Component, OnInit} from '@angular/core';
+import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, last, map, Observable, of, switchMap, tap } from 'rxjs';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave, YMovement_Opacity, YMovement_Opacity_Leave } from '../../assets/animations/animations';
 import { SelectShowStatus } from '../../model/form-model/SelectShowStatus';
 import { SelectYear } from '../../model/form-model/SelectYear';
@@ -8,10 +8,11 @@ import { SelectFormat } from '../../model/form-model/SelectFormat';
 import { EditService } from '../../services/edit/edit.service';
 import { InternalService } from '../../services/internal/internal.service';
 import { IAnimeBase } from '../../model/IAnimeBase';
-import { IFilter, IPage, IQuery, Sort } from '../../model/IQuery';
+import { IFilter, IPage, Sort } from '../../model/IQuery';
 import { ILibrary, IPageInfo } from '../../model/ILibrary';
 import { IAnimeFull } from '../../model/IAnimeFull';
 import { ToasterService } from 'gazza-toaster';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 export interface DialogData {
   animal: string;
@@ -83,8 +84,6 @@ export class LibraryComponent implements OnInit {
   //! SEARCH RESULTS
   searchTerm: string = "";
   private searchTerm$ = new BehaviorSubject<string>('');
-  searchResult$!: Observable<{ loading: boolean, result?: ILibrary }>;  
-  searchResultTracker!: boolean[];
   searching: boolean = false;
   noResults: boolean = false;
 
@@ -170,7 +169,7 @@ export class LibraryComponent implements OnInit {
 
   /// Add to plan to watch
   setPlanToWatch(item: IAnimeFull) {
-    this.internalService.setPlanToWatch(item.info?.id!, !item.planToWatch)
+    this.internalService.setPlanToWatch(item.info?.id!, !item.planToWatch)      
       .subscribe(
         {
           next: (data: boolean) => {
@@ -180,6 +179,12 @@ export class LibraryComponent implements OnInit {
           },
           error: () => { this.toasterService.notifyError("The entry could not be updated") }
         });
+  }
+
+  printProgress(event: HttpEvent<any>) {
+    if (event.type == HttpEventType.DownloadProgress) {
+      console.log(event.loaded + ', ' + event.total)
+    }
   }
 
   /// Show sliders

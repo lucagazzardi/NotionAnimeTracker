@@ -7,7 +7,7 @@
       <a class="nav-link" href="">Library</a>
       <a class="nav-link" href="/browse">Browse</a>
       <a class="nav-link" href="/history">History</a>
-      <a class="nav-link" href="">Immersion</a>
+      <!--<a class="nav-link" href="">Immersion</a>-->
     </div>
     <div *ngIf="isDarkTheme()" class="nav-link theme-switcher" (click)="switchTheme(false)">
       <svg class="theme-switcher icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -24,6 +24,50 @@
 </nav>
 <!-- Navbar -->
 
-<app-toaster></app-toaster>
+<!--Mobile Menu-->
+<div class="mobile-menu">
+  <div class="mobile-menu__closed" *ngIf="!mobileMenuOpen" (click)="openCloseMobileMenu()">
+    <svg class="mobile-menu__icon" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+      <path fill="currentColor" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" class=""></path>
+    </svg>
+  </div>
 
-<router-outlet></router-outlet>
+  <div class="mobile-menu__open" *ngIf="mobileMenuOpen" @scaleUpOnEnter>
+    <a class="mobile-menu__item" href="" style="color: #748899">
+      <svg class="mobile-menu__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+        <path fill="currentColor" d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5V78.6c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8V454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5V83.8c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 35.6c-3.3 2.6-5 6.8-5 11V456c0 11.4 11.7 19.3 22.4 15.5z" />
+      </svg>
+      <span class="mobile-menu__label">library</span>
+    </a>
+    <a class="mobile-menu__item" href="/browse" style="color: #748899">
+      <svg class="mobile-menu__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+      </svg>
+      <span class="mobile-menu__label">browse</span>
+    </a>
+    <a class="mobile-menu__item" href="/history" style="color: #748899">
+      <svg class="mobile-menu__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+        <path fill="currentColor" d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+      </svg>
+      <span class="mobile-menu__label">history</span>
+    </a>
+    <a class="mobile-menu__item" (click)="openCloseMobileMenu()" style="color: #748899">
+      <svg class="mobile-menu__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+        <path fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+      </svg>
+    </a>
+  </div>
+</div>
+<!--Mobile Menu-->
+
+<div class="app">
+  <div class="progress-bar-active"><mat-progress-bar mode="determinate" [value]="progressBarValue" (animationEnd)="resetProgressBar()"></mat-progress-bar></div>
+
+  <app-toaster></app-toaster>
+
+  <div class="page-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<app-footer></app-footer>

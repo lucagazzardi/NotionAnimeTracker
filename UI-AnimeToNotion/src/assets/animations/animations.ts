@@ -11,7 +11,7 @@ export const opacityOnEnter = animation([
 
 export const scaleUpOnEnter = animation([
 
-  animate('100ms linear', keyframes([
+  animate('150ms ease-in-out', keyframes([
     style({ transform: 'scale(.9)', opacity: 0, offset: 0 }),
     style({ transform: 'scale(1)', opacity: 1, offset: 1 })
   ]))

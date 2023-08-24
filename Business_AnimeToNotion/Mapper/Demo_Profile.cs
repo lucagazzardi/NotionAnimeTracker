@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Business_AnimeToNotion.Model.Internal;
-using Data_AnimeToNotion.Model;
 using Notion.Client;
 
 namespace Business_AnimeToNotion.Mapper
@@ -38,7 +37,7 @@ namespace Business_AnimeToNotion.Mapper
                         case "Finished On":
                             if (((DatePropertyValue)prop.Value).Date != null && ((DatePropertyValue)prop.Value).Date.Start != null)
                             {
-                                edit.StartedOn = ((DatePropertyValue)prop.Value).Date.Start.Value;
+                                edit.FinishedOn = ((DatePropertyValue)prop.Value).Date.Start.Value;
                             }
                             break;
 
