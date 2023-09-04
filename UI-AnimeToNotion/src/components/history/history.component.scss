@@ -1,5 +1,5 @@
 @use '../../assets/scss/_container.scss';
-@import '../../assets/scss/_skeleton.scss';
+@use "../../assets/scss/_skeleton.scss" as *;
 
 .year {
   margin-top: 40px;
@@ -58,53 +58,53 @@
       background: rgba(var(--color-foreground), .8);
       transition: .35s;
     }
-  }
 
-  @at-root &__item--loading {
-    min-height: 220px;
-    background: rgba(var(--color-skeleton-base),.8);
-    box-shadow: none;
-    opacity: 1;
-    overflow: hidden;
-    padding: 0;
-    grid-template-columns: 1fr;
-    cursor: initial;
+    @at-root &--loading {
+      min-height: 220px;
+      background: rgba(var(--color-skeleton-base),.8);
+      box-shadow: none;
+      opacity: 1;
+      overflow: hidden;
+      padding: 0;
+      grid-template-columns: 1fr;
+      cursor: initial;
 
-    &:before {
-      @include skeleton;
-      @include skeleton-animation;
-    }
-
-    &:after {
-      display: none;
-    }
-
-    @media screen and (min-width: 1200px) and (max-width: 1540px) {
-      & {
-        min-height: 175px;
+      &:before {
+        @include skeleton;
+        @include skeleton-animation;
       }
-    }
 
-    @media screen and (min-width: 1040px) and (max-width: 1200px) {
-      & {
-        min-height: 154px;
+      &:after {
+        display: none;
       }
-    }
 
-    @media screen and (min-width: 400px) and (max-width: 1040px) {
-      & {
-        min-height: 325px;
+      @media screen and (min-width: 1200px) and (max-width: 1540px) {
+        & {
+          min-height: 175px;
+        }
       }
-    }
 
-    @media screen and (max-width: 400px) {
-      & {
-        min-height: 303px;
+      @media screen and (min-width: 1040px) and (max-width: 1200px) {
+        & {
+          min-height: 154px;
+        }
       }
-    }
 
-    @media screen and (max-width: 760px) {
-      display: grid;
+      @media screen and (min-width: 400px) and (max-width: 1040px) {
+        & {
+          min-height: 325px;
+        }
+      }
+
+      @media screen and (max-width: 400px) {
+        & {
+          min-height: 303px;
+        }
+      }
+
+      @media screen and (max-width: 760px) {
+        display: grid;
+      }
     }
   }
 
@@ -162,11 +162,11 @@
     width: 1rem;
     color: rgb(var(--background-danger-item), .9);
     margin-bottom: 2px;
-  }
 
-  @at-root &__info-icon--play {
-    width: .7rem;
-    color: rgb(var(--color-text-normal));
+    @at-root &--play {
+      width: .7rem;
+      color: rgb(var(--color-text-normal));
+    }
   }
 
   @at-root &__preview-wrapper {
@@ -265,9 +265,9 @@
     left: 0;
     opacity: 0;
     transition: opacity .3s ease-in-out;
-  }
 
-  @at-root &__image--loaded {
-    opacity: 1;
+    @at-root &--loaded {
+      opacity: 1;
+    }
   }
 }

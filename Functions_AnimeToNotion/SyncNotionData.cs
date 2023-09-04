@@ -41,9 +41,39 @@ namespace Functions_AnimeToNotion
 
             #endregion
 
+            #region DELETE
+
+            var toDelete = await _syncToNotionRepository.GetNotionSync("Delete");
+            var delToRemove = new List<NotionSync>();
+
+            foreach (var entry in toDelete)
+            {
+                try
+                {
+                    if (entry.NotionPageId != null)
+                        await NotionClient.Pages.UpdateAsync(entry.NotionPageId, new PagesUpdateParameters() { Archived = true });
+
+                    _logger.LogInformation($"Notion page {entry.NotionPageId}: deleted");
+                }
+                catch (Exception ex)
+                {
+                    delToRemove.Add(entry);
+                    await _syncToNotionRepository.SetError(entry, ex.Message);
+
+                    _logger.LogError($"Notion page {entry.NotionPageId}: error while deleting");
+                }
+            }
+
+            toDelete = toDelete.Except(delToRemove).ToList();
+            if (toDelete.Count > 0)
+                await _syncToNotionRepository.SetDeleted(toDelete);
+
+            #endregion
+
             #region ADD
 
             var toAdd = await _syncToNotionRepository.GetNotionSync("Add");
+            var addToRemove = new List<NotionSync>();
             Dictionary<int, string> notionPages = new Dictionary<int, string>();
             
 
@@ -61,14 +91,19 @@ namespace Functions_AnimeToNotion
                     });
 
                     notionPages.Add(entry.Id, added.Id);
+
+                    _logger.LogInformation($"{entry.AnimeShow.NameEnglish} - {entry.AnimeShow.MalId}: added");
                 }
                 catch(Exception ex)
                 {
-                    toAdd.Remove(entry);
+                    addToRemove.Add(entry);
                     await _syncToNotionRepository.SetError(entry, ex.Message);
+
+                    _logger.LogError($"{entry.AnimeShow.NameEnglish} - {entry.AnimeShow.MalId}: error while adding");
                 }
             }
 
+            toAdd = toAdd.Except(addToRemove).ToList();
             if(toAdd.Count > 0)
                 await _syncToNotionRepository.SetAdded(toAdd, notionPages);
 
@@ -77,6 +112,7 @@ namespace Functions_AnimeToNotion
             #region EDIT
 
             var toEdit = await _syncToNotionRepository.GetNotionSync("Edit");
+            var editToRemove = new List<NotionSync>();
 
             foreach (var entry in toEdit)
             {
@@ -89,40 +125,23 @@ namespace Functions_AnimeToNotion
                     {
                         Properties = properties
                     });
+
+                    _logger.LogInformation($"{entry.AnimeShow.NameEnglish} - {entry.AnimeShow.MalId}: updated");
                 }
                 catch(Exception ex)
                 {
-                    toEdit.Remove(entry);
+                    editToRemove.Add(entry);
                     await _syncToNotionRepository.SetError(entry, ex.Message);
+
+                    _logger.LogError($"{entry.AnimeShow.NameEnglish} - {entry.AnimeShow.MalId}: error while updating");
                 }
             }
 
+            toEdit = toEdit.Except(editToRemove).ToList();
             if(toEdit.Count > 0)
                 await _syncToNotionRepository.SetEdited(toEdit);
 
-            #endregion
-
-            #region DELETE
-
-            var toDelete = await _syncToNotionRepository.GetNotionSync("Delete");
-
-            foreach (var entry in toDelete)
-            {
-                try
-                {
-                    await NotionClient.Pages.UpdateAsync(entry.NotionPageId, new PagesUpdateParameters() { Archived = true });
-                }
-                catch(Exception ex)
-                {
-                    toDelete.Remove(entry);
-                    await _syncToNotionRepository.SetError(entry, ex.Message);
-                }
-            }
-
-            if(toDelete.Count > 0)
-                await _syncToNotionRepository.SetDeleted(toDelete);
-
-            #endregion
+            #endregion            
         }
 
         private async Task<Dictionary<string, PropertyValue>> CheckAndRetrieveCompletedYear(int? year, Dictionary<string, PropertyValue> properties)

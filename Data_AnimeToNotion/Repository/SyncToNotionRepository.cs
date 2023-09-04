@@ -20,13 +20,38 @@ namespace Data_AnimeToNotion.Repository
         /// <returns></returns>
         public async Task<List<NotionSync>> GetNotionSync(string action)
         {
-            return await _animeShowContext.NotionSyncs
-                .Include(x => x.AnimeShow)
-                .Include(x => x.AnimeShow.GenreOnAnimeShows)
-                .Include(x => x.AnimeShow.StudioOnAnimeShows)
-                .AsSplitQuery()
-                .Where(x => x.Action == action && x.ToSync)
-                .ToListAsync();
+            switch (action)
+            {
+                case "Add":
+                    // Gets all the Add syncs and Edit not present in Notion
+                    return await _animeShowContext.NotionSyncs
+                        .Include(x => x.AnimeShow)
+                        .Include(x => x.AnimeShow.AnimeShowProgress)
+                        .Include(x => x.AnimeShow.GenreOnAnimeShows)
+                        .Include(x => x.AnimeShow.StudioOnAnimeShows)
+                        .AsSplitQuery()
+                        .Where(x => x.ToSync && (x.Action == "Add" || (x.Action == "Edit" && x.NotionPageId == null)) )
+                        .ToListAsync();
+                case "Edit":
+                    // Gets all the Edit syncs that are present in Notion
+                    return await _animeShowContext.NotionSyncs
+                        .Include(x => x.AnimeShow)
+                        .Include(x => x.AnimeShow.AnimeShowProgress)
+                        .Include(x => x.AnimeShow.GenreOnAnimeShows)
+                        .Include(x => x.AnimeShow.StudioOnAnimeShows)
+                        .AsSplitQuery()
+                        .Where(x => x.ToSync && x.Action == "Edit" && x.NotionPageId != null)
+                        .ToListAsync();
+                default:
+                    return await _animeShowContext.NotionSyncs
+                        .Include(x => x.AnimeShow)
+                        .Include(x => x.AnimeShow.AnimeShowProgress)
+                        .Include(x => x.AnimeShow.GenreOnAnimeShows)
+                        .Include(x => x.AnimeShow.StudioOnAnimeShows)
+                        .AsSplitQuery()
+                        .Where(x => x.ToSync && x.Action == action)
+                        .ToListAsync();
+            }            
         } 
 
         /// <summary>

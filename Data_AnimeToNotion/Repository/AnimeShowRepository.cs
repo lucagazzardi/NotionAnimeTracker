@@ -78,6 +78,7 @@ namespace Data_AnimeToNotion.Repository
         public async Task<AnimeShow> GetFull(Guid Id)
         {
             return await _animeShowContext.AnimeShows
+                .Include(x => x.AnimeShowProgress)
                 .Include(x => x.GenreOnAnimeShows)
                 .Include(x => x.StudioOnAnimeShows)
                 .Include(x => x.Relations)

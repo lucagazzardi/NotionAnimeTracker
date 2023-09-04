@@ -146,12 +146,6 @@ namespace API_AnimeToNotion.Controllers
             return Ok(await _main.LibraryQuery(query.filters, query.sort, query.page));
         }
 
-        [HttpPost("get/demo/library")]
-        public async Task<IActionResult> GetDemoLibrary([FromBody] QueryIn query)
-        {
-            return Ok(await _main.LibraryQueryDemo(query.filters, query.sort, query.page));
-        }
-
         #endregion
 
         #region History

@@ -30,7 +30,6 @@ namespace Business_AnimeToNotion.Integrations.Internal
         #region Library Operativity
 
         Task<PaginatedResponse<INT_AnimeShowFull>> LibraryQuery(FilterIn filters, SortIn? sort, PageIn page);
-        Task<List<INT_AnimeShowFull>> LibraryQueryDemo(FilterIn filters, SortIn? sort, PageIn page);
 
         #endregion
 

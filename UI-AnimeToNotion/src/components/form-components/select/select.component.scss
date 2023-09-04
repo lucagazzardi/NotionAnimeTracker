@@ -1,5 +1,3 @@
-@use "sass:selector";
-
 .select {
   display: flex;
   align-items: center;
@@ -15,16 +13,16 @@
     transition: .15s;
     display: inline-flex;
     align-items: center;
-  }
 
-  @at-root &__icon--rotated {
-    transition: .15s;
-    transform: rotate(-180deg);
-  }
+    @at-root &--rotated {
+      transition: .15s;
+      transform: rotate(-180deg);
+    }
 
-  @at-root &__icon--reset {
-    color: rgb(var(--color-text-normal), .7);
-    position: absolute;
-    right: 15px;
+    @at-root &--reset {
+      color: rgb(var(--color-text-normal), .7);
+      position: absolute;
+      right: 15px;
+    }
   }
 }

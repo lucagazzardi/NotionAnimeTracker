@@ -1,13 +1,7 @@
-@use "sass:selector";
-
 .show-buttons {
   position: absolute;
   top: 15px;
   right: 15px;
-
-  @at-root &__item--main {
-    margin-bottom: 7px;
-  }
 
   @at-root &__item {
     height: 25px;
@@ -27,6 +21,10 @@
       transition: 0.25s;
       opacity: 100%;
     }
+
+    &--main {
+      margin-bottom: 7px;
+    }
   }
 
   @at-root ::ng-deep &__item--tooltip {
@@ -39,21 +37,23 @@
     padding: 3px 8px;
   }
 
-  @at-root &__icon--s {
+  @at-root &__icon {
     width: .5rem;
-  }
 
-  @at-root &__icon--m {
-    width: .6rem;
-  }
+    @at-root &--s {
+      width: .5rem;
+    }
 
-  @at-root &__icon--l {
-    width: .7rem;
-  }
+    @at-root &--m {
+      width: .6rem;
+    }
 
-  @at-root &__icon--xl {
-    width: .9rem;
+    @at-root &--l {
+      width: .7rem;
+    }
+
+    @at-root &--xl {
+      width: .9rem;
+    }
   }
 }
-
-

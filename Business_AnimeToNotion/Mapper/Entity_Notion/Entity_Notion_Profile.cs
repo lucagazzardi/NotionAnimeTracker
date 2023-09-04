@@ -19,13 +19,15 @@ namespace Business_AnimeToNotion.Mapper.Entity_Notion
                     { "Format", Mapping.Mapper.Map<SelectPropertyValue>(source.Format) },
                     { "Status", Mapping.Mapper.Map<SelectPropertyValue>(source.Status) },
                     { "Cover", Mapping.Mapper.Map<FilesPropertyValue>(source.Cover) },
-                    { "Episodes", Mapping.Mapper.Map<NumberPropertyValue>(source.Episodes) },
                     { "Favorite", Mapping.Mapper.Map<CheckboxPropertyValue>(source.Favorite) },
                     { "Genres", Mapping.Mapper.Map<RichTextPropertyValue>(string.Join(", ", source.GenreOnAnimeShows.Select(x => x.Description))) },
                     { "MAL Id", Mapping.Mapper.Map<NumberPropertyValue>(source.MalId) },
                     { "MAL Link", Mapping.Mapper.Map<UrlPropertyValue>(source.MalId) },
                     { "Studios", Mapping.Mapper.Map<RichTextPropertyValue>(string.Join(", ", source.StudioOnAnimeShows.Select(x => x.Description))) }
                 };
+
+                if (source.Episodes != null)
+                    result.Add("Episodes", Mapping.Mapper.Map<NumberPropertyValue>(source.Episodes));
 
                 if (source.Score != null)
                     result.Add("MAL Score", Mapping.Mapper.Map<NumberPropertyValue>(source.Score));

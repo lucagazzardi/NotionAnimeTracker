@@ -1,5 +1,4 @@
-@use "sass:selector";
-@import "./_skeleton.scss";
+@use "../../assets/scss/_skeleton.scss" as *;
 
 .show-visualization {
   font-family: var(--font-family-secondary);
@@ -90,17 +89,17 @@
         padding-bottom: 150%;
       }
     }
-  }
 
-  @at-root &__cover--loading {
-    background: rgba(var(--color-skeleton-base),.8);
-    box-shadow: none;
-    opacity: 1;
-    overflow: hidden;
+    @at-root &--loading {
+      background: rgba(var(--color-skeleton-base),.8);
+      box-shadow: none;
+      opacity: 1;
+      overflow: hidden;
 
-    &:before {
-      @include skeleton;
-      @include skeleton-animation;
+      &:before {
+        @include skeleton;
+        @include skeleton-animation;
+      }
     }
   }
 
@@ -113,10 +112,10 @@
     left: 0;
     opacity: 0;
     transition: opacity .3s ease-in-out;
-  }
 
-  @at-root &__image--loaded {
-    opacity: 1;
+    @at-root &--loaded {
+      opacity: 1;
+    }
   }
 
   @at-root &__show-title {
@@ -140,6 +139,22 @@
     &:hover {
       transition: .25s;
       color: rgb(var(--color-text-hover));
+    }
+
+    @at-root &--loading {
+      border-radius: 4px;
+      height: 17px;
+      margin-top: 5px;
+      width: 90%;
+      background: rgba(var(--color-skeleton-base),.8);
+      box-shadow: none;
+      opacity: 1;
+      overflow: hidden;
+
+      &:before {
+        @include skeleton;
+        @include skeleton-animation;
+      }
     }
   }
 
@@ -178,12 +193,12 @@
       top: 15%;
     }
 
-    &--active {
+    @at-root &--active {
       opacity: 1;
       transform: none;
     }
 
-    &--right {
+    @at-root &--right {
       right: initial;
       left: 100%;
       margin-left: 18px;
@@ -197,7 +212,7 @@
       }
     }
 
-    &--left {
+    @at-root &--left {
       left: initial;
       right: 100%;
       margin-right: 18px;
@@ -242,59 +257,45 @@
     width: 1rem;
     color: rgb(var(--background-danger-item), .9);
     margin-bottom: 5px;
-  }
 
-  @at-root &__icon--play {
-    width: .8rem;
-    color: rgb(var(--color-text-normal));
-  }
+    @at-root &--play {
+      width: .8rem;
+      color: rgb(var(--color-text-normal));
+    }
 
-  @at-root &__icon--title {
-    width: .8rem;
-    margin-top: 3px;
-    margin-right: 3px;
-  }
+    @at-root &--title {
+      width: .8rem;
+      margin-top: 3px;
+      margin-right: 3px;
+    }
 
-  @at-root &__icon--completed {
-    width: .6rem;
-    margin-top: 2px;
-    margin-right: 3px;
-    color: rgb(var(--background-active-item));
-  }
+    @at-root &--completed {
+      width: .6rem;
+      margin-top: 2px;
+      margin-right: 3px;
+      color: rgb(var(--background-active-item));
+    }
 
-  @at-root &__icon--good {
-    margin-top: 2px;
-    color: rgb(var(--background-success-item));
-  }
+    @at-root &--good {
+      margin-top: 2px;
+      color: rgb(var(--background-success-item));
+    }
 
-  @at-root &__icon--meh {
-    margin-top: 2px;
-    color: rgb(var(--background-warning-item));
-  }
+    @at-root &--meh {
+      margin-top: 2px;
+      color: rgb(var(--background-warning-item));
+    }
 
-  @at-root &__icon--bad {
-    margin-top: 2px;
+    @at-root &--bad {
+      margin-top: 2px;
+    }
   }
 
   @at-root &__percentage {
     padding-left: 7px;
   }
 
-  @at-root &__show-title--loading {
-    border-radius: 4px;
-    height: 17px;
-    margin-top: 5px;
-    width: 90%;
-    background: rgba(var(--color-skeleton-base),.8);
-    box-shadow: none;
-    opacity: 1;
-    overflow: hidden;
 
-    &:before {
-      @include skeleton;
-      @include skeleton-animation;
-    }
-  }
 
   @at-root &__show-circle {
     width: 10px;
@@ -305,18 +306,18 @@
     position: relative;
     top: 1px;
     background: rgb(var(--background-active-item));
-  }
 
-  @at-root &__show-circle--towatch {
-    background: #F4C900;
-  }
+    @at-root &--towatch {
+      background: #F4C900;
+    }
 
-  @at-root &__show-circle--watching {
-    background: rgb(var(--background-active-item));
-  }
+    @at-root &--watching {
+      background: rgb(var(--background-active-item));
+    }
 
-  @at-root &__show-circle--completed {
-    background: green;
+    @at-root &--completed {
+      background: green;
+    }
   }
 }
 

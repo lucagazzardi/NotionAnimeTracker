@@ -20,17 +20,13 @@ namespace Functions_AnimeToNotion
     {
         #region Config
 
-        private static string Notion_Auth_Token = Environment.GetEnvironmentVariable("NotionSecretKey");
         private static string MAL_Header = Environment.GetEnvironmentVariable("MAL_Header");
         private static string MAL_ApiKey = Environment.GetEnvironmentVariable("MALApiKey");
         private static string MAL_NotionNeededFields = Environment.GetEnvironmentVariable("MAL_NotionNeededFields");
         private static string MAL_BaseURL = Environment.GetEnvironmentVariable("MAL_BaseURL");
-        private string DataBaseId = Environment.GetEnvironmentVariable("Notion-DataBaseId");
         private int PageSize = Convert.ToInt32(Environment.GetEnvironmentVariable("PageSize"));
         private ConfigurationClient configClient = new ConfigurationClient(Environment.GetEnvironmentVariable("AppConfiguration-ConnectionString"));
 
-        private NotionClient NotionClient;
-        private HttpClient MALClient;
         private int currentPage;
 
         #region DI
@@ -70,14 +66,24 @@ namespace Functions_AnimeToNotion
 
             foreach (var dbEntry in dbEntries.Data)
             {
-                // Retrieve MAL anime record by Id
-                INT_AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(MAL_Header, MAL_ApiKey, BuildMALUrl_SearchById(dbEntry.MalId));
+                try
+                {
+                    // Retrieve MAL anime record by Id
+                    INT_AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(MAL_Header, MAL_ApiKey, BuildMALUrl_SearchById(dbEntry.MalId));
 
-                // Check if there are differences
-                var changes = Utility.Utility.CheckDifferences(MalEntry, dbEntry);
+                    // Check if there are differences
+                    var changes = Utility.Utility.CheckDifferences(MalEntry, dbEntry);
 
-                // Update if there are differences
-                await UpdateItem(changes, dbEntry);                
+                    // Update if there are differences
+                    await UpdateItem(changes, dbEntry);
+
+                    _logger.LogInformation($"{dbEntry.NameEnglish} - {dbEntry.MalId}: updated");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"{dbEntry.NameEnglish} - {dbEntry.MalId}: {ex.Message}");
+                }
+                
             }
 
             currentPage = dbEntries.PageInfo.HasNextPage ? currentPage + 1 : 1;

@@ -1,5 +1,4 @@
-@use '../../assets/scss/_show-visualization.scss';
-@import '../../assets/scss/_skeleton.scss';
+@use "../../assets/scss/_skeleton.scss" as *;
 
 .main-content {
   margin-top: 60px;
@@ -15,22 +14,21 @@
     grid-template-columns: max-content max-content max-content max-content;
     grid-gap: 10px;
     color: rgb(var(--color-text-highlight));
-    /*margin-bottom: 20px;*/
-  }
 
-  @at-root &__title--loading {
-    border-radius: 4px;
-    height: 24px;
-    background: rgba(var(--color-skeleton-contrast),.8);
-    box-shadow: none;
-    opacity: 1;
-    overflow: hidden;
-    padding: 0;
-    width: 50%;
+    @at-root &--loading {
+      border-radius: 4px;
+      height: 24px;
+      background: rgba(var(--color-skeleton-contrast),.8);
+      box-shadow: none;
+      opacity: 1;
+      overflow: hidden;
+      padding: 0;
+      width: 50%;
 
-    &:before {
-      @include skeleton;
-      @include skeleton-animation;
+      &:before {
+        @include skeleton;
+        @include skeleton-animation;
+      }
     }
   }
 
@@ -57,16 +55,16 @@
     width: 1rem;
     color: rgb(var(--background-danger-item), .9);
     margin-bottom: 5px;
-  }
 
-  @at-root &__icon--play {
-    width: .8rem;
-    color: rgb(var(--color-text-normal));
-  }
+    @at-root &--play {
+      width: .8rem;
+      color: rgb(var(--color-text-normal));
+    }
 
-  @at-root &__icon--title{
+    @at-root &--title {
       width: .8rem;
       margin-top: 3px;
       margin-right: 3px;
+    }
   }
 }

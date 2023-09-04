@@ -50,6 +50,8 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
 @import "assets/scss/_menu-ang-material.scss";
 @import "assets/scss/_progress-bar.scss";
 
+@import "assets/scss/_show-visualization.scss";
+
 :root {
   --color-background: 237, 241, 245;
   --color-foreground: 255, 255, 255;

@@ -7,13 +7,13 @@ import { LibraryComponent } from '../components/library/library.component';
 import { SearchAnimeComponent } from '../components/search-anime/search-anime.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full', data: { title: 'home' } },
-  { path: 'library', redirectTo: '/home', pathMatch: 'full', data: { title: 'home' } },
-  { path: 'home', component: LibraryComponent, data: { title: 'home' } },
-  { path: 'edit/:id/:title', component: EditComponent, data: { title: 'edit' } },
-  { path: 'browse', component: SearchAnimeComponent, data: { title: 'browse' } },
-  { path: 'history', component: HistoryComponent, data: { title: 'history' } },
-  { path: 'history/year/:year', component: HistoryElementComponent, data: { title: 'history year' } }
+  { path: '', redirectTo: '/home', pathMatch: 'full', data: { title: 'Library' } },
+  { path: 'library', redirectTo: '/home', pathMatch: 'full', data: { title: 'Library' } },
+  { path: 'home', component: LibraryComponent, data: { title: 'Library' } },
+  { path: 'edit/:id/:title', component: EditComponent, data: { title: 'Edit' } },
+  { path: 'browse', component: SearchAnimeComponent, data: { title: 'Browse' } },
+  { path: 'history', component: HistoryComponent, data: { title: 'History' } },
+  { path: 'history/year/:year', component: HistoryElementComponent, data: { title: 'Year' } }
 
 ];
 

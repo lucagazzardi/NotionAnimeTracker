@@ -6,18 +6,18 @@
   justify-items: center;
 
   @at-root &__icon {
-  }
 
-  @at-root &__icon--good {
-    color: rgb(var(--background-success-item));
-  }
+    @at-root &--good {
+      color: rgb(var(--background-success-item));
+    }
 
-  @at-root &__icon--meh {
-    color: rgb(var(--background-warning-item));
-  }
+    @at-root &--meh {
+      color: rgb(var(--background-warning-item));
+    }
 
-  @at-root &__icon--bad {
-    color: rgb(var(--background-danger-item));
+    @at-root &--bad {
+      color: rgb(var(--background-danger-item));
+    }
   }
 
   @at-root &__input {
@@ -39,9 +39,9 @@
     color: rgb(var(--color-text-normal), .7);
     height: 15px;
     cursor: pointer;
-  }
 
-  @at-root &__arrow--not-allowed {
-    cursor: not-allowed;
+    @at-root &--not-allowed {
+      cursor: not-allowed;
+    }
   }
 }

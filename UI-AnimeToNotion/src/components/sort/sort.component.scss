@@ -1,5 +1,3 @@
-@use "sass:selector";
-
 .sort-wrap {
   display: flex;
   justify-content: flex-end;
@@ -14,11 +12,11 @@
 
   @at-root &__item {
     cursor: pointer;
-  }
 
-  @at-root &__item--divider {
-    border-left: 1px solid rgb(var(--color-text-normal), .7);
-    height: 80%;
+    @at-root &--divider {
+      border-left: 1px solid rgb(var(--color-text-normal), .7);
+      height: 80%;
+    }
   }
 
   @at-root &__select {

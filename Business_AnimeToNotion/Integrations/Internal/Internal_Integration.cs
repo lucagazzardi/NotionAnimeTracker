@@ -193,25 +193,9 @@ namespace Business_AnimeToNotion.Integrations.Internal
             data = sortManager.ApplySort(data, sort);
 
             PageManager pageManager = new PageManager();
-            //data = await pageManager.ApplyPaging(data, page);
-
-            return pageManager.GeneratePaginatedResponse(await Mapping.Mapper.ProjectTo<INT_AnimeShowFull>(data).ToListAsync(), page);
-        }
-
-        public async Task<List<INT_AnimeShowFull>> LibraryQueryDemo(FilterIn filters, SortIn? sort, PageIn page)
-        {
-            IQueryable<AnimeShow> data = _animeRepository.GetAsQueryable();
-
-            FilterManager filterManager = new FilterManager(filters);
-            data = filterManager.ApplyFilters(data);
-
-            SortManager sortManager = new SortManager();
-            //data = sortManager.ApplySort(data, sort);
-
-            PageManager pageManager = new PageManager();
             data = await pageManager.ApplyPaging(data, page);
 
-            return await Mapping.Mapper.ProjectTo<INT_AnimeShowFull>(data).ToListAsync();
+            return pageManager.GeneratePaginatedResponse(await Mapping.Mapper.ProjectTo<INT_AnimeShowFull>(data).ToListAsync(), page);
         }
 
         #endregion

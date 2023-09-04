@@ -6,12 +6,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToasterModule } from 'gazza-toaster';
-import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -73,7 +72,6 @@ import { BaseService } from '../services/base/base.service';
     HttpClientModule,
     FormsModule,
     ToasterModule,
-    MdbDropdownModule,
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,

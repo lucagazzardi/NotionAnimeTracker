@@ -5,7 +5,7 @@
   background-color: rgb(11, 27, 57) !important;
   color: rgb(214, 230, 243);
   letter-spacing: 1px;
-  font-size: 13px;
+  font-size: 14px;
   box-shadow: initial;
 
   @media screen and (max-width: 1040px) {
@@ -24,8 +24,13 @@
   }
 }
 
+.logo-container{
+    padding: 0;
+}
+
 .logo{
-    width: 60px;
+    width: 65px;
+    width: 65px;
 }
 
 .theme-switcher{
