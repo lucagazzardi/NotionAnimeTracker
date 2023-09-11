@@ -23,10 +23,11 @@ namespace Functions_AnimeToNotion
         }
 
         [Function("SyncNotionData")]
-        public async Task Run([TimerTrigger("0 0 4 * * *",
-            #if DEBUG
-                RunOnStartup= true
-            #endif
+        public async Task Run([TimerTrigger("0 0 4 * * *"
+            //,
+            //#if DEBUG
+            //    RunOnStartup= true
+            //#endif
             )] MyInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");

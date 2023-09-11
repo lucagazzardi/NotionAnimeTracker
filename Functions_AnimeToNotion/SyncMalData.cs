@@ -50,10 +50,11 @@ namespace Functions_AnimeToNotion
         }
 
         [Function("SyncMalData")]
-        public async Task Run([TimerTrigger("0 0 3 * * *",
-            #if DEBUG
-                RunOnStartup= false
-            #endif
+        public async Task Run([TimerTrigger("0 0 3 * * *"
+            //,
+            //#if DEBUG
+            //    RunOnStartup= false
+            //#endif
             )] MyInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
