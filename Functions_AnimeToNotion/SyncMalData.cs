@@ -78,7 +78,10 @@ namespace Functions_AnimeToNotion
                     // Update if there are differences
                     await UpdateItem(changes, dbEntry);
 
-                    _logger.LogInformation($"{dbEntry.NameEnglish} - {dbEntry.MalId}: updated");
+                    if(changes.Changes.Count > 0)
+                        _logger.LogInformation($"{dbEntry.NameEnglish} - {dbEntry.MalId}: updated");
+                    else
+                        _logger.LogInformation($"{dbEntry.NameEnglish} - {dbEntry.MalId}: no differences");
                 }
                 catch (Exception ex)
                 {
@@ -109,7 +112,7 @@ namespace Functions_AnimeToNotion
             if (changes.Changes.Count == 0)
                 return;
 
-            var anime = await _animeRepository.GetForEdit(dbEntry.Info.Id);            
+            var anime = await _animeRepository.GetForEdit(dbEntry.Info.Id);
 
             anime = Utility.Utility.SetBasicChanges(anime, changes.ChangedAnime, changes.Changes);
 
