@@ -151,6 +151,7 @@ export class EditComponent implements OnInit {
   setFinishDate(finishDate: Date | null) {
     this.selectedFinishDate = finishDate;
     this.item!.edit!.finishedOn = finishDate ?? null;
+    this.item!.edit!.completedYear = finishDate != null ? new Date(finishDate).getFullYear() : null;
   }
 
   //NOTES
