@@ -1,7 +1,7 @@
 <div class="sort-wrap">
   <div class="sort">
 
-    <div class="sort__item">
+    <div class="sort__item flex-end">
       <div class="sort__select" mat-button [matMenuTriggerFor]="menu">
         <div class="sort__icon">
           <svg xmlns="http://www.w3.org/2000/svg" height=".75rem" viewBox="0 0 320 512">
@@ -19,12 +19,14 @@
 
     <div class="sort__item--divider"></div>
 
-    <div class="sort__item">
-      <app-checkbox [label]="favoritesLabel" (valueChanged)="onChangeFavorites($event)"></app-checkbox>
-    </div>
+    <div class="sort__item-wrapper">
+      <div class="sort__item">
+        <app-checkbox [label]="favoritesLabel" (valueChanged)="onChangeFavorites($event)"></app-checkbox>
+      </div>
 
-    <div class="sort__item">
-      <app-checkbox [label]="planToWatchLabel" (valueChanged)="onChangePlanToWatch($event)"></app-checkbox>
+      <div class="sort__item">
+        <app-checkbox [label]="planToWatchLabel" (valueChanged)="onChangePlanToWatch($event)"></app-checkbox>
+      </div>
     </div>
 
   </div>

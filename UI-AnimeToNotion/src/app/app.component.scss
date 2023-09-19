@@ -69,7 +69,7 @@
     width: 50px;
     height: 50px;
     color: rgb(var(--background-active-item));
-    box-shadow: 0 1px 20px rgba(43,50,88,.3);
+    box-shadow: 0 1px 20px rgba(43,50,88,.5);
     background: rgb(var(--color-foreground));
     border-radius: 6px;
   }
@@ -84,7 +84,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    box-shadow: 0 1px 20px rgba(43,50,88,.3);
+    box-shadow: 0 1px 20px rgba(43,50,88,.5);
     background: rgb(var(--color-foreground));
     height: 140px;
     width: 140px;

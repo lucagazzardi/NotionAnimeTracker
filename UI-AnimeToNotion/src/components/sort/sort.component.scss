@@ -6,16 +6,41 @@
 
 .sort {
   display: grid;
-  grid-template-columns: max-content max-content max-content max-content;
+  grid-template-columns: max-content max-content max-content;
   grid-gap: 10px;
   align-items: center;
+
+  @media screen and (max-width: 760px) {
+    & {
+      display: initial;
+    }
+  }
+
+  @at-root &__item-wrapper {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+  }
 
   @at-root &__item {
     cursor: pointer;
 
+    @media screen and (max-width: 760px) {
+      & {
+        margin-bottom: 10px;
+      }
+    }
+
     @at-root &--divider {
       border-left: 1px solid rgb(var(--color-text-normal), .7);
       height: 80%;
+
+      @media screen and (max-width: 760px) {
+        & {
+          display: none;
+        }
+      }
     }
   }
 
@@ -46,6 +71,15 @@
 
   @at-root &__value {
     user-select: none;
+  }
+}
+
+.flex-end {
+  @media screen and (max-width: 760px) {
+    & {
+      display: flex;
+      justify-content: end;
+    }
   }
 }
 
