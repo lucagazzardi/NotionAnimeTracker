@@ -79,7 +79,7 @@ namespace Functions_AnimeToNotion
                     await UpdateItem(changes, dbEntry);
 
                     if(changes.Changes.Count > 0)
-                        _logger.LogInformation($"{dbEntry.NameEnglish} - {dbEntry.MalId}: updated");
+                        _logger.LogInformation($"{dbEntry.NameEnglish} - {dbEntry.MalId}: updated. Differences: {string.Join(", ", changes.Changes)}");
                     else
                         _logger.LogInformation($"{dbEntry.NameEnglish} - {dbEntry.MalId}: no differences");
                 }

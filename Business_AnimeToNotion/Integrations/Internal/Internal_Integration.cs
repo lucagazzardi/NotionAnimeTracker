@@ -12,6 +12,7 @@ using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Business_AnimeToNotion.Integrations.Internal
 {
@@ -134,6 +135,8 @@ namespace Business_AnimeToNotion.Integrations.Internal
         public async Task<bool> SetAnimeFavorite(Guid id, bool favorite)
         {
             await _animeRepository.SetAnimeFavorite(id);
+
+            await _syncToNotionRepository.SetToSyncNotion(id, "Edit");
             return favorite;
         }
 
