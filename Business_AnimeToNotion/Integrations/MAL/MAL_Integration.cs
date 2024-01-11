@@ -144,7 +144,8 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <returns></returns>
         public async Task<INT_AnimeShowFull> GetAnimeById(string header, string key, string url)
         {
-            return Mapping.Mapper.Map<INT_AnimeShowFull>(await GetAnimeFromMal(header, key, url));
+            var malOb = await GetAnimeFromMal(header, key, url);
+            return Mapping.Mapper.Map<INT_AnimeShowFull>(malOb);
         }
 
         /// <summary>

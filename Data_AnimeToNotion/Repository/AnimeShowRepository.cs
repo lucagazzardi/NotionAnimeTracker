@@ -216,7 +216,7 @@ namespace Data_AnimeToNotion.Repository
             var studioMalIds = studios.Select(x => x.Id).ToList();
             var existingStudios = await _animeShowContext.Studios.AsNoTracking().Where(x => studioMalIds.Contains(x.Id)).ToListAsync();
 
-            if (existingStudios.Any() && existingStudios.All(x => studioMalIds.Contains(x.Id)))
+            if (existingStudios.Any() && studioMalIds.All(x => existingStudios.Select(x => x.Id).Contains(x)))
                 return existingStudios;
 
             List<Studio> newStudios = studios.Where(x => !existingStudios.Select(x => x.Id).Contains(x.Id)).ToList();
@@ -230,7 +230,7 @@ namespace Data_AnimeToNotion.Repository
             var genreMalIds = genres.Select(x => x.Id).ToList();
             var existingGenres = await _animeShowContext.Genres.AsNoTracking().Where(x => genreMalIds.Contains(x.Id)).ToListAsync();
 
-            if (existingGenres.Any() && existingGenres.All(x => genreMalIds.Contains(x.Id)))
+            if (existingGenres.Any() && genreMalIds.All(x => existingGenres.Select(x => x.Id).Contains(x)))
                 return existingGenres;
 
             List<Genre> newGenres = genres.Where(x => !existingGenres.Select(x => x.Id).Contains(x.Id)).ToList();
@@ -249,7 +249,9 @@ namespace Data_AnimeToNotion.Repository
                 studioOnAnime.Add(new StudioOnAnimeShow() { Id = Guid.NewGuid(), Description = studio.Description, AnimeShowId = show.Id, StudioId = studio.Id });
             }
 
-            await _animeShowContext.StudioOnAnimeShows.Where(x => x.AnimeShowId == show.Id).ExecuteDeleteAsync();
+            // Bug with the function SyncMalData because deletes genres already present and adds delta only, so everytime the studios are different
+            // Decomment if something wrong comes up
+            //await _animeShowContext.StudioOnAnimeShows.Where(x => x.AnimeShowId == show.Id).ExecuteDeleteAsync();
             await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
         }
 
@@ -263,7 +265,9 @@ namespace Data_AnimeToNotion.Repository
                 genreOnAnime.Add(new GenreOnAnimeShow() { Id = Guid.NewGuid(), Description = genre.Description, AnimeShowId = show.Id, GenreId = genre.Id });
             }
 
-            await _animeShowContext.GenreOnAnimeShows.Where(x => x.AnimeShowId == show.Id).ExecuteDeleteAsync();
+            // Bug with the function SyncMalData because deletes genres already present and adds delta only, so everytime the genres are different
+            // Decomment if something wrong comes up
+            //await _animeShowContext.GenreOnAnimeShows.Where(x => x.AnimeShowId == show.Id).ExecuteDeleteAsync();
             await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
         }
 

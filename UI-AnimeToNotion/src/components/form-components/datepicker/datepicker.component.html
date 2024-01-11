@@ -7,7 +7,7 @@
   </div>
 
   <mat-form-field class="datepicker__input" appearance="fill" >
-    <input class="datepicker__trigger" matInput [matDatepicker]="picker" [formControl]="date">
+    <input class="datepicker__trigger" matInput [matDatepicker]="picker" [formControl]="date" inputmode="none">
     <mat-datepicker #picker xPosition="start" yPosition="above"></mat-datepicker>
   </mat-form-field>
 

@@ -53,7 +53,7 @@ namespace Functions_AnimeToNotion
         public async Task Run([TimerTrigger("0 0 3 * * *"
             //,
             //#if DEBUG
-            //    RunOnStartup= false
+            //    RunOnStartup= true
             //#endif
             )] MyInfo myTimer)
         {
