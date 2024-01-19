@@ -40,5 +40,38 @@ namespace Business_AnimeToNotion.Functions.Static
 
             return Season.Winter;
         }
+
+        public static string InternalStatusToMAlLUpdateStatus(string internalStatus)
+        {
+            switch (internalStatus)
+            {
+                case "To Watch":
+                    return "plan_to_watch";
+                case "Watching":
+                    return "watching";
+                case "Completed":
+                    return "completed";
+                case "Dropped":
+                    return "dropped";
+                default:
+                    return "on_hold";
+            }
+        }
+
+        public static int? InternalScoreToMALUpdateScore(int? score)
+        {
+            if (score == null)
+                return null;
+
+            return (int)(Math.Round((double)score / 10, 0));
+        } 
+
+        public static string InternalDateToMALDate(DateTime? date)
+        {
+            if (date == null)
+                return null;
+
+            return date.Value.ToString("yyyy-MM-dd");
+        }
     }
 }

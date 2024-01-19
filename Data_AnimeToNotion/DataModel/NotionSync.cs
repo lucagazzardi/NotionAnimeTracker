@@ -11,9 +11,11 @@ namespace Data_AnimeToNotion.DataModel
         public Guid? AnimeShowId { get; set; }
         public string NotionPageId { get; set; }
         public bool ToSync { get; set; }
+        public bool MalListToSync { get; set; }
         public string Action { get; set; }
         public DateTime LastModified { get; set; }
         public string? Error { get; set; }
+        public string? MalListError { get; set; }
 
         public AnimeShow AnimeShow { get; set; }
     }

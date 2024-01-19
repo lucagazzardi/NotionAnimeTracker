@@ -1,7 +1,6 @@
 ﻿using Data_AnimeToNotion.Context;
 using Data_AnimeToNotion.DataModel;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Data_AnimeToNotion.Repository
 {

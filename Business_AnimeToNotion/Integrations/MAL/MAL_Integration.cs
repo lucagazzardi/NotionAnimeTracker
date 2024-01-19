@@ -6,8 +6,10 @@ using Business_AnimeToNotion.Model.MAL;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using JikanDotNet.Config;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace Business_AnimeToNotion.Integrations.MAL
 {  
@@ -149,6 +151,18 @@ namespace Business_AnimeToNotion.Integrations.MAL
         }
 
         /// <summary>
+        /// Add or update status on Mal
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="key"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public async Task<MAL_AnimeUpdateStatus> UpdateListStatus(string header, string key, string url, MAL_AnimeUpdateStatus item)
+        {
+            return await UpdateStatusOnMal(header, key, url, item);
+        }
+
+        /// <summary>
         /// Retrieves relations for an anime
         /// </summary>
         /// <param name="malId"></param>
@@ -194,6 +208,13 @@ namespace Business_AnimeToNotion.Integrations.MAL
             SetHttpHeader(header, key);
             var response = await _malHttpClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<MAL_AnimeShowRaw>(response);
+        }
+
+        private async Task<MAL_AnimeUpdateStatus> UpdateStatusOnMal(string header, string key, string url, MAL_AnimeUpdateStatus item)
+        {
+            SetHttpHeader(header, key);
+            var response = await _malHttpClient.PostAsJsonAsync(url, item);
+            return JsonConvert.DeserializeObject<MAL_AnimeUpdateStatus>(await response.Content.ReadAsStringAsync());
         }
 
         private string BuildMALRelationsUrl(int malId)

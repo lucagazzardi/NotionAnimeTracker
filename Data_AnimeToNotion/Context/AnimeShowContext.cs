@@ -21,6 +21,7 @@ namespace Data_AnimeToNotion.Context
         #region SyncToNotion
 
         public DbSet<NotionSync> NotionSyncs { get; set; }
+        public DbSet<MalUpdateListAction> MalUpdateErrors { get; set; }
 
         #endregion
 
@@ -34,6 +35,7 @@ namespace Data_AnimeToNotion.Context
             modelBuilder.Entity<Relation>().ToTable("Relation");
             modelBuilder.Entity<Year>().ToTable("Year");
             modelBuilder.Entity<NotionSync>().ToTable("NotionSync");
+            modelBuilder.Entity<MalUpdateListAction>().ToTable("MalUpdateError");
 
             modelBuilder.Entity<AnimeShow>()
                 .Property(t => t.PlanToWatch)

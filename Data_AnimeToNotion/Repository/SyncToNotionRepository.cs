@@ -54,6 +54,18 @@ namespace Data_AnimeToNotion.Repository
             }            
         } 
 
+        public async Task<List<NotionSync>> GetMalListToUpdate(params string[] actions)
+        {
+            return await _animeShowContext.NotionSyncs
+                .Include(x => x.AnimeShow)
+                .Include(x => x.AnimeShow.AnimeShowProgress)
+                .Include(x => x.AnimeShow.GenreOnAnimeShows)
+                .Include(x => x.AnimeShow.StudioOnAnimeShows)
+                .AsSplitQuery()
+                .Where(x => x.MalListToSync && actions.Contains(x.Action))
+                .ToListAsync();
+        }
+
         /// <summary>
         /// Creates NotionSync for every anime that's missing
         /// </summary>
@@ -105,6 +117,7 @@ namespace Data_AnimeToNotion.Repository
             {
                 AnimeShowId = anime.Id,
                 ToSync = true,
+                MalListToSync = true,
                 Action = "Add"
             });
             await _animeShowContext.SaveChangesAsync();
@@ -116,10 +129,11 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="animeId"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public async Task SetToSyncNotion(Guid animeId, string action)
+        public async Task SetToSyncNotion(Guid animeId, string action, bool malListToSync = true)
         {
             await _animeShowContext.NotionSyncs.Where(x => x.AnimeShowId == animeId).ExecuteUpdateAsync(x => x
                 .SetProperty(a => a.ToSync, a => true)
+                .SetProperty(a => a.MalListToSync, a => malListToSync)
                 .SetProperty(a => a.Action, a => action)
             );
         }
@@ -178,6 +192,23 @@ namespace Data_AnimeToNotion.Repository
         {
             await _animeShowContext.NotionSyncs.Where(x => x.Id == inError.Id).ExecuteUpdateAsync(x => x
                 .SetProperty(a => a.Error, a => message)
+            );
+        }
+
+        /// <summary>
+        /// Set the item as synced on Mal List
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task SetMalListSynced(int id)
+        {
+            await _animeShowContext.NotionSyncs.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.MalListToSync, a => false));
+        }
+
+        public async Task SetMalListError(int id, string message)
+        {
+            await _animeShowContext.NotionSyncs.Where(x => x.Id == id).ExecuteUpdateAsync(x => x
+                .SetProperty(a => a.MalListError, a => message)
             );
         }
 

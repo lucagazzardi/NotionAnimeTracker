@@ -136,7 +136,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         {
             await _animeRepository.SetAnimeFavorite(id);
 
-            await _syncToNotionRepository.SetToSyncNotion(id, "Edit");
+            await _syncToNotionRepository.SetToSyncNotion(id, "Edit", malListToSync: false);
             return favorite;
         }
 

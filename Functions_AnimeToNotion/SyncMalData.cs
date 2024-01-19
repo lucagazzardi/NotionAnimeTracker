@@ -2,14 +2,12 @@ using Azure.Data.AppConfiguration;
 using Business_AnimeToNotion.Integrations.Internal;
 using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Internal;
-using Business_AnimeToNotion.Model.Query.Filter;
 using Business_AnimeToNotion.Model.Query;
 using Business_AnimeToNotion.QueryLogic.SortLogic;
 using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Notion.Client;
 using Functions_AnimeToNotion.Model;
 using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Model.Pagination;
@@ -123,7 +121,7 @@ namespace Functions_AnimeToNotion
                 changes.Changes.Contains("Relations") ? Mapping.Mapper.ProjectTo<Relation>(changes.ChangedAnime.Relations.AsQueryable()).ToList() : null
             );
 
-            await _syncToNotionRepository.SetToSyncNotion(anime.Id, "Edit");
+            await _syncToNotionRepository.SetToSyncNotion(anime.Id, "Edit", malListToSync: false);
         }     
 
         #endregion Private & Mapping
