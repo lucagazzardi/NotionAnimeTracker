@@ -7,6 +7,7 @@ using JikanDotNet;
 using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Integrations.Demo;
 using Business_AnimeToNotion.Integrations.Internal;
+using Business_AnimeToNotion.MAL_Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ builder.Services.AddScoped<IAnimeShowRepository, AnimeShowRepository>();
 builder.Services.AddScoped<IDemo_Integration, Demo_Integration>();
 builder.Services.AddScoped<IInternal_Integration, Internal_Integration>();
 builder.Services.AddScoped<ISyncToNotionRepository, SyncToNotionRepository>();
+builder.Services.AddScoped<IMalAuth, MalAuth>();
+
 
 builder.Services.AddSingleton<IJikan, Jikan>();
 

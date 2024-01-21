@@ -5,6 +5,7 @@ using Business_AnimeToNotion.Mapper.Entity_Notion;
 using Business_AnimeToNotion.Mapper.FromMal;
 using Business_AnimeToNotion.Mapper.Internal_Entity;
 using Business_AnimeToNotion.Mapper.MAL_Internal;
+using Business_AnimeToNotion.Mapper.NotionSync_MAL;
 using Business_AnimeToNotion.Mapper.String_Notion;
 
 namespace Business_AnimeToNotion.Mapper.Config
@@ -24,7 +25,8 @@ namespace Business_AnimeToNotion.Mapper.Config
                 cfg.AddProfile<Entity_Internal_Profile>();
                 cfg.AddProfile<Entity_History_Profile>();
                 cfg.AddProfile<MAL_Internal_Profile>();
-                cfg.AddProfile<Entity_Notion_Profile>();                
+                cfg.AddProfile<Entity_Notion_Profile>();
+                cfg.AddProfile<NotionSync_MAL_Profile>();                
             });
             var mapper = config.CreateMapper();
             return mapper;

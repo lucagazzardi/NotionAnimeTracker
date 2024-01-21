@@ -76,6 +76,7 @@ export class LibraryComponent implements OnInit {
   libraryListTracker!: boolean[];
   libraryListImages!: boolean[];
 
+  authLink: string = '';
 
   //! GENERAL FIELDS
   filterBackground: string = "foreground";

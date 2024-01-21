@@ -193,24 +193,7 @@ namespace Data_AnimeToNotion.Repository
             await _animeShowContext.NotionSyncs.Where(x => x.Id == inError.Id).ExecuteUpdateAsync(x => x
                 .SetProperty(a => a.Error, a => message)
             );
-        }
-
-        /// <summary>
-        /// Set the item as synced on Mal List
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task SetMalListSynced(int id)
-        {
-            await _animeShowContext.NotionSyncs.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.MalListToSync, a => false));
-        }
-
-        public async Task SetMalListError(int id, string message)
-        {
-            await _animeShowContext.NotionSyncs.Where(x => x.Id == id).ExecuteUpdateAsync(x => x
-                .SetProperty(a => a.MalListError, a => message)
-            );
-        }
+        }              
 
         /// <summary>
         /// Retrieves the year notion page Id
@@ -221,6 +204,50 @@ namespace Data_AnimeToNotion.Repository
         {
             return await _animeShowContext.Years.AsNoTracking().Where(x => x.YearValue == year).Select(x => x.NotionPageId).SingleOrDefaultAsync();
         }
+
+        #region MalSyncs
+
+        /// <summary>
+        /// Retrieves all the Mal sync errors occurred
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<MalSyncErrors>> GetMalSyncErrors()
+        {
+            return await _animeShowContext.MalSyncErrors.Include(x => x.AnimeShow).Include(x => x.AnimeShow.AnimeShowProgress).ToListAsync();
+        }
+
+        /// <summary>
+        /// Set the item as synced on Mal List
+        /// </summary>
+        /// <param name="notionSyncId"></param>
+        /// <returns></returns>
+        public async Task SetMalListSynced(int notionSyncId, int? malListErrorId = null)
+        {
+            await _animeShowContext.NotionSyncs.Where(x => x.Id == notionSyncId).ExecuteUpdateAsync(x => x.SetProperty(a => a.MalListToSync, a => false));
+            if (malListErrorId != null)
+                await _animeShowContext.MalSyncErrors.Where(x => x.Id == malListErrorId.Value).ExecuteDeleteAsync();
+        }
+
+        /// <summary>
+        /// Adds an error occurance for a Mal sync attempt
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public async Task SetMalListError(NotionSync notionSync, string error)
+        {
+            await _animeShowContext.NotionSyncs.Where(x => x.Id == notionSync.Id).ExecuteUpdateAsync(x => x.SetProperty(a => a.MalListToSync, a => false));
+
+            await _animeShowContext.MalSyncErrors.AddAsync(new MalSyncErrors()
+            {
+                AnimeShowId = notionSync.AnimeShow.Id,
+                MalId = notionSync.AnimeShow.MalId,
+                Action = notionSync.Action,
+                Error = error
+            });
+        }
+
+        #endregion
 
     }
 }

@@ -162,6 +162,11 @@ namespace Business_AnimeToNotion.Integrations.MAL
             return await UpdateStatusOnMal(header, key, url, item);
         }
 
+        public async Task<MAL_AnimeUpdateStatus> DeleteListStatus(string header, string key, string url)
+        {
+            return await DeleteListStatus(header, key, url);
+        }
+
         /// <summary>
         /// Retrieves relations for an anime
         /// </summary>
@@ -213,7 +218,14 @@ namespace Business_AnimeToNotion.Integrations.MAL
         private async Task<MAL_AnimeUpdateStatus> UpdateStatusOnMal(string header, string key, string url, MAL_AnimeUpdateStatus item)
         {
             SetHttpHeader(header, key);
-            var response = await _malHttpClient.PostAsJsonAsync(url, item);
+            var response = await _malHttpClient.PatchAsJsonAsync(url, item);
+            return JsonConvert.DeserializeObject<MAL_AnimeUpdateStatus>(await response.Content.ReadAsStringAsync());
+        }
+
+        private async Task<MAL_AnimeUpdateStatus> DeleteStatusOnMal(string header, string key, string url)
+        {
+            SetHttpHeader(header, key);
+            var response = await _malHttpClient.DeleteAsync(url);
             return JsonConvert.DeserializeObject<MAL_AnimeUpdateStatus>(await response.Content.ReadAsStringAsync());
         }
 
