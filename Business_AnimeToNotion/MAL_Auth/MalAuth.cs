@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Azure.Data.AppConfiguration;
 using Business_AnimeToNotion.Model.Auth;
 using Business_AnimeToNotion.Model.MAL;
 using Data_AnimeToNotion.DataModel;
@@ -75,6 +76,9 @@ namespace Business_AnimeToNotion.MAL_Auth
 
             var result = await response.Content.ReadAsStringAsync();
             ResponseTokens tokens = JsonConvert.DeserializeObject<ResponseTokens>(result);
+
+            var appConfig = new ConfigurationClient("temp");
+            appConfig.SetConfigurationSetting("MalRefreshToken", tokens.refresh_token);
         }
     }
 }

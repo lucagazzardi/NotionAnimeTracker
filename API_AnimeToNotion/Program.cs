@@ -42,6 +42,8 @@ if (builder.Environment.IsProduction())
     new DefaultAzureCredential());
 }
 
+builder.Configuration.AddConfiguration()
+
 builder.Services
     .AddDbContext<AnimeShowContext>(options =>
     {
