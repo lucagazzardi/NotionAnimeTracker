@@ -1,5 +1,6 @@
 using Business_AnimeToNotion.Integrations.Internal;
 using Business_AnimeToNotion.Integrations.MAL;
+using Business_AnimeToNotion.MAL_Auth;
 using Data_AnimeToNotion.Context;
 using Data_AnimeToNotion.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ var host = new HostBuilder()
         s.AddSingleton<IMAL_Integration, MAL_Integration>();
         s.AddSingleton<IAnimeShowRepository, AnimeShowRepository>();
         s.AddSingleton<ISyncToNotionRepository, SyncToNotionRepository>();
+        s.AddSingleton<IMalAuth, MalAuth>();
         s.Configure<LoggerFilterOptions>(options =>
         {
             // The Application Insights SDK adds a default logging filter that instructs ILogger to capture only Warning and more severe logs. Application Insights requires an explicit override.

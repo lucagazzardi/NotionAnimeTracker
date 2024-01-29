@@ -10,14 +10,16 @@ namespace API_AnimeToNotion.Controllers
     public class AuthController : Controller
     {
         private readonly IMalAuth _malAuth;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(IMalAuth malAuth)
+        public AuthController(IMalAuth malAuth, IConfiguration configuration)
         {
             _malAuth = malAuth;
+            _configuration = configuration;
         }
 
         [HttpGet("login")]
-        public IActionResult GetCurrentSeasonAnimeShow([FromQuery] string from)
+        public IActionResult RedirectMalAuth([FromQuery] string from)
         {
             // Fai controllo che non ci sia già il cookie col valore
             var code_verifier = _malAuth.GeneratePKCECodeVerifier();
@@ -39,7 +41,7 @@ namespace API_AnimeToNotion.Controllers
         }
 
         [HttpGet("callback")]
-        public async Task<IActionResult> GetCurrentSeasonAnimeShow([FromQuery] string code, [FromQuery] string state)
+        public async Task<IActionResult> GetAccessToken([FromQuery] string code, [FromQuery] string state)
         {
             if (!_malAuth.CheckStateParameter(state))
                 return BadRequest("State compromised");
@@ -51,7 +53,13 @@ namespace API_AnimeToNotion.Controllers
 
             await _malAuth.GetAccessToken(code, code_verifier);
 
-            return Ok();
+            return Redirect(_configuration["RedirectFromAuth"]);
+        }
+
+        [HttpGet("refresh")]
+        public async Task<IActionResult> RefreshAccessToken()
+        {
+            return Ok(await _malAuth.RefreshAccessToken());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Business_AnimeToNotion.Functions.Static;
 using Business_AnimeToNotion.Mapper.Config;
+using Business_AnimeToNotion.Model.Auth;
 using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.Internal;
 using Business_AnimeToNotion.Model.MAL;
@@ -9,7 +10,9 @@ using JikanDotNet.Config;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Threading;
 
 namespace Business_AnimeToNotion.Integrations.MAL
 {  
@@ -157,14 +160,42 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <param name="key"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<MAL_AnimeUpdateStatus> UpdateListStatus(string header, string key, string url, MAL_AnimeUpdateStatus item)
+        public async Task<MAL_AnimeUpdateStatus> UpdateListStatus(string token, string url, MAL_AnimeUpdateStatus item)
         {
-            return await UpdateStatusOnMal(header, key, url, item);
+            Dictionary<string, string> reqData = new Dictionary<string, string>
+            {
+                { "status", item.status },
+                { "start_date", item.start_date },
+                { "finish_date", item.finish_date },
+                { "num_watched_episodes", item.num_watched_episodes.ToString() },
+                { "score", item.score?.ToString() }
+            };
+
+            HttpClient client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(20);
+
+            var req = new HttpRequestMessage(HttpMethod.Patch, url) { Content = new FormUrlEncodedContent(reqData) };
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            var response = await client.SendAsync(req);
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MAL_AnimeUpdateStatus>(result);
         }
 
-        public async Task<MAL_AnimeUpdateStatus> DeleteListStatus(string header, string key, string url)
+        /// <summary>
+        /// Delete status on Mal
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public async Task DeleteListStatus(string token, string url)
         {
-            return await DeleteListStatus(header, key, url);
+            SetHttpHeader(token);
+            var response = await _malHttpClient.DeleteAsync(url);
+            response.EnsureSuccessStatusCode();
         }
 
         /// <summary>
@@ -215,20 +246,6 @@ namespace Business_AnimeToNotion.Integrations.MAL
             return JsonConvert.DeserializeObject<MAL_AnimeShowRaw>(response);
         }
 
-        private async Task<MAL_AnimeUpdateStatus> UpdateStatusOnMal(string header, string key, string url, MAL_AnimeUpdateStatus item)
-        {
-            SetHttpHeader(header, key);
-            var response = await _malHttpClient.PatchAsJsonAsync(url, item);
-            return JsonConvert.DeserializeObject<MAL_AnimeUpdateStatus>(await response.Content.ReadAsStringAsync());
-        }
-
-        private async Task<MAL_AnimeUpdateStatus> DeleteStatusOnMal(string header, string key, string url)
-        {
-            SetHttpHeader(header, key);
-            var response = await _malHttpClient.DeleteAsync(url);
-            return JsonConvert.DeserializeObject<MAL_AnimeUpdateStatus>(await response.Content.ReadAsStringAsync());
-        }
-
         private string BuildMALRelationsUrl(int malId)
         {
             return string.Concat(_configuration["MAL_ApiConfig:MAL_BaseURL"], "anime/", malId.ToString(), "?fields=related_anime");
@@ -239,6 +256,13 @@ namespace Business_AnimeToNotion.Integrations.MAL
             // Add MAL Secret Api Key as header
             if (!_malHttpClient.DefaultRequestHeaders.Contains(header))
                 _malHttpClient.DefaultRequestHeaders.Add(header, key);
+        }
+
+        private void SetHttpHeader(string token)
+        {
+            // Add Access Token as header
+            if (!_malHttpClient.DefaultRequestHeaders.Contains("Authorization"))
+                _malHttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
         }
 
         #endregion

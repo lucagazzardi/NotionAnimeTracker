@@ -15,7 +15,7 @@ namespace Data_AnimeToNotion.Repository
         Task SetDeleted(List<NotionSync> deleted);
         Task SetError(NotionSync inError, string message);
         Task SetMalListSynced(int notionSyncId, int? malListError = null);
-        Task<List<MalSyncErrors>> GetMalSyncErrors();
+        Task<List<MalSyncError>> GetMalSyncErrors();
         Task SetMalListError(NotionSync notionSync, string error);
         Task<string> GetYear(int year);
     }

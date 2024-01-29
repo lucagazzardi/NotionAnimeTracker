@@ -58,7 +58,7 @@ namespace Functions_AnimeToNotion
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
                         
-            currentPage = Convert.ToInt32(configClient.GetConfigurationSetting("AnimeToNotion-NextCursor").Value.Value);
+            currentPage = Convert.ToInt32((await configClient.GetConfigurationSettingAsync("AnimeToNotion-NextCursor")).Value.Value);
             _logger.LogInformation($"Page: {currentPage}");
 
             var dbEntries = await GetFromDB();
@@ -89,7 +89,7 @@ namespace Functions_AnimeToNotion
             }
 
             currentPage = dbEntries.PageInfo.HasNextPage ? currentPage + 1 : 1;
-            configClient.SetConfigurationSetting("AnimeToNotion-NextCursor", (currentPage).ToString());
+            await configClient.SetConfigurationSettingAsync("AnimeToNotion-NextCursor", (currentPage).ToString());
         }
 
         #region Private & Mapping

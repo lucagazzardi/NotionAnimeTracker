@@ -5,6 +5,7 @@ using Business_AnimeToNotion.Model.MAL;
 using Data_AnimeToNotion.DataModel;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 
@@ -13,10 +14,13 @@ namespace Business_AnimeToNotion.MAL_Auth
     public class MalAuth : IMalAuth
     {
         private readonly IConfiguration _configuration;
+        private ConfigurationClient appConfig;
 
         public MalAuth(IConfiguration configuration)
         {
             _configuration = configuration;
+
+            appConfig = new ConfigurationClient(_configuration["AppConfiguration-ConnectionString"]);
         }
 
         public string GeneratePKCECodeVerifier()
@@ -69,16 +73,39 @@ namespace Business_AnimeToNotion.MAL_Auth
                 { "grant_type", "authorization_code" },
             };
 
+            await GetAndSaveTokens(url, reqData, 20);
+        }
+
+        public async Task<ResponseTokens> RefreshAccessToken(string client_id = null)
+        {
+            string refreshToken = (await appConfig.GetConfigurationSettingAsync("MalRefreshToken")).Value.Value;
+
+            string url = "https://myanimelist.net/v1/oauth2/token";
+
+            Dictionary<string, string> reqData = new Dictionary<string, string>
+            {
+                { "client_id", _configuration["MAL-ApiKey"] ?? client_id },
+                { "refresh_token", refreshToken },
+                { "grant_type", "refresh_token" },
+            };
+
+            return await GetAndSaveTokens(url, reqData, 10);
+        }
+
+        private async Task<ResponseTokens> GetAndSaveTokens(string url, Dictionary<string, string> data, int timeout)
+        {
             HttpClient client = new HttpClient();
-            var req = new HttpRequestMessage(HttpMethod.Post, url) { Content = new FormUrlEncodedContent(reqData) };
-            client.Timeout = TimeSpan.FromSeconds(20);
+            var req = new HttpRequestMessage(HttpMethod.Post, url) { Content = new FormUrlEncodedContent(data) };
+            client.Timeout = TimeSpan.FromSeconds(timeout);
             var response = await client.SendAsync(req);
+            response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadAsStringAsync();
             ResponseTokens tokens = JsonConvert.DeserializeObject<ResponseTokens>(result);
+            
+            await appConfig.SetConfigurationSettingAsync("MalRefreshToken", tokens.refresh_token);
 
-            var appConfig = new ConfigurationClient("temp");
-            appConfig.SetConfigurationSetting("MalRefreshToken", tokens.refresh_token);
+            return tokens;
         }
     }
 }

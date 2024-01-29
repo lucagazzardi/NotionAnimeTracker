@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Data_AnimeToNotion.DataModel
 {
     [Index(nameof(MalId))]
-    public class MalSyncErrors
+    public class MalSyncError
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

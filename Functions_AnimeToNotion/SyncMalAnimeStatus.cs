@@ -1,6 +1,7 @@
 using Azure.Data.AppConfiguration;
 using Business_AnimeToNotion.Integrations.Internal;
 using Business_AnimeToNotion.Integrations.MAL;
+using Business_AnimeToNotion.MAL_Auth;
 using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.MAL;
 using Data_AnimeToNotion.Repository;
@@ -13,28 +14,26 @@ namespace Functions_AnimeToNotion
     {
         #region Config
 
-        private static string MAL_Header = Environment.GetEnvironmentVariable("MAL_Header");
         private static string MAL_ApiKey = Environment.GetEnvironmentVariable("MALApiKey");
         private static string MAL_BaseURL = Environment.GetEnvironmentVariable("MAL_BaseURL");
-        private ConfigurationClient configClient = new ConfigurationClient(Environment.GetEnvironmentVariable("AppConfiguration-ConnectionString"));
-
-        private int currentPage;
 
         #region DI
 
         private readonly ILogger _logger;
         private readonly IMAL_Integration _malIntegration;
+        private readonly IMalAuth _malAuth;
         private readonly ISyncToNotionRepository _syncToNotionRepository;
 
         #endregion
 
         #endregion
 
-        public SyncMalAnimeStatus(ILoggerFactory loggerFactory, ISyncToNotionRepository syncToNotionRepository, IMAL_Integration malIntegration)
+        public SyncMalAnimeStatus(ILoggerFactory loggerFactory, ISyncToNotionRepository syncToNotionRepository, IMAL_Integration malIntegration, IMalAuth malAuth)
         {
             _logger = loggerFactory.CreateLogger<SyncMalAnimeStatus>();
             _syncToNotionRepository = syncToNotionRepository;
             _malIntegration = malIntegration;
+            _malAuth = malAuth;
         }
 
         [Function("SyncMalAnimeStatus")]
@@ -48,6 +47,9 @@ namespace Functions_AnimeToNotion
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
 
+            _logger.LogInformation($"Retrieving Access Token from Mal");
+            var tokens = await _malAuth.RefreshAccessToken(MAL_ApiKey);
+
             #region Delete
 
             var toDelete = await _syncToNotionRepository.GetMalListToUpdate("Delete");
@@ -56,7 +58,7 @@ namespace Functions_AnimeToNotion
             {
                 try
                 {
-                    await _malIntegration.DeleteListStatus(MAL_Header, MAL_ApiKey, BuildUrl(item.AnimeShow.MalId));
+                    await _malIntegration.DeleteListStatus(tokens.access_token, BuildUrl(item.AnimeShow.MalId));
                     await _syncToNotionRepository.SetMalListSynced(item.Id);
 
                     _logger.LogInformation($"Mal List item {item.AnimeShow.NameEnglish} - {item.AnimeShow.MalId}: deleted");
@@ -79,7 +81,7 @@ namespace Functions_AnimeToNotion
                 try
                 {
                     MAL_AnimeUpdateStatus malUpdate = Mapping.Mapper.Map<MAL_AnimeUpdateStatus>(item.AnimeShow);
-                    await _malIntegration.UpdateListStatus(MAL_Header, MAL_ApiKey, BuildUrl(malUpdate.anime_id), malUpdate);
+                    var updated = await _malIntegration.UpdateListStatus(tokens.access_token, BuildUrl(malUpdate.anime_id), malUpdate);
                     await _syncToNotionRepository.SetMalListSynced(item.Id);
 
                     _logger.LogInformation($"Mal List item {item.AnimeShow.NameEnglish} - {item.AnimeShow.MalId}: updated");
@@ -104,9 +106,9 @@ namespace Functions_AnimeToNotion
                     MAL_AnimeUpdateStatus malUpdate = Mapping.Mapper.Map<MAL_AnimeUpdateStatus>(item.AnimeShow);
 
                     if(item.Action == "Delete")
-                        await _malIntegration.DeleteListStatus(MAL_Header, MAL_ApiKey, BuildUrl(item.MalId));
+                        await _malIntegration.DeleteListStatus(tokens.access_token, BuildUrl(item.MalId));
                     else
-                        await _malIntegration.UpdateListStatus(MAL_Header, MAL_ApiKey, BuildUrl(malUpdate.anime_id), malUpdate);
+                        await _malIntegration.UpdateListStatus(tokens.access_token, BuildUrl(malUpdate.anime_id), malUpdate);
 
                     await _syncToNotionRepository.SetMalListSynced(item.Id, malListError: item.Id);
 

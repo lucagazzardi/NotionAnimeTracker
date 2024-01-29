@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business_AnimeToNotion.Model.Auth;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace Business_AnimeToNotion.MAL_Auth
         string BuildAuthorisationUrl(string code_verifier, string state);
         bool CheckStateParameter(string state);
         Task GetAccessToken(string code, string code_verifier);
+        Task<ResponseTokens> RefreshAccessToken(string client_id = null);
     }
 }

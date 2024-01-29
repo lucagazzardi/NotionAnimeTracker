@@ -152,7 +152,7 @@ namespace Data_AnimeToNotion.Repository
                 sync.Action = string.Empty;
                 sync.LastModified = DateTime.Now;
                 sync.NotionPageId = notionPages[sync.Id];
-                sync.Error = null;
+                sync.Error = string.Empty;
             }
             await _animeShowContext.SaveChangesAsync();
         }
@@ -211,7 +211,7 @@ namespace Data_AnimeToNotion.Repository
         /// Retrieves all the Mal sync errors occurred
         /// </summary>
         /// <returns></returns>
-        public async Task<List<MalSyncErrors>> GetMalSyncErrors()
+        public async Task<List<MalSyncError>> GetMalSyncErrors()
         {
             return await _animeShowContext.MalSyncErrors.Include(x => x.AnimeShow).Include(x => x.AnimeShow.AnimeShowProgress).ToListAsync();
         }
@@ -238,13 +238,15 @@ namespace Data_AnimeToNotion.Repository
         {
             await _animeShowContext.NotionSyncs.Where(x => x.Id == notionSync.Id).ExecuteUpdateAsync(x => x.SetProperty(a => a.MalListToSync, a => false));
 
-            await _animeShowContext.MalSyncErrors.AddAsync(new MalSyncErrors()
+            await _animeShowContext.MalSyncErrors.AddAsync(new MalSyncError()
             {
                 AnimeShowId = notionSync.AnimeShow.Id,
                 MalId = notionSync.AnimeShow.MalId,
                 Action = notionSync.Action,
                 Error = error
             });
+
+            _animeShowContext.SaveChanges();
         }
 
         #endregion
