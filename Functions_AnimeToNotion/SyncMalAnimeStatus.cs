@@ -3,6 +3,7 @@ using Business_AnimeToNotion.Integrations.Internal;
 using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.MAL_Auth;
 using Business_AnimeToNotion.Mapper.Config;
+using Business_AnimeToNotion.Model.Auth;
 using Business_AnimeToNotion.Model.MAL;
 using Data_AnimeToNotion.Repository;
 using Microsoft.Azure.Functions.Worker;
@@ -48,7 +49,17 @@ namespace Functions_AnimeToNotion
             _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
 
             _logger.LogInformation($"Retrieving Access Token from Mal");
-            var tokens = await _malAuth.RefreshAccessToken(MAL_ApiKey);
+
+            ResponseTokens tokens = null;
+            try 
+            {
+                tokens = await _malAuth.RefreshAccessToken(MAL_ApiKey);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error in retrieving access token");
+                throw;
+            }
 
             #region Delete
 

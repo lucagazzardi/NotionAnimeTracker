@@ -257,7 +257,23 @@ $cover-height-small: $cover-width-small * 1.5;
   }
 }
 
+.synopsis {
+  font-family: var(--font-family-secondary);
+  font-size: .8em;
+  color: rgb(var(--color-text-normal));
+  margin-bottom: 30px;
 
+  @at-root &__title {
+    text-align: center;
+    line-height: 1rem;
+  }
+
+  @at-root &__icon {
+    margin: 0 auto;
+    width: 0.65rem;
+    line-height: 1rem;
+  }
+}
 
 .info {
 

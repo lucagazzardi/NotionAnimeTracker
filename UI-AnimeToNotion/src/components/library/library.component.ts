@@ -80,7 +80,7 @@ export class LibraryComponent implements OnInit {
 
   //! GENERAL FIELDS
   filterBackground: string = "foreground";
-  showSliders: boolean = false;
+  showAdditionalFilters: boolean = false;
 
   //! SEARCH RESULTS
   searchTerm: string = "";
@@ -189,8 +189,8 @@ export class LibraryComponent implements OnInit {
   }
 
   /// Show sliders
-  switchShowSliders() {
-    this.showSliders = !this.showSliders;
+  switchShowAdditionalFilters() {
+    this.showAdditionalFilters = !this.showAdditionalFilters;
   }
 
   /// Set filter for query
