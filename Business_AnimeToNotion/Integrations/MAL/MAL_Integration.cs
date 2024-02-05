@@ -81,7 +81,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
 
             // Gets seasonal from Jikan and takes 12 items
             List<INT_AnimeShowBase> seasonEntries = Mapping.Mapper.ProjectTo<INT_AnimeShowBase>(
-                    (await _jikan.GetSeasonAsync(DateTime.Now.Year, season)).Data.AsQueryable().Take(12)
+                    (await _jikan.GetSeasonAsync(season == Season.Winter ? DateTime.Now.Year + 1 : DateTime.Now.Year, season)).Data.AsQueryable().Take(12)
                 )
                 .ToList();
 
