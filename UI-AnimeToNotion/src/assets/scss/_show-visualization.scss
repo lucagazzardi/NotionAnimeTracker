@@ -158,6 +158,14 @@
     }
   }
 
+  @at-root &__additionalinfo {
+    color: rgb(var(--background-active-item));
+
+    &--score {
+      color: rgb(var(--background-success-item));
+    }
+  }
+
   @at-root &__show-hover {
     min-width: 290px;
     padding: 20px;

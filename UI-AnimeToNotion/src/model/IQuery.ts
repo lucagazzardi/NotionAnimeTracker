@@ -24,9 +24,9 @@ export enum Sort {
   Status = 'Status',
   MalScore = 'MalScore',
   PersonalScore = 'PersonalScore',
+  Upcoming = 'Upcoming',
   StartDate = 'StartDate',
-  FinishDate = 'FinishDate',
-  StartedAiring = 'StartedAiring'
+  FinishDate = 'FinishDate'
 }
 
 export interface IPage {

@@ -98,8 +98,7 @@ export class LibraryComponent implements OnInit {
   selectedPersonalScoreGreater: number | null = null;
   selectedPersonalScoreLesser: number | null = null;
 
-  //! SORT
-  selectedSort: string = 'Status';
+
 
   //! QUERY
   filters: IFilter = {} as IFilter;
@@ -314,6 +313,7 @@ export class LibraryComponent implements OnInit {
   setSort(sort: string) {
     this.page.currentPage = 1;
     this.sort = <Sort>sort;
+    console.log(this.sort);
 
     this.libraryQuery();
   } 

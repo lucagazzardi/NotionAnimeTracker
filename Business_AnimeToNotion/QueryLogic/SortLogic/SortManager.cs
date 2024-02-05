@@ -10,7 +10,7 @@ namespace Business_AnimeToNotion.QueryLogic.SortLogic
         PersonalScore,
         StartDate,
         FinishDate,
-        StartedAiring
+        Upcoming
     }    
 
     public class SortManager : ISortManager
@@ -36,8 +36,8 @@ namespace Business_AnimeToNotion.QueryLogic.SortLogic
                     return data.OrderByDescending(x => x.AnimeShowProgress.StartedOn).ThenBy(x => x.NameEnglish);
                 case SortIn.FinishDate:
                     return data.OrderByDescending(x => x.AnimeShowProgress.FinishedOn).ThenBy(x => x.NameEnglish);
-                case SortIn.StartedAiring:
-                    return data.OrderByDescending(x => x.StartedAiring).ThenBy(x => x.NameEnglish);
+                case SortIn.Upcoming:
+                    return data.Where(x => x.StartedAiring == null || x.StartedAiring > DateTime.Now).OrderByDescending(x => x.StartedAiring.HasValue).ThenBy(x => x.StartedAiring).ThenBy(x => x.NameEnglish);
                 default:
                     return data.OrderByDescending(x => x.Status).ThenBy(x => x.NameEnglish);
             }
