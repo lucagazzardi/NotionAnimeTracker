@@ -1,4 +1,5 @@
 ﻿using Business_AnimeToNotion.Integrations.Demo;
+using Business_AnimeToNotion.Integrations.Demo.DemoModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,11 +61,11 @@ namespace API_AnimeToNotion.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("db/update/mal")]
-        public async Task<IActionResult> UpdateFromMal(List<int> MalIds)
+        public async Task<IActionResult> UpdateFromMal(Demo_AnimeToUpdate MalToUpdate)
         {
             try
             {
-                await _demo.UpdateMassiveFromMal(MalIds);
+                await _demo.UpdateMassiveFromMal(MalToUpdate.MalIds);
                 return Ok();
             }
             catch (Exception ex)
