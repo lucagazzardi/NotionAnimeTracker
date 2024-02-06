@@ -309,6 +309,20 @@ export class LibraryComponent implements OnInit {
     this.page.currentPage = 1;
   }
 
+  /// Change score color based on value
+  getScoreColor(score: number | null) {
+
+    if (score == null)
+      return '';
+
+    if (score > 70)
+      return 'show-visualization__additionalinfo--score-good';
+    else if (score > 50 && score <= 70)
+      return 'show-visualization__additionalinfo--score-meh';
+    else
+      return 'show-visualization__additionalinfo--score-bad';
+  }
+
   /// Set sort for query
   setSort(sort: string) {
     this.page.currentPage = 1;

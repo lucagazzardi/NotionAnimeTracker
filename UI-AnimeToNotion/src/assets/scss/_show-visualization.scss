@@ -160,9 +160,24 @@
 
   @at-root &__additionalinfo {
     color: rgb(var(--background-active-item));
+    display: none;
 
-    &--score {
+    @media screen and (max-width: 1040px) {
+      & {
+        display: initial;
+      }
+    }
+
+    &--score-good {
       color: rgb(var(--background-success-item));
+    }
+
+    &--score-meh {
+      color: rgb(var(--background-warning-item));
+    }
+
+    &--score-bad {
+      color: rgb(var(--background-danger-item));
     }
   }
 

@@ -114,8 +114,11 @@
                 <span class="show-visualization__additionalinfo" *ngIf="sort == 'Upcoming'">
                   {{item.startedAiring | date: 'longDate'}}
                 </span>
-                <span class="show-visualization__additionalinfo show-visualization__additionalinfo--score" *ngIf="sort == 'MalScore' || sort == 'Status' || sort == 'PersonalScore'">
-                  {{sort == 'MalScore' || sort == 'Status' ? item.score : item.edit?.personalScore}}%
+                <span class="show-visualization__additionalinfo" [ngClass]="getScoreColor(item.score)" *ngIf="item.score != null && (sort == 'MalScore' || sort == 'Status')">
+                  {{item.score}}%
+                </span>
+                <span class="show-visualization__additionalinfo" [ngClass]="getScoreColor(item.edit!.personalScore)" *ngIf="item.edit?.personalScore != null && sort == 'PersonalScore'">
+                  {{item.edit?.personalScore}}%
                 </span>
                 {{item.nameEnglish}}
               </a>
