@@ -1,4 +1,5 @@
-﻿using Business_AnimeToNotion.Integrations.Internal;
+﻿using Business_AnimeToNotion.Integrations.Demo.DemoModels;
+using Business_AnimeToNotion.Integrations.Internal;
 using Business_AnimeToNotion.Integrations.MAL;
 using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Internal;
@@ -7,6 +8,7 @@ using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using JikanDotNet.Config;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Notion.Client;
 
 namespace Business_AnimeToNotion.Integrations.Demo
@@ -76,6 +78,28 @@ namespace Business_AnimeToNotion.Integrations.Demo
         {
             await _syncToNotionRepository.CreateNotionSyncs();
         }
+
+        /// <summary>
+        /// Updates specific list of anime entries from Mal
+        /// </summary>
+        /// <returns></returns>
+        public async Task UpdateMassiveFromMal(List<int> MalIds)
+        {
+            foreach(var id in MalIds)
+            {
+                var dbEntry = Mapping.Mapper.Map<INT_AnimeShowFull>(await _animeShowRepository.GetFull(id));
+
+                // Retrieve MAL anime record by Id
+                INT_AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"], $"{_configuration["MAL_ApiConfig:MAL_BaseURL"]}anime/{id}?{_configuration["MAL_ApiConfig:MAL_NotionNeededFields"]}");
+
+                // Check if there are differences
+                var changes = CheckDifferences(MalEntry, dbEntry);
+
+                // Update if there are differences
+                await UpdateItem(changes, dbEntry);
+            }
+        }
+
 
         #region Private
 
@@ -147,6 +171,107 @@ namespace Business_AnimeToNotion.Integrations.Demo
             var edit = Mapping.Mapper.Map<INT_AnimeShowEdit>(page);
             edit.Id = added.Id;
             await _internalIntegration.EditAnime(edit, skipSync: true);
+        }
+
+        #endregion
+
+        #region Private Update From Mal
+
+        private Demo_Changes_MalToInternal CheckDifferences(INT_AnimeShowFull malShow, INT_AnimeShowFull internalShow)
+        {
+            Demo_Changes_MalToInternal result = new Demo_Changes_MalToInternal();
+
+            result.Changes = EvaluateChanges(malShow, internalShow);
+            result.ChangedAnime = malShow;
+            return result;
+        }
+
+        private AnimeShow SetBasicChanges(AnimeShow show, INT_AnimeShowFull source, List<string> changes)
+        {
+            foreach (var change in changes)
+            {
+                switch (change)
+                {
+                    case "NameDefault":
+                        show.NameDefault = source.NameDefault; break;
+                    case "NameEnglish":
+                        show.NameEnglish = source.NameEnglish; break;
+                    case "NameJapanese":
+                        show.NameJapanese = source.NameJapanese; break;
+                    case "Cover":
+                        show.Cover = source.Cover; break;
+                    case "Episodes":
+                        show.Episodes = source.Episodes; break;
+                    case "StartedAiring":
+                        show.StartedAiring = source.StartedAiring; break;
+                    case "Score":
+                        show.Score = source.Score; break;
+                }
+            }
+            return show;
+        }
+
+        private List<string> EvaluateChanges(INT_AnimeShowFull mappedMalShow, INT_AnimeShowFull internalShow)
+        {
+            List<string> result = new List<string>();
+
+            if (mappedMalShow.NameDefault != internalShow.NameDefault)
+                result.Add("NameDefault");
+            if (mappedMalShow.NameEnglish != internalShow.NameEnglish)
+                result.Add("NameEnglish");
+            if (mappedMalShow.NameJapanese != internalShow.NameJapanese)
+                result.Add("NameJapanese");
+            if (mappedMalShow.Cover != internalShow.Cover)
+                result.Add("Cover");
+            if (mappedMalShow.Episodes != internalShow.Episodes)
+                result.Add("Episodes");
+            if (mappedMalShow.Score != internalShow.Score)
+                result.Add("Score");
+            if (mappedMalShow.StartedAiring != internalShow.StartedAiring)
+                result.Add("StartedAiring");
+
+            var deltaStudios = mappedMalShow.Studios.Select(x => x.Id).Where(x => !internalShow.Studios.Select(y => y.Id).Contains(x)).ToList();
+            var deltaGenres = mappedMalShow.Genres.Select(x => x.Id).Where(x => !internalShow.Genres.Select(y => y.Id).Contains(x)).ToList();
+            var deltaRelations = mappedMalShow.Relations.Select(x => x.RelatedMalId).Where(x => !internalShow.Relations.Select(y => y.RelatedMalId).Contains(x)).ToList();
+
+            if (deltaStudios.Count > 0)
+            {
+                mappedMalShow.Studios = mappedMalShow.Studios.Where(x => deltaStudios.Contains(x.Id)).ToArray();
+                result.Add("Studios");
+            }
+
+            if (deltaGenres.Count > 0)
+            {
+                mappedMalShow.Genres = mappedMalShow.Genres.Where(x => deltaGenres.Contains(x.Id)).ToArray();
+                result.Add("Genres");
+            }
+
+            if (deltaRelations.Count > 0)
+            {
+                mappedMalShow.Relations = mappedMalShow.Relations.Where(x => deltaRelations.Contains(x.RelatedMalId)).ToList();
+                result.Add("Relations");
+            }
+
+            return result;
+        }
+
+        private async Task UpdateItem(Demo_Changes_MalToInternal changes, INT_AnimeShowFull dbEntry)
+        {
+            if (changes.Changes.Count == 0)
+                return;
+
+            var anime = await _animeShowRepository.GetForEdit(dbEntry.Info.Id);
+
+            anime = SetBasicChanges(anime, changes.ChangedAnime, changes.Changes);
+
+            await _animeShowRepository.SyncFromMal(
+                anime,
+                changes.Changes.Contains("Studios") ? Mapping.Mapper.ProjectTo<Studio>(changes.ChangedAnime.Studios.AsQueryable()).ToList() : null,
+                changes.Changes.Contains("Genres") ? Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(changes.ChangedAnime.Genres.AsQueryable()).ToList() : null,
+                changes.Changes.Contains("Relations") ? Mapping.Mapper.ProjectTo<Relation>(changes.ChangedAnime.Relations.AsQueryable()).ToList() : null
+            );
+
+            await _syncToNotionRepository.SetToSyncNotion(anime.Id, "Edit", malListToSync: false);
         }
 
         #endregion

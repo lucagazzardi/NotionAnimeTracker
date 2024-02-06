@@ -10,5 +10,6 @@ namespace Business_AnimeToNotion.Integrations.Demo
     {
         Task FromNotionToDB(string cursor);
         Task CreateNotionSync();
+        Task UpdateMassiveFromMal(List<int> MalIds);
     }
 }

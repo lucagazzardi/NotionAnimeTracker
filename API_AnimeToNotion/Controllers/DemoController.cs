@@ -55,6 +55,24 @@ namespace API_AnimeToNotion.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates animes from Mal
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("db/update/mal")]
+        public async Task<IActionResult> UpdateFromMal(List<int> MalIds)
+        {
+            try
+            {
+                await _demo.UpdateMassiveFromMal(MalIds);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }
