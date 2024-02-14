@@ -18,6 +18,8 @@ import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/m
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { NgxWebstorageModule } from 'ngx-webstorage';
+import { NgxScrollPositionRestorationModule } from 'ngx-scroll-position-restoration';
 
 //APP COMPONENTS
 import { AppComponent } from './app.component';
@@ -84,7 +86,9 @@ import { BaseService } from '../services/base/base.service';
     MatMomentDateModule,
     InfiniteScrollModule,
     MatTooltipModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NgxWebstorageModule.forRoot({ prefix: '', separator: '' }),
+    NgxScrollPositionRestorationModule.forRoot()
   ],
   providers: [
     ThemeService,

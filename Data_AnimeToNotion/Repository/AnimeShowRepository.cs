@@ -154,9 +154,9 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task SetAnimeFavorite(Guid id)
+        public async Task SetAnimeFavorite(Guid id, bool isFavorite)
         {
-            await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.Favorite, a => !a.Favorite));
+            await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.Favorite, a => isFavorite));
         }
 
         /// <summary>

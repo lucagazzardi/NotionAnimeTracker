@@ -8,7 +8,7 @@
         <div class="filter__name searchbar">
           Search
         </div>
-        <div class="filter__field"><app-searchbar (valueChanged)="search($event)"></app-searchbar></div>
+        <div class="filter__field"><app-searchbar [initialValue]="searchTerm" (valueChanged)="search($event)"></app-searchbar></div>
       </div>
 
       <div class="filter__item">

@@ -98,6 +98,10 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
   --form-checkbox-border: 116, 123, 130;
 }
 
+html {
+    scroll-behavior: initial !important;
+}
+
 body{
     background: rgb(var(--color-background));
 }

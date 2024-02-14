@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -10,11 +10,16 @@ export class SearchbarComponent implements OnInit {
 
   searchTerm = new FormControl('');
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
+  @Input() initialValue: string = "";
 
   constructor() { }
 
   ngOnInit(): void {
     this.searchTerm.valueChanges.subscribe(x => this.onChange(x));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.searchTerm.setValue(changes["initialValue"].currentValue);
   }
 
   onChange(value: string) {

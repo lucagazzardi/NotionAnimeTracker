@@ -134,7 +134,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// <returns></returns>
         public async Task<bool> SetAnimeFavorite(Guid id, bool favorite)
         {
-            await _animeRepository.SetAnimeFavorite(id);
+            await _animeRepository.SetAnimeFavorite(id, favorite);
 
             await _syncToNotionRepository.SetToSyncNotion(id, "Edit", malListToSync: false);
             return favorite;

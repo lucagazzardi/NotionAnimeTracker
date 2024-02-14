@@ -34,6 +34,7 @@ export class EditComponent implements OnInit {
   id: string | null = null;
   item: IAnimeFull | null = null;
   malBaseUrl: string = 'https://myanimelist.net/anime/';
+  callInProgress: boolean = false;
 
   //STATUS
   showStatuses = SelectShowStatus;
@@ -57,7 +58,7 @@ export class EditComponent implements OnInit {
   initialFinishDate: Date | null = null;
   initialNotes: string | null = null;
 
-  synopsis: string = "Ten years ago, \"the Gate\" appeared and connected the real world with the realm of magic and monsters. To combat these vile beasts, ordinary people received superhuman powers and became known as \"Hunters.\" Twenty-year-old Sung Jin-Woo is one such Hunter, but he is known as the \"World's Weakest,\" owing to his pathetic power compared to even a measly E-Rank. Still, he hunts monsters tirelessly in low-rank Gates to pay for his mother's medical bills.\n\nHowever, this miserable lifestyle changes when Jin-Woo—believing himself to be the only one left to die in a mission gone terribly wrong—awakens in a hospital three days later to find a mysterious screen floating in front of him. This \"Quest Log\" demands that Jin-Woo completes an unrealistic and intense training program, or face an appropriate penalty. Initially reluctant to comply because of the quest's rigor, Jin-Woo soon finds that it may just transform him into one of the world's most fearsome Hunters. \n\n[Written by MAL Rewrite]"
+  //synopsis: string = "Ten years ago, \"the Gate\" appeared and connected the real world with the realm of magic and monsters. To combat these vile beasts, ordinary people received superhuman powers and became known as \"Hunters.\" Twenty-year-old Sung Jin-Woo is one such Hunter, but he is known as the \"World's Weakest,\" owing to his pathetic power compared to even a measly E-Rank. Still, he hunts monsters tirelessly in low-rank Gates to pay for his mother's medical bills.\n\nHowever, this miserable lifestyle changes when Jin-Woo—believing himself to be the only one left to die in a mission gone terribly wrong—awakens in a hospital three days later to find a mysterious screen floating in front of him. This \"Quest Log\" demands that Jin-Woo completes an unrealistic and intense training program, or face an appropriate penalty. Initially reluctant to comply because of the quest's rigor, Jin-Woo soon finds that it may just transform him into one of the world's most fearsome Hunters. \n\n[Written by MAL Rewrite]"
 
   constructor(
     private route: ActivatedRoute,
@@ -187,20 +188,32 @@ export class EditComponent implements OnInit {
 
   /// Update the item with the new values
   updateItem() {
+
+    if (this.isCallInProgress())
+      return;
+
     this.item!.edit!.id = this.item!.info!.id;
+
+    this.setCallInProgress();
     this.internalService.editAnime(this.item!.edit!)
       .subscribe(
         {
           next: () => {
             this.initialStatus = this.item!.edit!.status;
             this.item!.info!.status = this.item!.edit!.status!;
-            this.toasterService.notifySuccess(this.item!.nameEnglish + " has been updated") },
-          error: () => { this.toasterService.notifyError("The entry could not be updated") }
+            this.toasterService.notifySuccess(this.item!.nameEnglish + " has been updated");
+            this.releaseCallInProgress();
+          },
+          error: () => { this.toasterService.notifyError("The entry could not be updated"); this.releaseCallInProgress(); }
         });
   }
 
   /// Add new item when it is not already existing
   addFull() {
+    if (this.isCallInProgress())
+      return;
+
+    this.setCallInProgress();
     this.internalService.addFull(this.item!)
       .subscribe(
         {
@@ -208,55 +221,60 @@ export class EditComponent implements OnInit {
             this.item!.info = data;
             this.initialStatus = data.status;
             this.toasterService.notifySuccess(this.item!.nameEnglish + " has been added")
+            this.releaseCallInProgress();
           },
-          error: () => { this.toasterService.notifyError("The entry could not be added") }
+          error: () => { this.toasterService.notifyError("The entry could not be added"); this.releaseCallInProgress(); }
         });
   }
 
   /// Switch anime favorite
   setFavorite() {
-
-    if (this.item!.info?.id == null)
+    if (this.isCallInProgress() || this.item!.info?.id == null)
       return;
 
+    this.setCallInProgress();
     this.internalService.setFavorite(this.item!.info!.id, !this.item!.favorite)
       .subscribe(
         {
           next: (data: boolean) => {
             this.item!.favorite = data;
             let message = data ? " added as favorite" : " removed as favorite";
-            this.toasterService.notifySuccess(this.item!.nameEnglish + message)
+            this.toasterService.notifySuccess(this.item!.nameEnglish + message);
+            this.releaseCallInProgress();
           },
-          error: () => { this.toasterService.notifyError("The entry could not be updated") }
+          error: () => { this.toasterService.notifyError("The entry could not be updated"); this.releaseCallInProgress(); }
         });
   }
 
   /// Switch anime planning to watch
   setPlanToWatch() {
 
-    if (this.item!.info == null)
+    if(this.isCallInProgress() || this.item!.info == null)
       return;
 
+    this.setCallInProgress();
     this.internalService.setPlanToWatch(this.item!.info!.id, !this.item!.planToWatch)
       .subscribe(
         {
           next: (data: boolean) => {
             this.item!.planToWatch = data;
             let message = data ? " planned to watch" : " removed from planning";
-            this.toasterService.notifySuccess(this.item!.nameEnglish + message)
+            this.toasterService.notifySuccess(this.item!.nameEnglish + message);
+            this.releaseCallInProgress();
           },
-          error: () => { this.toasterService.notifyError("The entry could not be updated") }
+          error: () => { this.toasterService.notifyError("The entry could not be updated"); this.releaseCallInProgress(); }
         });
   }
 
   /// Remove anime
   remove() {
 
-    if (this.item!.info == null)
+    if (this.isCallInProgress() || this.item!.info == null)
       return;
 
     this.updateInitialValues();
 
+    this.setCallInProgress();
     this.internalService.remove(this.item!.info!.id)
       .subscribe(
         {
@@ -264,9 +282,10 @@ export class EditComponent implements OnInit {
             this.item!.info = null;
             this.item!.edit = null;            
             this.setInitialValues(this.item!);
-            this.toasterService.notifySuccess(this.item!.nameEnglish + " has been removed")
+            this.toasterService.notifySuccess(this.item!.nameEnglish + " has been removed");
+            this.releaseCallInProgress();
           },
-          error: () => { this.toasterService.notifyError("The entry could not be removed") }
+          error: () => { this.toasterService.notifyError("The entry could not be removed"); this.releaseCallInProgress(); }
         });    
 
   }
@@ -300,5 +319,20 @@ export class EditComponent implements OnInit {
     this.initialStartDate = this.selectedStartDate;
     this.initialFinishDate = this.selectedFinishDate;
     this.initialNotes = this.selectedNotes;
+  }
+
+  ///Checks whether an api call is already in progress or not
+  isCallInProgress() {
+    return this.callInProgress;
+  }
+
+  ///Marks api calls as in progress
+  setCallInProgress() {
+    this.callInProgress = true;
+  }
+
+  ///Marks api calls as not in progress
+  releaseCallInProgress() {
+    this.callInProgress = false;
   }
 }

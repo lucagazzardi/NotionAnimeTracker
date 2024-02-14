@@ -13,7 +13,7 @@ namespace Data_AnimeToNotion.Repository
         Task<AnimeShow> GetForEdit(Guid Id);
         Task<AnimeShow> AddInternalAnimeShow(AnimeShow animeShow, List<Studio> studios, List<Genre> genres, List<Relation> relations);
         Task RemoveInternalAnimeShow(Guid id);
-        Task SetAnimeFavorite(Guid id);
+        Task SetAnimeFavorite(Guid id, bool isFavorite);
         Task SetPlanToWatch(Guid id);
         Task<bool> Exists(int malId);
 

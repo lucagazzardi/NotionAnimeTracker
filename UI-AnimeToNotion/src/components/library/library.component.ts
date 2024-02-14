@@ -13,6 +13,7 @@ import { ILibrary, IPageInfo } from '../../model/ILibrary';
 import { IAnimeFull } from '../../model/IAnimeFull';
 import { ToasterService } from 'gazza-toaster';
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 export interface DialogData {
   animal: string;
@@ -98,8 +99,6 @@ export class LibraryComponent implements OnInit {
   selectedPersonalScoreGreater: number | null = null;
   selectedPersonalScoreLesser: number | null = null;
 
-
-
   //! QUERY
   filters: IFilter = {} as IFilter;
   sort: Sort = Sort.Status;
@@ -112,11 +111,23 @@ export class LibraryComponent implements OnInit {
   constructor(
     private internalService: InternalService,
     private editService: EditService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.libraryQuery();
+    this.loadInitialLibrary();
+  }
+
+  /// Defines if page is loading from a back navigation with a searched term or not
+  loadInitialLibrary() {
+    let navigatedBackSearchParam = this.activatedRoute.snapshot.queryParamMap.get('search')
+    if (navigatedBackSearchParam !== null) {
+      this.search(navigatedBackSearchParam);
+      this.searchTerm = navigatedBackSearchParam;
+    }
+    else this.libraryQuery();
   }
 
   /// Triggered when something is typed in the search bar
@@ -147,6 +158,11 @@ export class LibraryComponent implements OnInit {
                   this.libraryListImages = Array(value.data.length).fill(false);
                   this.libraryListStatic = value.data;
                   this.loading = false;
+                  this.router.navigate([],
+                    {
+                      relativeTo: this.activatedRoute,
+                      queryParams: { search: searchTerm }
+                    })
                 }),
                 map(value => ({ data: value.data, pageInfo: value.pageInfo })),
 
