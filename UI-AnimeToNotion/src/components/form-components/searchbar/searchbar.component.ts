@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-searchbar',
@@ -12,18 +14,18 @@ export class SearchbarComponent implements OnInit {
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
   @Input() initialValue: string = "";
 
-  constructor() { }
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.searchTerm.valueChanges.subscribe(x => this.onChange(x));
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.searchTerm.setValue(changes["initialValue"].currentValue);
+    
   }
 
-  onChange(value: string) {
-    this.valueChanged.emit(value);
+  onChange(valuex: any) {
+    this.valueChanged.emit(valuex.target.value);
   }
 
 }

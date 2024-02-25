@@ -1,6 +1,6 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { BehaviorSubject, concat, debounceTime, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable } from 'rxjs';
+import { BehaviorSubject, concat, debounceTime, distinctUntilChanged, map, of, switchMap, tap, toArray, Observable, Subscription, filter, combineLatest } from 'rxjs';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave } from '../../assets/animations/animations';
 import { InternalService } from '../../services/internal/internal.service';
 import { ToasterService } from 'gazza-toaster';
@@ -9,6 +9,7 @@ import { MalService } from '../../services/mal/mal.service';
 import { IAnimeBase } from '../../model/IAnimeBase';
 import { IAnimePersonal } from '../../model/IAnimePersonal';
 import { IAnimeFull } from '../../model/IAnimeFull';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 
 
 @Component({
@@ -68,6 +69,7 @@ export class SearchAnimeComponent implements OnInit {
 
   //! ==SEARCH==
   searchTerm: string = "";
+  popStateNavigation: boolean = false;
   private searchTerm$ = new BehaviorSubject<string>('');
   searchResult$!: Observable<{ loading: boolean, list?: IAnimeBase[] }>;
   searchResultTracker!: boolean[];
@@ -77,21 +79,22 @@ export class SearchAnimeComponent implements OnInit {
 
   @ViewChildren("hover") hover: QueryList<ElementRef> = new QueryList<ElementRef>();
 
+  private _routerSub = Subscription.EMPTY;
+
   constructor(
     private malService: MalService,
     private internalService: InternalService,
     private toasterService: ToasterService,
-    private editService: EditService
+    private editService: EditService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
 
-    this.seasonalList$ = this.malService.getCurrentSeason()
-      .pipe(tap(value => { this.seasonalListStatic = value; this.seasonalListTracker = Array(value.length).fill(false), this.seasonalListImages = Array(value.length).fill(false) }));
+    /// Defines if page is loading from a back navigation with a searched term or not
+    this.loadInitialData();
     
-    this.nextSeasonList$ = this.malService.getUpcomingSeason()
-      .pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false), this.nextSeasonImages = Array(value.length).fill(false) }));
-
     //! DEBOUNCING START
     this.debouncingPipe();
   }
@@ -100,6 +103,61 @@ export class SearchAnimeComponent implements OnInit {
     this.hover.changes.subscribe((x: QueryList<ElementRef>) => {
       x.toArray().forEach(x => this.isInViewport(x))
     });
+  }
+
+  ngOnDestroy() {
+    this._routerSub.unsubscribe();
+  }
+
+  loadInitialData() {       
+
+    // The following subscribes are executed in this order by Angular
+
+    /// Gets all the NavigationStart events and if they are from a popstate trigger (back and forward buttons) reloads library
+    this._routerSub = this.router.events
+      .pipe(
+        filter(
+          event => {
+            return (event instanceof NavigationStart);
+          }
+        )
+      )
+      .subscribe((x: any) => {
+        if (x.navigationTrigger == 'popstate') {
+          this.popStateNavigation = true;
+        }
+      });
+
+    /// Updates the search term everytime it changes from query parameters and defines which kind of data to load
+    this.activatedRoute.queryParamMap.subscribe(x => {
+
+      let search = x.get('search') ?? '';
+      this.searchTerm = search;
+
+      // If coming from a back or next navigation
+      if (this.popStateNavigation && search) this.search(search);
+      else if (this.popStateNavigation && !this.seasonalListStatic)
+      {
+        this.searching = false;
+        this.loadCurrentAndUpcomingSeasons();
+      }
+      else if (this.popStateNavigation && this.seasonalListStatic) this.search(search);
+
+    });    
+
+    // If component is loaded with search filter in query param, search instead of loading current and upcoming seasons
+    if (this.searchTerm)
+      this.search(this.searchTerm)    
+    else this.loadCurrentAndUpcomingSeasons();
+  }
+
+  loadCurrentAndUpcomingSeasons() {
+    this.seasonalList$ = this.malService.getCurrentSeason()
+      .pipe(tap(value => { this.seasonalListStatic = value; this.seasonalListTracker = Array(value.length).fill(false), this.seasonalListImages = Array(value.length).fill(false) }));
+
+    this.nextSeasonList$ = this.malService.getUpcomingSeason()
+      .pipe(tap(value => { this.nextSeasonListStatic = value; this.nextSeasonTracker = Array(value.length).fill(false), this.nextSeasonImages = Array(value.length).fill(false) }));
+
   }
 
   /// Alternate search by id or by title
@@ -115,14 +173,36 @@ export class SearchAnimeComponent implements OnInit {
       this.searching = true;
       this.noResults = false;
     }
-    else
+    else {
+      this.updateQueryParams();
       this.searching = false;
+      if (!this.seasonalListStatic) this.loadCurrentAndUpcomingSeasons();
+    }
+      
   }
 
   /// Retrieve the value of text typed in search bar
   getEventType(event: Event): string {
     return (event.target as HTMLInputElement).value;
   }
+
+  /// Set or remove query params from route
+  updateQueryParams(name: string | null = null, value: string | null = null) {
+
+    if (!name)
+      this.router.navigate([],
+        {
+          relativeTo: this.activatedRoute,
+          queryParams: {}
+        })
+    else {
+      this.router.navigate([],
+        {
+          relativeTo: this.activatedRoute,
+          queryParams: { [name]: value }
+        })
+    }
+  } 
 
   /// Triggered if there's no input for more than [debounceTime] ms in the search bar
   debouncingPipe() {
@@ -133,7 +213,9 @@ export class SearchAnimeComponent implements OnInit {
         switchMap(searchTerm =>
           concat(
             // Starts with
-            of({ loading: true, list: [] }),
+            of({ loading: true, list: [] }).pipe(tap(value => {              
+              searchTerm === '' ? this.updateQueryParams() : this.updateQueryParams('search', searchTerm);
+            })),
             // API call
             this.querySearch(searchTerm)
               .pipe(
@@ -142,6 +224,7 @@ export class SearchAnimeComponent implements OnInit {
                   this.noResults = value.length == 0;
                   this.searchResultTracker = Array(value.length).fill(false);
                   this.searchResultImages = Array(value.length).fill(false);
+                  this.updateQueryParams('search', searchTerm);
                 }),
                 map(value => ({ loading: false, list: value })),
                 

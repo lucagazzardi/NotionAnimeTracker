@@ -447,7 +447,7 @@ $cover-height-small: $cover-width-small * 1.5;
   }
 }
 
-.edit {
+.edit  {
   background: rgb(var(--color-foreground));
   border-radius: 5px;
   display: grid;
@@ -551,6 +551,29 @@ $cover-height-small: $cover-width-small * 1.5;
         transition: .35s;
         background: rgb(var(--background-active-item));
       }
+    }
+  }
+}
+
+.overview {
+  background: rgb(var(--color-foreground));
+  border-radius: 5px;
+  padding: 40px 90px;
+  height: min-content;
+  width: 100%;
+  color: rgb(var(--color-text-normal));
+  font-family: rgb(var(--font-family-secondary));
+  font-size: 14px;
+
+  @media screen and (max-width: 1540px) {
+    & {
+      padding: 30px 45px;
+    }
+  }
+
+  @media screen and (max-width: 1040px) {
+    & {
+      padding: 20px 20px;
     }
   }
 }

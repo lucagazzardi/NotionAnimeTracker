@@ -39,5 +39,9 @@ export class MalService {
   searchByName(searchTerm: string) {
     return this.httpService.get(this.malController + "search/anime/" + searchTerm);
   }
+
+  getSynopsis(id: number) {
+    return this.httpService.get(this.malController + 'get/synopsis/' + id, false);
+  }
 }
 

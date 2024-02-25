@@ -14,10 +14,12 @@ export class BaseService {
 
   constructor(private client: HttpClient) { }  
 
-  get(url: string): Observable<any>  {
+  get(url: string, progressbar: boolean = true): Observable<any>  {
 
     let req = new HttpRequest('GET', this.baseUrl + url, this.trackOptions);
-    return this.sendRequest(req);
+    if (progressbar)
+      return this.sendRequest(req);
+    else return this.client.get(this.baseUrl + url);
   }
 
   post(url: string, body: object | null): Observable<any> {

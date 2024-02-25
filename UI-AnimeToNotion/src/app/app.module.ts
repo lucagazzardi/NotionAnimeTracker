@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NgxScrollPositionRestorationModule } from 'ngx-scroll-position-restoration';
+import { MatTabsModule } from '@angular/material/tabs';
 
 //APP COMPONENTS
 import { AppComponent } from './app.component';
@@ -88,7 +89,8 @@ import { BaseService } from '../services/base/base.service';
     MatTooltipModule,
     MatProgressBarModule,
     NgxWebstorageModule.forRoot({ prefix: '', separator: '' }),
-    NgxScrollPositionRestorationModule.forRoot()
+    NgxScrollPositionRestorationModule.forRoot(),
+    MatTabsModule
   ],
   providers: [
     ThemeService,

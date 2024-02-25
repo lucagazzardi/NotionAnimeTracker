@@ -1,0 +1,28 @@
+
+.edit-tab .mat-tab-label {
+  color: rgb(var(--color-text-normal));
+  font-weight: initial;
+  opacity: .8;
+  height: 43px;
+
+  &:hover {
+    cursor: pointer;
+    color: rgb(var(--background-active-item));
+    transition: .15s;
+  }  
+}
+
+.edit-tab .mat-tab-label-active {
+  color: rgb(var(--color-text-highlight));
+  opacity: 1;
+
+  @media screen and (max-width: 1040px) {
+    & {
+      color: rgb(var(--background-active-item));
+    }
+  }
+}
+
+.edit-tab .mat-ink-bar {
+  display: none;
+}

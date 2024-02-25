@@ -1,6 +1,6 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { Component, OnInit} from '@angular/core';
-import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, last, map, Observable, of, switchMap, tap } from 'rxjs';
+import { ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, filter, last, map, Observable, of, Subscription, switchMap, take, tap } from 'rxjs';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave, YMovement_Opacity, YMovement_Opacity_Leave } from '../../assets/animations/animations';
 import { SelectShowStatus } from '../../model/form-model/SelectShowStatus';
 import { SelectYear } from '../../model/form-model/SelectYear';
@@ -13,7 +13,7 @@ import { ILibrary, IPageInfo } from '../../model/ILibrary';
 import { IAnimeFull } from '../../model/IAnimeFull';
 import { ToasterService } from 'gazza-toaster';
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
 
 export interface DialogData {
   animal: string;
@@ -108,6 +108,8 @@ export class LibraryComponent implements OnInit {
 
   loading: boolean = false;
 
+  private _routerSub = Subscription.EMPTY;
+
   constructor(
     private internalService: InternalService,
     private editService: EditService,
@@ -117,21 +119,47 @@ export class LibraryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadInitialLibrary();
+    this.loadInitialData();
+  }
+
+  ngOnDestroy() {
+    this._routerSub.unsubscribe();
   }
 
   /// Defines if page is loading from a back navigation with a searched term or not
-  loadInitialLibrary() {
-    let navigatedBackSearchParam = this.activatedRoute.snapshot.queryParamMap.get('search')
-    if (navigatedBackSearchParam !== null) {
-      this.search(navigatedBackSearchParam);
-      this.searchTerm = navigatedBackSearchParam;
-    }
-    else this.libraryQuery();
+  loadInitialData() {    
+
+    /// Gets all the NavigationStart events and if they are from a popstate trigger (back and forward buttons) reloads library
+    this._routerSub = this.router.events
+      .pipe(
+        filter(
+          event => {
+            return (event instanceof NavigationStart);
+          }
+        )
+      )
+      .subscribe((x: any) => {
+        if (x.navigationTrigger == 'popstate') {
+          this.libraryQuery();
+        }
+      });
+
+    /// Updates filters everytime query parameters change
+    this.activatedRoute.queryParamMap.subscribe(x => {      
+
+      let search = x.get('search') ?? '';
+      this.setFilter('search', search, false);
+      this.searchTerm = search;
+
+    });    
+
+    /// At reinitialize of this component, if from popstate event, this is called both in the subscribe above and here, but for some reason it doesn't make two calls so it's ok
+    this.libraryQuery();
+
   }
 
   /// Triggered when something is typed in the search bar
-  search(searchTerm: string) {
+  search(searchTerm: string) {    
     this.resetPage();
     this.searchTerm$.next(searchTerm);
     this.debouncingPipe();
@@ -147,7 +175,10 @@ export class LibraryComponent implements OnInit {
         switchMap(searchTerm =>
           concat(
             // Starts with
-            of({ data: [], pageInfo: {} as IPageInfo }).pipe(tap(value => this.loading = true)),
+            of({ data: [], pageInfo: {} as IPageInfo }).pipe(tap(value => {
+              this.loading = true;              
+              searchTerm === '' ? this.updateQueryParams() : this.updateQueryParams('search', searchTerm);
+            })),
             // API call
             this.querySearch(searchTerm)
               .pipe(
@@ -157,12 +188,7 @@ export class LibraryComponent implements OnInit {
                   this.libraryListTracker = Array(value.data.length).fill(false);
                   this.libraryListImages = Array(value.data.length).fill(false);
                   this.libraryListStatic = value.data;
-                  this.loading = false;
-                  this.router.navigate([],
-                    {
-                      relativeTo: this.activatedRoute,
-                      queryParams: { search: searchTerm }
-                    })
+                  this.loading = false;                  
                 }),
                 map(value => ({ data: value.data, pageInfo: value.pageInfo })),
 
@@ -177,6 +203,25 @@ export class LibraryComponent implements OnInit {
     this.setFilter("search", searchTerm, false);
     return this.internalService.libraryQuery({ filters: this.filters, sort: this.sort, page: this.page });
   }
+
+  /// Set or remove query params from route
+  updateQueryParams(name: string | null = null, value: string | null = null) {
+
+    if (!name) {
+      this.router.navigate([],
+        {
+          relativeTo: this.activatedRoute,
+          queryParams: {}
+        })
+    }
+    else {
+      this.router.navigate([],
+        {
+          relativeTo: this.activatedRoute,
+          queryParams: { [name]: value }
+        })
+    }
+  } 
 
   /// Open Edit Component
   editItem(item: IAnimeBase) {
@@ -195,12 +240,6 @@ export class LibraryComponent implements OnInit {
           },
           error: () => { this.toasterService.notifyError("The entry could not be updated") }
         });
-  }
-
-  printProgress(event: HttpEvent<any>) {
-    if (event.type == HttpEventType.DownloadProgress) {
-      console.log(event.loaded + ', ' + event.total)
-    }
   }
 
   /// Show sliders
@@ -343,7 +382,6 @@ export class LibraryComponent implements OnInit {
   setSort(sort: string) {
     this.page.currentPage = 1;
     this.sort = <Sort>sort;
-    console.log(this.sort);
 
     this.libraryQuery();
   } 

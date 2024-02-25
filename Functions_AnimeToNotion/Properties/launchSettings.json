@@ -2,8 +2,7 @@
   "profiles": {
     "Functions_AnimeToNotion": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7272",
-      "launchBrowser": false
+      "commandLineArgs": "--port 7272"
     }
   }
 }

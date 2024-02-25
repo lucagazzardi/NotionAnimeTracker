@@ -51,102 +51,118 @@
         </div>
       </div>-->
 
-      <div class="main">
+    <div class="main">
 
-        <!--INFO-->
-        <div class="info">
-          <div class="info__buttons" [class.info__buttons--single-row]="item?.info == null">
-            <div class="info__button" *ngIf="item?.info != null">
-              <svg class="info__button-icon" [class.info__button-icon--selected]="item?.favorite" (click)="setFavorite()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
-              </svg>
-            </div>
-
-            <div class="info__button" *ngIf="item?.info != null">
-              <svg class="info__button-icon" [class.info__button-icon--plan-selected]="item?.planToWatch" (click)="setPlanToWatch()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M128 0c13.3 0 24 10.7 24 24V64H296V24c0-13.3 10.7-24 24-24s24 10.7 24 24V64h40c35.3 0 64 28.7 64 64v16 48V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V192 144 128C0 92.7 28.7 64 64 64h40V24c0-13.3 10.7-24 24-24zM400 192H48V448c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16V192zM329 297L217 409c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47 95-95c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
-              </svg>
-            </div>
-
-            <div class="info__button">
-              <a class="info__button--id" target="_blank" href="{{malBaseUrl+item?.malId}}">MAL</a>
-            </div>
+      <!--INFO-->
+      <div class="info">
+        <div class="info__buttons" [class.info__buttons--single-row]="item?.info == null">
+          <div class="info__button" *ngIf="item?.info != null">
+            <svg class="info__button-icon" [class.info__button-icon--selected]="item?.favorite" (click)="setFavorite()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
+            </svg>
           </div>
 
-          <div class="info__list">
-            <ng-container *ngIf="item?.nameDefault != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.nameDefault }"></ng-container></ng-container>
-            <ng-container *ngIf="item?.startedAiring != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: (item?.startedAiring | date:'mediumDate') }"></ng-container></ng-container>
-            <ng-container *ngIf="item?.format != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.format }"></ng-container></ng-container>
-            <ng-container *ngIf="item?.score != null"><ng-container *ngTemplateOutlet="field; context: { title: 'MAL Score', value: item?.score + '%' }"></ng-container></ng-container>
-            <ng-container *ngIf="item?.episodes != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Episodes', value: item?.episodes }"></ng-container></ng-container>
-            <ng-container *ngIf="item?.studios != null"><ng-container *ngTemplateOutlet="fieldList; context: { title: 'Studios', values: item?.studios?.slice(0,4) }"></ng-container></ng-container>
-            <ng-container *ngIf="item?.genres != null"><ng-container *ngTemplateOutlet="fieldList; context: { title: 'Genres', values: item?.genres?.slice(0,4) }"></ng-container></ng-container>
+          <div class="info__button" *ngIf="item?.info != null">
+            <svg class="info__button-icon" [class.info__button-icon--plan-selected]="item?.planToWatch" (click)="setPlanToWatch()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path fill="currentColor" d="M128 0c13.3 0 24 10.7 24 24V64H296V24c0-13.3 10.7-24 24-24s24 10.7 24 24V64h40c35.3 0 64 28.7 64 64v16 48V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V192 144 128C0 92.7 28.7 64 64 64h40V24c0-13.3 10.7-24 24-24zM400 192H48V448c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16V192zM329 297L217 409c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47 95-95c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
+            </svg>
+          </div>
+
+          <div class="info__button">
+            <a class="info__button--id" target="_blank" href="{{malBaseUrl+item?.malId}}">MAL</a>
           </div>
         </div>
 
-        <!--EDIT FIELDS-->
-        <div class="edit">
-
-          <!--STATUS-->
-          <div class="edit__item">
-            <div class="edit__name">
-              Status
-            </div>
-
-            <app-select [values]="showStatuses" [initialValue]="initialStatus" (valueChanged)="setStatus($event)"></app-select>
-          </div>
-
-          <!--PERSONAL SCORE-->
-          <div class="edit__item">
-            <div class="edit__name">
-              Score
-            </div>
-
-            <app-ranking [initialValue]="initialRank" (valueChanged)="setRank($event)"></app-ranking>
-          </div>
-
-          <!--START DATE-->
-          <div class="edit__item">
-            <div class="edit__name">
-              Start Date
-            </div>
-
-            <app-datepicker [initialValue]="initialStartDate" (valueChanged)="setStartDate($event)"></app-datepicker>
-          </div>
-
-          <!--FINISH DATE-->
-          <div class="edit__item">
-            <div class="edit__name">
-              Finish Date
-            </div>
-
-            <app-datepicker [initialValue]="initialFinishDate" (valueChanged)="setFinishDate($event)"></app-datepicker>
-          </div>
-
-          <!--NOTES-->
-          <div class="edit__item edit__item--row-full">
-            <div class="edit__name">
-              Notes
-            </div>
-
-            <app-text-input [initialValue]="initialNotes" [isTextArea]="true" (valueChanged)="setNotes($event)"></app-text-input>
-          </div>
-
-
-
-          <div class="edit__item edit__item--row-full">
-            <div class="edit__buttons">
-              <div class="edit__button edit__button--delete" (click)="remove()">
-                <span>Delete</span>
-              </div>
-              <div class="edit__button edit__button--save" (click)="save()">
-                <span>Save</span>
-              </div>
-            </div>
-          </div>
-
+        <div class="info__list">
+          <ng-container *ngIf="item?.nameDefault != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Romaji', value: item?.nameDefault }"></ng-container></ng-container>
+          <ng-container *ngIf="item?.startedAiring != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Started Airing', value: (item?.startedAiring | date:'mediumDate') }"></ng-container></ng-container>
+          <ng-container *ngIf="item?.format != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Format', value: item?.format }"></ng-container></ng-container>
+          <ng-container *ngIf="item?.score != null"><ng-container *ngTemplateOutlet="field; context: { title: 'MAL Score', value: item?.score + '%' }"></ng-container></ng-container>
+          <ng-container *ngIf="item?.episodes != null"><ng-container *ngTemplateOutlet="field; context: { title: 'Episodes', value: item?.episodes }"></ng-container></ng-container>
+          <ng-container *ngIf="item?.studios != null"><ng-container *ngTemplateOutlet="fieldList; context: { title: 'Studios', values: item?.studios?.slice(0,4) }"></ng-container></ng-container>
+          <ng-container *ngIf="item?.genres != null"><ng-container *ngTemplateOutlet="fieldList; context: { title: 'Genres', values: item?.genres?.slice(0,4) }"></ng-container></ng-container>
         </div>
       </div>
+
+      <div class="edit-tab">
+        <mat-tab-group mat-align-tabs="center" animationDuration="0ms" disableRipple="true" class="edit-tab" (selectedTabChange)="onTabChange($event)">
+          <mat-tab label="Edit">
+            <!--EDIT FIELDS-->
+            <div class="edit">
+
+              <!--STATUS-->
+              <div class="edit__item">
+                <div class="edit__name">
+                  Status
+                </div>
+
+                <app-select [values]="showStatuses" [initialValue]="initialStatus" (valueChanged)="setStatus($event)"></app-select>
+              </div>
+
+              <!--PERSONAL SCORE-->
+              <div class="edit__item">
+                <div class="edit__name">
+                  Score
+                </div>
+
+                <app-ranking [initialValue]="initialRank" (valueChanged)="setRank($event)"></app-ranking>
+              </div>
+
+              <!--START DATE-->
+              <div class="edit__item">
+                <div class="edit__name">
+                  Start Date
+                </div>
+
+                <app-datepicker [initialValue]="initialStartDate" (valueChanged)="setStartDate($event)"></app-datepicker>
+              </div>
+
+              <!--FINISH DATE-->
+              <div class="edit__item">
+                <div class="edit__name">
+                  Finish Date
+                </div>
+
+                <app-datepicker [initialValue]="initialFinishDate" (valueChanged)="setFinishDate($event)"></app-datepicker>
+              </div>
+
+              <!--NOTES-->
+              <div class="edit__item edit__item--row-full">
+                <div class="edit__name">
+                  Notes
+                </div>
+
+                <app-text-input [initialValue]="initialNotes" [isTextArea]="true" (valueChanged)="setNotes($event)"></app-text-input>
+              </div>
+
+
+
+              <div class="edit__item edit__item--row-full">
+                <div class="edit__buttons">
+                  <div class="edit__button edit__button--delete" (click)="remove()">
+                    <span>Delete</span>
+                  </div>
+                  <div class="edit__button edit__button--save" (click)="save()">
+                    <span>Save</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </mat-tab>
+          <mat-tab label="Overview">
+            <div class="overview">
+
+              {{synopsis}}
+
+            </div>
+          </mat-tab>
+          <mat-tab label="Episodes">Content 3</mat-tab>
+        </mat-tab-group>
+      </div>
+
+      
+    </div>
 
 
     </div>

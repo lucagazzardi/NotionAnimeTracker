@@ -16,7 +16,7 @@
   <div class="search-area">
 
     <div class="search-area__searchbar">
-      <app-searchbar (valueChanged)="search($event)"></app-searchbar>
+      <app-searchbar [initialValue]="searchTerm" (valueChanged)="search($event)"></app-searchbar>
     </div>
 
     <div class="search-area__mode" (click)="switchMode()">

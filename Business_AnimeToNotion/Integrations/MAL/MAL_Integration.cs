@@ -210,6 +210,21 @@ namespace Business_AnimeToNotion.Integrations.MAL
             return JsonConvert.DeserializeObject<MAL_AnimeShowRelations>(relations);
         }
 
+        /// <summary>
+        /// Retrieves synopsis for a specific anime
+        /// </summary>
+        /// <param name="malId"></param>
+        /// <returns></returns>
+        public async Task<MAL_AnimeSynopsis> GetSynopsisById(int malId)
+        {
+            var anime = await _jikan.GetAnimeAsync(malId);
+            return new MAL_AnimeSynopsis()
+            {
+                MalId = (int)anime.Data.MalId.Value,
+                Synopsis = anime.Data.Synopsis
+            };
+        }
+
         #region Private
 
         private List<INT_AnimeShowBase> CheckSavedAnimeShow(List<INT_AnimeShowBase> animeShows)

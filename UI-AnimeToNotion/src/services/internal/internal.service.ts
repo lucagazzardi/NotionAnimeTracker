@@ -45,7 +45,7 @@ export class InternalService {
   editAnime(animeEdit: IAnimeEdit) {
     //return this.client.post(this.baseUrl + this.internalController + "edit", animeEdit);
     return this.httpService.post(this.internalController + "edit", animeEdit);
-  }
+  }  
 
   setFavorite(id: string, favorite: boolean): Observable<any> {
     //return this.client.put(this.baseUrl + this.internalController + "set/favorite/" + id + "/" + favorite, null);

@@ -60,5 +60,16 @@ namespace API_AnimeToNotion.Controllers
             return Ok(await _mal.GetAnimeById(malId));
         }
 
+        /// <summary>
+        /// Retrieves synopsis of specific anime
+        /// </summary>
+        /// <param name="malId"></param>
+        /// <returns></returns>
+        [HttpGet("get/synopsis/{malId}")]
+        public async Task<IActionResult> GetSynopsisById(int malId)
+        {
+            return Ok(await _mal.GetSynopsisById(malId));
+        }
+
     }
 }
