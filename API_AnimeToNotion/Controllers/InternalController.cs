@@ -131,6 +131,59 @@ namespace API_AnimeToNotion.Controllers
             return Ok(await _main.GetAnimeRelations(malId));
         }
 
+        /// <summary>
+        /// Adds new anime episode record
+        /// </summary>
+        /// <param name="malId"></param>
+        /// <returns></returns>
+        [HttpPost("add/episode")]
+        public async Task<IActionResult> GetAnimeRelations([FromBody] INT_AnimeEpisode animeEpisode)
+        {
+            await _main.AddAnimeEpisode(animeEpisode);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Retrieves every watched episode for an anime
+        /// </summary>
+        /// <param name="animeShowId"></param>
+        /// <returns></returns>
+        [HttpGet("get/episode/{animeShowId}")]
+        public async Task<IActionResult> GetAnimeEpisodes(Guid animeShowId)
+        {
+            return Ok(await _main.GetAnimeEpisodes(animeShowId));
+        }
+
+        /// <summary>
+        /// Edits an episode already watched
+        /// </summary>
+        /// <param name="animeEpisode"></param>
+        /// <returns></returns>
+        [HttpPut("edit/episode")]
+        public async Task<IActionResult> EditAnimeEpisode([FromBody] INT_AnimeEpisode animeEpisode)
+        {
+            await _main.EditAnimeEpisode(animeEpisode);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Deletes an anime episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("delete/episode/{id}")]
+        public async Task<IActionResult> DeleteAnimeEpisode(Guid id)
+        {
+            await _main.DeleteAnimeEpisode(id);
+            return Ok();
+        }
+
+        [HttpGet("anime/{malId}/episode/record/{animeShowId}")]
+        public async Task<IActionResult> GetAnimeEpisodesRecord(Guid animeShowId, int malId)
+        {
+            return Ok(await _main.GetAnimeEpisodesRecord(animeShowId, malId));
+        }
+
         #endregion
 
         #region Library

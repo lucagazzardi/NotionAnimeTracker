@@ -11,12 +11,14 @@ namespace Data_AnimeToNotion.Context
         }
 
         public DbSet<AnimeShow> AnimeShows { get; set; }
+        public DbSet<AnimeShowProgress> AnimeShowProgresses { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<GenreOnAnimeShow> GenreOnAnimeShows { get; set; }
         public DbSet<Studio> Studios { get; set; }
         public DbSet<StudioOnAnimeShow> StudioOnAnimeShows { get; set; }
         public DbSet<Relation> Relations { get; set; }
         public DbSet<Year> Years { get; set; }
+        public DbSet<AnimeEpisode> AnimeEpisodes { get; set; }
 
         #region SyncToNotion
 
@@ -28,6 +30,7 @@ namespace Data_AnimeToNotion.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AnimeShow>().ToTable("AnimeShow");
+            modelBuilder.Entity<AnimeShowProgress>().ToTable("AnimeShowProgress");
             modelBuilder.Entity<Genre>().ToTable("Genre");
             modelBuilder.Entity<GenreOnAnimeShow>().ToTable("GenreOnAnimeShow");
             modelBuilder.Entity<Studio>().ToTable("Studio");
@@ -36,6 +39,8 @@ namespace Data_AnimeToNotion.Context
             modelBuilder.Entity<Year>().ToTable("Year");
             modelBuilder.Entity<NotionSync>().ToTable("NotionSync");
             modelBuilder.Entity<MalSyncError>().ToTable("MalSyncError");
+            modelBuilder.Entity<AnimeEpisode>().ToTable("AnimeEpisode");
+
 
             modelBuilder.Entity<AnimeShow>()
                 .Property(t => t.PlanToWatch)

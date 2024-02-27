@@ -179,6 +179,54 @@ namespace Data_AnimeToNotion.Repository
             return await _animeShowContext.AnimeShows.AsNoTracking().AnyAsync(x => x.MalId == malId);
         }
 
+        /// <summary>
+        /// Adds new anime episode record
+        /// </summary>
+        /// <param name="animeId"></param>
+        /// <param name="episodeNumber"></param>
+        /// <param name="watchedOn"></param>
+        /// <returns></returns>
+        public async Task AddEpisode(Guid animeId, int episodeNumber, DateTime watchedOn)
+        {
+            await _animeShowContext.AnimeEpisodes.AddAsync(new AnimeEpisode() 
+            { 
+                Id = Guid.NewGuid(), AnimeShowId = animeId, EpisodeNumber = episodeNumber, WatchedOn = watchedOn 
+            });
+            await _animeShowContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Edits an episode already watched
+        /// </summary>
+        /// <param name="animeId"></param>
+        /// <param name="episodeNumber"></param>
+        /// <param name="watchedOn"></param>
+        /// <returns></returns>
+        public async Task EditEpisode(Guid id, DateTime watchedOn)
+        {
+            await _animeShowContext.AnimeEpisodes.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.WatchedOn, a => watchedOn));
+        }
+
+        /// <summary>
+        /// Retrieves every watched episode for an anime
+        /// </summary>
+        /// <param name="animeId"></param>
+        /// <returns></returns>
+        public async Task<List<AnimeEpisode>> GetAnimeEpisodes(Guid animeId)
+        {
+            return await _animeShowContext.AnimeEpisodes.Where(x => x.AnimeShowId == animeId).AsNoTracking().ToListAsync();
+        }
+
+        /// <summary>
+        /// Deletes an anime episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteAnimeEpisodes(Guid id)
+        {
+            await _animeShowContext.AnimeEpisodes.Where(x => x.Id == id).ExecuteDeleteAsync();
+        }
+
         #region Sync MAL
 
         /// <summary>

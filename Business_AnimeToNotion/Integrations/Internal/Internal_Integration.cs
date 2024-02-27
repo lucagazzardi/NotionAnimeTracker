@@ -3,6 +3,7 @@ using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.History;
 using Business_AnimeToNotion.Model.Internal;
+using Business_AnimeToNotion.Model.Mixed;
 using Business_AnimeToNotion.Model.Pagination;
 using Business_AnimeToNotion.Model.Query;
 using Business_AnimeToNotion.QueryLogic.FilterLogic;
@@ -172,6 +173,77 @@ namespace Business_AnimeToNotion.Integrations.Internal
         public async Task<List<INT_AnimeShowRelation>> GetAnimeRelations(int malId)
         {
             return Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await _mal.GetRelationsFromMAL(malId)).related_anime.AsQueryable()).ToList();
+        }
+
+        /// <summary>
+        /// Adds new anime episode record
+        /// </summary>
+        /// <param name="animeEpisode"></param>
+        /// <returns></returns>
+        public async Task AddAnimeEpisode(INT_AnimeEpisode animeEpisode)
+        {
+            await _animeRepository.AddEpisode(animeEpisode.AnimeShowId, animeEpisode.EpisodeNumber, animeEpisode.WatchedOn);
+        }
+
+        /// <summary>
+        /// Edits an episode already watched
+        /// </summary>
+        /// <param name="animeEpisode"></param>
+        /// <returns></returns>
+        public async Task EditAnimeEpisode(INT_AnimeEpisode animeEpisode)
+        {
+            await _animeRepository.EditEpisode(animeEpisode.Id, animeEpisode.WatchedOn);
+        }
+
+        /// <summary>
+        /// Retrieves every watched episode for an anime
+        /// </summary>
+        /// <param name="animeShowId"></param>
+        /// <returns></returns>
+        public async Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(Guid animeShowId)
+        {
+            return (await _animeRepository.GetAnimeEpisodes(animeShowId)).Select(x => new INT_AnimeEpisode()
+            {
+                Id = x.Id,
+                AnimeShowId = x.AnimeShowId,
+                EpisodeNumber = x.EpisodeNumber,
+                WatchedOn = x.WatchedOn
+            }).ToList();
+        }
+
+        /// <summary>
+        /// Deletes an anime episode
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteAnimeEpisode(Guid id)
+        {
+            await _animeRepository.DeleteAnimeEpisodes(id);
+        }
+
+        public async Task<AnimeEpisodesRecord> GetAnimeEpisodesRecord(Guid animeShowId, int malId)
+        {
+            // Collect watched episodes
+            var watchedEpisodes = (await _animeRepository.GetAnimeEpisodes(animeShowId)).ToDictionary(x => x.EpisodeNumber, x => x);
+
+            // Collect all the episodes of the anime
+            var episodes = (await _jikan.GetAnimeEpisodesAsync(malId)).Data;
+
+
+            var result = new AnimeEpisodesRecord()
+            {
+                AnimeShowId = animeShowId,
+                Episodes = episodes.Select(x => new AnimeSingleEpisode()
+                {
+                    TitleEnglish = x.Title,
+                    TitleJapanese = x.TitleJapanese,
+                    EpisodeNumber = (int)x.MalId,
+                    EpisodeId = watchedEpisodes.TryGetValue((int)x.MalId, out var watched) ? watched.Id : null,
+                    WatchedOn = watched?.WatchedOn
+                }).ToList()
+            };
+
+            return result;
         }
 
         #endregion

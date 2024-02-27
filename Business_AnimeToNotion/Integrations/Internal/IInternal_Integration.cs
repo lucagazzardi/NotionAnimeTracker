@@ -1,6 +1,7 @@
 ﻿using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.History;
 using Business_AnimeToNotion.Model.Internal;
+using Business_AnimeToNotion.Model.Mixed;
 using Business_AnimeToNotion.Model.Pagination;
 using Business_AnimeToNotion.Model.Query;
 using Business_AnimeToNotion.QueryLogic.SortLogic;
@@ -24,6 +25,11 @@ namespace Business_AnimeToNotion.Integrations.Internal
         Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch);
         Task RemoveAnime(Guid id);
         Task<List<INT_AnimeShowRelation>> GetAnimeRelations(int malId);
+        Task AddAnimeEpisode(INT_AnimeEpisode animeEpisode);
+        Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(Guid animeShowId);
+        Task EditAnimeEpisode(INT_AnimeEpisode animeEpisode);
+        Task DeleteAnimeEpisode(Guid id);
+        Task<AnimeEpisodesRecord> GetAnimeEpisodesRecord(Guid animeShowId, int malId);
 
         #endregion
 

@@ -4,6 +4,7 @@ using Data_AnimeToNotion.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_AnimeToNotion.Migrations
 {
     [DbContext(typeof(AnimeShowContext))]
-    partial class AnimeShowContextModelSnapshot : ModelSnapshot
+    [Migration("20240226151218_ADD_ANIMEEPISODE")]
+    partial class ADD_ANIMEEPISODE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,12 @@ namespace Data_AnimeToNotion.Migrations
 
                     b.Property<int>("EpisodeNumber")
                         .HasColumnType("int");
+
+                    b.Property<string>("TitleEnglish")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleJapanese")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("WatchedOn")
                         .HasColumnType("datetime2");

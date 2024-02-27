@@ -21,6 +21,7 @@ namespace Data_AnimeToNotion.DataModel
         public int? Score { get; set; }
 
         public AnimeShowProgress AnimeShowProgress { get; set; }
+        public ICollection<AnimeEpisode> AnimeEpisodes { get; set; }
         public ICollection<GenreOnAnimeShow> GenreOnAnimeShows { get; set; }
         public ICollection<StudioOnAnimeShow> StudioOnAnimeShows { get; set; }
         public ICollection<Relation> Relations { get; set; }
