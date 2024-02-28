@@ -38,6 +38,7 @@ import { CheckboxComponent } from '../components/form-components/checkbox/checkb
 import { HistoryComponent } from '../components/history/history.component';
 import { HistoryElementComponent } from '../components/history-element/history-element.component';
 import { FooterComponent } from '../components/footer/footer.component';
+import { EpisodesComponent } from '../components/episodes/episodes.component';
 
 //APP SERVICES
 import { ThemeService } from '../services/theme/theme.service';
@@ -66,7 +67,8 @@ import { BaseService } from '../services/base/base.service';
     CheckboxComponent,
     HistoryComponent,
     HistoryElementComponent,
-    FooterComponent
+    FooterComponent,
+    EpisodesComponent
   ],
   imports: [
     AppRoutingModule,

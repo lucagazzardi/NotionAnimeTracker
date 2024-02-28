@@ -1,0 +1,121 @@
+
+.episodes {
+
+  @at-root &__item-wrapper {
+    border-radius: 5px;
+    background: rgb(var(--color-foreground));
+    padding: 15px 25px;
+    color: rgb(var(--color-text-normal));
+    font-family: var(--font-family-secondary);
+
+    &:not(:first-child) {
+      margin-top: 10px;
+    }
+  }
+
+  @at-root &__item {
+    display: grid;
+    grid-template-columns: 42px 42px auto min-content;
+  }
+
+  @at-root &__status-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @at-root &__status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+
+    &--watched {
+      background: rgb(var(--background-active-item));
+    }
+
+    &--not-watched {
+      background: rgb(var(--background-danger-item));
+    }
+  }
+
+  @at-root &__number {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+  }
+
+  @at-root &__title-wrapper {
+    padding: 0 14px;
+  }
+
+  @at-root &__title {
+
+    &--main {
+      margin-top: 2px;
+      font-size: 15px;
+      font-weight: 500;
+      color: rgb(var(--color-text-highlight));
+    }
+
+    &--secondary {
+      font-size: 12px;
+      color: rgb(var(--color-text-normal));
+    }
+
+    &--watched-on {
+      margin-top: 5px;
+      font-style: italic;
+      font-size: 11px;
+      color: rgb(var(--background-active-item));
+    }
+
+    &--not-watched {
+      margin-top: 5px;
+      font-style: italic;
+      font-size: 11px;
+      color: rgb(var(--background-danger-item));
+    }
+  }
+
+  @at-root &__buttons-wrapper {
+    display: grid;
+    grid-template-columns: 100px 100px;
+    align-items: center;
+  }
+
+  @at-root &__button {
+    height: 42px;
+    background: rgb(var(--color-background));
+    border-radius: 6px;
+    display: flex;
+    padding: 5px 10px;
+    margin-left: 15px;
+    font-family: var(--font-family-secondary);
+    font-size: 13px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--color-text-highlight));
+    cursor: pointer;
+    user-select: none;
+
+    @at-root &--delete {
+
+      &:hover {
+        transition: .25s;
+        background: rgb(var(--background-danger-item));
+      }
+    }
+
+    @at-root &--save {
+
+      &:hover {
+        transition: .25s;
+        background: rgb(var(--background-active-item));
+      }
+    }
+  }
+}

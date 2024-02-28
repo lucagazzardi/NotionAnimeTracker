@@ -3,7 +3,7 @@
   color: rgb(var(--color-text-normal));
   font-weight: initial;
   opacity: .8;
-  height: 43px;
+  height: 44px;
 
   &:hover {
     cursor: pointer;
@@ -25,4 +25,8 @@
 
 .edit-tab .mat-ink-bar {
   display: none;
+}
+
+.edit-tab .mat-tab-header{
+    border-bottom: none;
 }

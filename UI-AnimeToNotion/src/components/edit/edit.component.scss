@@ -548,7 +548,7 @@ $cover-height-small: $cover-width-small * 1.5;
       grid-column-start: 3;
 
       &:hover {
-        transition: .35s;
+        transition: .25s;
         background: rgb(var(--background-active-item));
       }
     }
