@@ -64,7 +64,6 @@ namespace Data_AnimeToNotion.Repository
                 .Include(x => x.AnimeShowProgress)
                 .Include(x => x.GenreOnAnimeShows)
                 .Include(x => x.StudioOnAnimeShows)
-                .Include(x => x.Relations)
                 .AsSplitQuery()
                 .Where(x => x.MalId == MalId).AsNoTracking().SingleOrDefaultAsync();
         }
@@ -80,7 +79,6 @@ namespace Data_AnimeToNotion.Repository
                 .Include(x => x.AnimeShowProgress)
                 .Include(x => x.GenreOnAnimeShows)
                 .Include(x => x.StudioOnAnimeShows)
-                .Include(x => x.Relations)
                 .AsSplitQuery()
                 .Where(x => x.Id == Id).AsNoTracking().SingleOrDefaultAsync();
         }
@@ -109,7 +107,7 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="genres"></param>
         /// <param name="relations"></param>
         /// <returns></returns>
-        public async Task<AnimeShow> AddInternalAnimeShow(AnimeShow animeShow, List<Studio> studios, List<Genre> genres, List<Relation> relations)
+        public async Task<AnimeShow> AddInternalAnimeShow(AnimeShow animeShow, List<Studio> studios, List<Genre> genres)
         {
             using var transaction = _animeShowContext.Database.BeginTransaction();
 
@@ -117,7 +115,6 @@ namespace Data_AnimeToNotion.Repository
 
             await HandleStudios(studios, animeShow);
             await HandleGenres(genres, animeShow);
-            await HandleRelations(relations, animeShow);
 
             await _animeShowContext.SaveChangesAsync();
 
@@ -139,7 +136,6 @@ namespace Data_AnimeToNotion.Repository
         {
             using var transaction = _animeShowContext.Database.BeginTransaction();
 
-            await _animeShowContext.Relations.Where(x => x.AnimeShowId == id).ExecuteDeleteAsync();
             await _animeShowContext.GenreOnAnimeShows.Where(x => x.AnimeShowId == id).ExecuteDeleteAsync();
             await _animeShowContext.StudioOnAnimeShows.Where(x => x.AnimeShowId == id).ExecuteDeleteAsync();
             await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteDeleteAsync();
@@ -186,13 +182,14 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="episodeNumber"></param>
         /// <param name="watchedOn"></param>
         /// <returns></returns>
-        public async Task AddEpisode(Guid animeId, int episodeNumber, DateTime watchedOn)
+        public async Task<Guid> AddEpisode(Guid animeId, int episodeNumber, DateTime watchedOn)
         {
-            await _animeShowContext.AnimeEpisodes.AddAsync(new AnimeEpisode() 
+            var added = await _animeShowContext.AnimeEpisodes.AddAsync(new AnimeEpisode() 
             { 
                 Id = Guid.NewGuid(), AnimeShowId = animeId, EpisodeNumber = episodeNumber, WatchedOn = watchedOn 
             });
             await _animeShowContext.SaveChangesAsync();
+            return added.Entity.Id;
         }
 
         /// <summary>
@@ -236,7 +233,7 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="studios"></param>
         /// <param name="genres"></param>
         /// <param name="relations"></param>
-        public async Task SyncFromMal(AnimeShow animeShow, List<Studio> studios, List<Genre> genres, List<Relation> relations)
+        public async Task SyncFromMal(AnimeShow animeShow, List<Studio> studios, List<Genre> genres)
         {
             using var transaction = _animeShowContext.Database.BeginTransaction();
 
@@ -245,9 +242,6 @@ namespace Data_AnimeToNotion.Repository
 
             if (genres != null)
                 await HandleGenres(genres, animeShow);
-
-            if (relations != null)
-                await HandleRelations(relations, animeShow);
 
             await _animeShowContext.SaveChangesAsync();
 
@@ -316,12 +310,6 @@ namespace Data_AnimeToNotion.Repository
             // Decomment if something wrong comes up
             //await _animeShowContext.GenreOnAnimeShows.Where(x => x.AnimeShowId == show.Id).ExecuteDeleteAsync();
             await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
-        }
-
-        private async Task HandleRelations(List<Relation> relations, AnimeShow show)
-        {
-            foreach (var relation in relations) { relation.AnimeShowId = show.Id; }
-            await _animeShowContext.Relations.AddRangeAsync(relations);
         }
 
         #endregion

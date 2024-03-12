@@ -28,3 +28,11 @@
 .input.mat-input-element{
     margin-top: 0!important;
 }
+
+.global-edit__calendar .mat-form-field {
+  width: initial;
+}
+
+.global-edit__calendar .mat-form-field-infix {
+  color: rgb(var(--color-text-highlight));
+}

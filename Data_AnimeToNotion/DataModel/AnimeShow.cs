@@ -24,7 +24,6 @@ namespace Data_AnimeToNotion.DataModel
         public ICollection<AnimeEpisode> AnimeEpisodes { get; set; }
         public ICollection<GenreOnAnimeShow> GenreOnAnimeShows { get; set; }
         public ICollection<StudioOnAnimeShow> StudioOnAnimeShows { get; set; }
-        public ICollection<Relation> Relations { get; set; }
         public NotionSync NotionSync { get; set; }
     }
 }

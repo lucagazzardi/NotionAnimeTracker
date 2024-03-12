@@ -121,17 +121,6 @@ namespace API_AnimeToNotion.Controllers
         }
 
         /// <summary>
-        /// Retrieves relations for an anime
-        /// </summary>
-        /// <param name="malId"></param>
-        /// <returns></returns>
-        [HttpGet("get/relations/{malId}")]
-        public async Task<IActionResult> GetAnimeRelations(int malId)
-        {
-            return Ok(await _main.GetAnimeRelations(malId));
-        }
-
-        /// <summary>
         /// Adds new anime episode record
         /// </summary>
         /// <param name="malId"></param>
@@ -139,8 +128,7 @@ namespace API_AnimeToNotion.Controllers
         [HttpPost("add/episode")]
         public async Task<IActionResult> GetAnimeRelations([FromBody] INT_AnimeEpisode animeEpisode)
         {
-            await _main.AddAnimeEpisode(animeEpisode);
-            return Ok();
+            return Ok(await _main.AddAnimeEpisode(animeEpisode));
         }
 
         /// <summary>

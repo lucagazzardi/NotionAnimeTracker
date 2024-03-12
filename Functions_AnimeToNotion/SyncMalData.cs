@@ -117,8 +117,7 @@ namespace Functions_AnimeToNotion
             await _animeRepository.SyncFromMal(
                 anime,
                 changes.Changes.Contains("Studios") ? Mapping.Mapper.ProjectTo<Studio>(changes.ChangedAnime.Studios.AsQueryable()).ToList() : null,
-                changes.Changes.Contains("Genres") ? Mapping.Mapper.ProjectTo<Genre>(changes.ChangedAnime.Genres.AsQueryable()).ToList() : null,
-                changes.Changes.Contains("Relations") ? Mapping.Mapper.ProjectTo<Relation>(changes.ChangedAnime.Relations.AsQueryable()).ToList() : null
+                changes.Changes.Contains("Genres") ? Mapping.Mapper.ProjectTo<Genre>(changes.ChangedAnime.Genres.AsQueryable()).ToList() : null
             );
 
             await _syncToNotionRepository.SetToSyncNotion(anime.Id, "Edit", malListToSync: false);

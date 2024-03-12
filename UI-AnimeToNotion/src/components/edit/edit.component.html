@@ -73,6 +73,8 @@
 
       <div class="edit-tab">
         <mat-tab-group mat-align-tabs="center" animationDuration="0ms" disableRipple="true" class="edit-tab" (selectedTabChange)="onTabChange($event)">
+
+          <!--FIRST TAB-->
           <mat-tab label="Edit">
             <!--EDIT FIELDS-->
             <div class="edit">
@@ -137,16 +139,21 @@
 
             </div>
           </mat-tab>
+
+          <!--SECOND TAB-->
           <mat-tab label="Overview">
             <div class="overview">
-
               {{synopsis}}
-
             </div>
           </mat-tab>
-          <mat-tab label="Episodes">
-            <app-episodes></app-episodes>
+
+          <!--THIRD TAB-->
+          <mat-tab label="Episodes" *ngIf="item?.startedAiring != null">
+            <ng-container *ngIf="loadedEpisodes">
+              <app-episodes [id]="item?.info?.id!" [malId]="item?.malId!"></app-episodes>
+            </ng-container>
           </mat-tab>
+
         </mat-tab-group>
       </div>
 

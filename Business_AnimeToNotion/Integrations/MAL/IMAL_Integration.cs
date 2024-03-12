@@ -12,7 +12,6 @@ namespace Business_AnimeToNotion.Integrations.MAL
         Task<INT_AnimeShowFull> GetAnimeById(string header, string key, string url);
         Task<MAL_AnimeUpdateStatus> UpdateListStatus(string token, string url, MAL_AnimeUpdateStatus item);
         Task DeleteListStatus(string token, string url);
-        Task<MAL_AnimeShowRelations> GetRelationsFromMAL(int malId);
         Task<MAL_AnimeSynopsis> GetSynopsisById(int malId);
     }
 }

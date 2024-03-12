@@ -46,11 +46,6 @@ namespace Business_AnimeToNotion.Mapper.FromMal
                 .ForMember(dto => dto.Episodes, map => map.MapFrom(source => source.Episodes))
                 .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.Studios.Select(x => new INT_KeyValue((int)x.MalId, x.Name))))
                 .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new INT_KeyValue((int)x.MalId, x.Name))));
-
-            CreateMap<MAL_RelatedShow, INT_AnimeShowRelation>()
-                .ForMember(dto => dto.Type, map => map.MapFrom(source => source.relation_type_formatted))
-                .ForMember(dto => dto.RelatedMalId, map => map.MapFrom(source => source.node.id))
-                .ForMember(dto => dto.Cover, map => map.MapFrom(source => source.node.main_picture.large));
         }
     }
 }

@@ -154,16 +154,12 @@ namespace Business_AnimeToNotion.Integrations.Demo
             if (await _animeShowRepository.Exists(animeId))
                 return;
 
-            var anime = _jikan.GetAnimeAsync(animeId);            
-            var malRelations = _malIntegration.GetRelationsFromMAL(animeId);
-            await Task.Delay(1000);
-            await Task.WhenAll(anime, malRelations);
+            var anime = await _jikan.GetAnimeAsync(animeId);
 
             var added = await _animeShowRepository.AddInternalAnimeShow(
-                Mapping.Mapper.Map<AnimeShow>(Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data)),
-                Mapping.Mapper.ProjectTo<Studio>(Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data).Studios.AsQueryable()).ToList(),
-                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data).Genres.AsQueryable()).ToList(),
-                Mapping.Mapper.ProjectTo<Relation>(Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await malRelations).related_anime.AsQueryable())).ToList()
+                Mapping.Mapper.Map<AnimeShow>(Mapping.Mapper.Map<INT_AnimeShowFull>(anime.Data)),
+                Mapping.Mapper.ProjectTo<Studio>(Mapping.Mapper.Map<INT_AnimeShowFull>(anime.Data).Studios.AsQueryable()).ToList(),
+                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(Mapping.Mapper.Map<INT_AnimeShowFull>(anime.Data).Genres.AsQueryable()).ToList()
             );
 
             await _syncToNotionRepository.CreateNotionSync(added, page.Id);
@@ -232,7 +228,6 @@ namespace Business_AnimeToNotion.Integrations.Demo
 
             var deltaStudios = mappedMalShow.Studios.Select(x => x.Id).Where(x => !internalShow.Studios.Select(y => y.Id).Contains(x)).ToList();
             var deltaGenres = mappedMalShow.Genres.Select(x => x.Id).Where(x => !internalShow.Genres.Select(y => y.Id).Contains(x)).ToList();
-            var deltaRelations = mappedMalShow.Relations.Select(x => x.RelatedMalId).Where(x => !internalShow.Relations.Select(y => y.RelatedMalId).Contains(x)).ToList();
 
             if (deltaStudios.Count > 0)
             {
@@ -244,12 +239,6 @@ namespace Business_AnimeToNotion.Integrations.Demo
             {
                 mappedMalShow.Genres = mappedMalShow.Genres.Where(x => deltaGenres.Contains(x.Id)).ToArray();
                 result.Add("Genres");
-            }
-
-            if (deltaRelations.Count > 0)
-            {
-                mappedMalShow.Relations = mappedMalShow.Relations.Where(x => deltaRelations.Contains(x.RelatedMalId)).ToList();
-                result.Add("Relations");
             }
 
             return result;
@@ -267,8 +256,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
             await _animeShowRepository.SyncFromMal(
                 anime,
                 changes.Changes.Contains("Studios") ? Mapping.Mapper.ProjectTo<Studio>(changes.ChangedAnime.Studios.AsQueryable()).ToList() : null,
-                changes.Changes.Contains("Genres") ? Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(changes.ChangedAnime.Genres.AsQueryable()).ToList() : null,
-                changes.Changes.Contains("Relations") ? Mapping.Mapper.ProjectTo<Relation>(changes.ChangedAnime.Relations.AsQueryable()).ToList() : null
+                changes.Changes.Contains("Genres") ? Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(changes.ChangedAnime.Genres.AsQueryable()).ToList() : null
             );
 
             await _syncToNotionRepository.SetToSyncNotion(anime.Id, "Edit", malListToSync: false);

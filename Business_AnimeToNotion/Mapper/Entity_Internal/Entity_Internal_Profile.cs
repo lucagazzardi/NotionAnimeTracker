@@ -15,13 +15,6 @@ namespace Business_AnimeToNotion.Mapper.Entity_Internal
                     .Select(x => new INT_KeyValue(x.StudioId, x.Description)) : null))
                 .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.GenreOnAnimeShows != null ? source.GenreOnAnimeShows
                     .Select(x => new INT_KeyValue(x.GenreId, x.Description)) : null))
-                .ForMember(dto => dto.Relations, map => map.MapFrom(source => source.Relations
-                    .Select(x => new INT_AnimeShowRelation()
-                    {
-                        RelatedMalId = x.AnimeRelatedMalId,
-                        Type = x.RelationType,
-                        Cover = x.Cover
-                    }).ToList()))
                 .ForMember(dto => dto.Edit, map => map.MapFrom(source => new INT_AnimeShowEdit()
                 {
                     Id = source.Id,

@@ -33,7 +33,7 @@ export class DatepickerComponent implements OnInit {
   date = new FormControl(this.initialValue);
   @Output() valueChanged: EventEmitter<Date> = new EventEmitter();
 
-  constructor(private fb: FormBuilder) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.date.valueChanges.subscribe(x => this.onChange(x));

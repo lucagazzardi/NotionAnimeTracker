@@ -24,8 +24,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         Task<bool> SetAnimeFavorite(Guid id, bool favorite);
         Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch);
         Task RemoveAnime(Guid id);
-        Task<List<INT_AnimeShowRelation>> GetAnimeRelations(int malId);
-        Task AddAnimeEpisode(INT_AnimeEpisode animeEpisode);
+        Task<Guid> AddAnimeEpisode(INT_AnimeEpisode animeEpisode);
         Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(Guid animeShowId);
         Task EditAnimeEpisode(INT_AnimeEpisode animeEpisode);
         Task DeleteAnimeEpisode(Guid id);

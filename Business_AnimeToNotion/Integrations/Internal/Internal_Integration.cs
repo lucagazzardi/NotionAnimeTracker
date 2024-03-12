@@ -46,13 +46,10 @@ namespace Business_AnimeToNotion.Integrations.Internal
             if (animeAdd.Info != null)
                 return null;
 
-            var relations = Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await _mal.GetRelationsFromMAL(animeAdd.MalId)).related_anime.AsQueryable()).ToList();
-
             var added = await _animeRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(animeAdd),
                 Mapping.Mapper.ProjectTo<Studio>(animeAdd.Studios.AsQueryable()).ToList(),
-                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(animeAdd.Genres.AsQueryable()).ToList(),
-                Mapping.Mapper.ProjectTo<Relation>(relations.AsQueryable()).ToList()
+                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(animeAdd.Genres.AsQueryable()).ToList()
             );
 
             await _syncToNotionRepository.AddNotionSync(added);
@@ -70,8 +67,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
             var added = await _animeRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(animeAdd),
                 Mapping.Mapper.ProjectTo<Studio>(animeAdd.Studios.AsQueryable()).ToList(),
-                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(animeAdd.Genres.AsQueryable()).ToList(),
-                Mapping.Mapper.ProjectTo<Relation>(animeAdd.Relations.AsQueryable()).ToList()
+                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(animeAdd.Genres.AsQueryable()).ToList()
             );
 
             await _syncToNotionRepository.AddNotionSync(added);
@@ -166,23 +162,13 @@ namespace Business_AnimeToNotion.Integrations.Internal
         }
 
         /// <summary>
-        /// Retrieve the relation of a single anime
-        /// </summary>
-        /// <param name="malId"></param>
-        /// <returns></returns>
-        public async Task<List<INT_AnimeShowRelation>> GetAnimeRelations(int malId)
-        {
-            return Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await _mal.GetRelationsFromMAL(malId)).related_anime.AsQueryable()).ToList();
-        }
-
-        /// <summary>
         /// Adds new anime episode record
         /// </summary>
         /// <param name="animeEpisode"></param>
         /// <returns></returns>
-        public async Task AddAnimeEpisode(INT_AnimeEpisode animeEpisode)
+        public async Task<Guid> AddAnimeEpisode(INT_AnimeEpisode animeEpisode)
         {
-            await _animeRepository.AddEpisode(animeEpisode.AnimeShowId, animeEpisode.EpisodeNumber, animeEpisode.WatchedOn);
+            return await _animeRepository.AddEpisode(animeEpisode.AnimeShowId, animeEpisode.EpisodeNumber, animeEpisode.WatchedOn);
         }
 
         /// <summary>
@@ -192,7 +178,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// <returns></returns>
         public async Task EditAnimeEpisode(INT_AnimeEpisode animeEpisode)
         {
-            await _animeRepository.EditEpisode(animeEpisode.Id, animeEpisode.WatchedOn);
+            await _animeRepository.EditEpisode(animeEpisode.Id.Value, animeEpisode.WatchedOn);
         }
 
         /// <summary>

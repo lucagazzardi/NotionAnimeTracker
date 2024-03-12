@@ -12,7 +12,6 @@
         public List<MAL_GeneralObject> genres { get; set; } = new List<MAL_GeneralObject>();
         public List<MAL_GeneralObject> studios { get; set; } = new List<MAL_GeneralObject>();
         public int num_episodes { get; set; }
-        public List<MAL_RelatedShow> related_anime { get; set; } = new List<MAL_RelatedShow>();
     }
 
     public class MAL_AlternativeTitle
@@ -32,19 +31,5 @@
     {
         public int id { get; set; }
         public string name { get; set; }
-    }
-
-    public class MAL_RelatedShow
-    {
-        public MAL_RelatedAnime_Node node { get; set; }
-        public string relation_type { get; set; }
-        public string relation_type_formatted { get; set; }
-    }
-
-    public class MAL_RelatedAnime_Node
-    {
-        public int id { get; set; }
-        public string title { get; set; }
-        public MAL_MainPicture main_picture { get; set; }
     }
 }

@@ -60,7 +60,6 @@ namespace Functions_AnimeToNotion.Utility
 
             var deltaStudios = mappedMalShow.Studios.Select(x => x.Id).Where(x => !internalShow.Studios.Select(y => y.Id).Contains(x)).ToList();
             var deltaGenres = mappedMalShow.Genres.Select(x => x.Id).Where(x => !internalShow.Genres.Select(y => y.Id).Contains(x)).ToList();
-            var deltaRelations = mappedMalShow.Relations.Select(x => x.RelatedMalId).Where(x => !internalShow.Relations.Select(y => y.RelatedMalId).Contains(x)).ToList();
 
             if (deltaStudios.Count > 0)
             {
@@ -72,12 +71,6 @@ namespace Functions_AnimeToNotion.Utility
             {
                 mappedMalShow.Genres = mappedMalShow.Genres.Where(x => deltaGenres.Contains(x.Id)).ToArray();
                 result.Add("Genres");
-            }
-
-            if (deltaRelations.Count > 0)
-            {
-                mappedMalShow.Relations = mappedMalShow.Relations.Where(x => deltaRelations.Contains(x.RelatedMalId)).ToList();
-                result.Add("Relations");
             }
 
             return result;

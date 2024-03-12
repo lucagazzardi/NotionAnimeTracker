@@ -38,12 +38,6 @@ namespace Business_AnimeToNotion.Mapper.Internal_Entity
             CreateMap<INT_KeyValue, Genre>()
                 .ForMember(dto => dto.Description, map => map.MapFrom(source => source.Value));
 
-            CreateMap<INT_AnimeShowRelation, Relation>()
-                .ForMember(dto => dto.Id, map => map.MapFrom(source => Guid.NewGuid()))
-                .ForMember(dto => dto.AnimeRelatedMalId, map => map.MapFrom(source => source.RelatedMalId))
-                .ForMember(dto => dto.RelationType, map => map.MapFrom(source => source.Type))
-                .ForMember(dto => dto.Cover, map => map.MapFrom(source => source.Cover));
-
         }
     }
 }

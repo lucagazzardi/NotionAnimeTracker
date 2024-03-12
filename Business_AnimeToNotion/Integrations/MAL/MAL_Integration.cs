@@ -127,13 +127,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <returns></returns>
         public async Task<INT_AnimeShowFull> GetAnimeById(int malId)
         {
-            var anime = _jikan.GetAnimeAsync(malId);
-            var malRelations = GetRelationsFromMAL(malId);
-            
-            await Task.WhenAll(anime, malRelations);
-
-            INT_AnimeShowFull found = Mapping.Mapper.Map<INT_AnimeShowFull>((await anime).Data);
-            found.Relations = Mapping.Mapper.ProjectTo<INT_AnimeShowRelation>((await malRelations).related_anime.AsQueryable()).ToList();
+            INT_AnimeShowFull found = Mapping.Mapper.Map<INT_AnimeShowFull>(await _jikan.GetAnimeAsync(malId));
 
             await CheckSavedAnimeShow(found);
 
@@ -199,18 +193,6 @@ namespace Business_AnimeToNotion.Integrations.MAL
         }
 
         /// <summary>
-        /// Retrieves relations for an anime
-        /// </summary>
-        /// <param name="malId"></param>
-        /// <returns></returns>
-        public async Task<MAL_AnimeShowRelations> GetRelationsFromMAL(int malId)
-        {
-            SetHttpHeader(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"]);
-            string relations = await _malHttpClient.GetStringAsync(BuildMALRelationsUrl(malId));
-            return JsonConvert.DeserializeObject<MAL_AnimeShowRelations>(relations);
-        }
-
-        /// <summary>
         /// Retrieves synopsis for a specific anime
         /// </summary>
         /// <param name="malId"></param>
@@ -259,11 +241,6 @@ namespace Business_AnimeToNotion.Integrations.MAL
             SetHttpHeader(header, key);
             var response = await _malHttpClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<MAL_AnimeShowRaw>(response);
-        }
-
-        private string BuildMALRelationsUrl(int malId)
-        {
-            return string.Concat(_configuration["MAL_ApiConfig:MAL_BaseURL"], "anime/", malId.ToString(), "?fields=related_anime");
         }
 
         private void SetHttpHeader(string header, string key)
