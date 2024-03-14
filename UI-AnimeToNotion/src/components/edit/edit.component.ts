@@ -89,10 +89,6 @@ export class EditComponent implements OnInit {
     else if (this.item != null && this.item.info != null && this.item.edit == null)
       this.loadItemForEdit(this.item.info.id);
 
-    // If the item is not present retrieves only relations
-    else if (this.item != null && this.item.relations == null)
-      this.loadItemRelations(Number(this.id))
-
     else
       this.setInitialValues(this.item!);
 

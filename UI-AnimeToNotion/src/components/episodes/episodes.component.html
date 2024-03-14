@@ -1,6 +1,13 @@
-<div class="episodes">
 
-  <div class="episodes__item-wrapper" *ngFor="let episode of (episodesList$ | async)?.episodes!; let i = index">
+<ng-template #loading>  
+  <div class="loader">
+    <img src="../../assets/images/loading.gif">
+  </div>
+</ng-template>
+
+<div class="episodes" *ngIf="(episodesList$ | async)?.episodes! as episodes; else loading">
+
+  <div class="episodes__item-wrapper" *ngFor="let episode of episodes; let i = index">
 
     <div class="episodes__item">
 

@@ -32,10 +32,13 @@ export class EpisodesComponent implements OnInit {
 
   /// Loads watched an not watched episodes
   loadEpisodes() {
+
+    this.loading = true;
     this.episodesList$ = this.internalService.getAnimeEpisodes(this.id, this.malId)
       .pipe(tap(value => {
         this.animeShowId = value.animeShowId;
         value.episodes.forEach(x => this.datesFormControls.push(new FormControl(x.watchedOn ?? this.momentStartDay())));
+        this.loading = false;
       }))
   }
 

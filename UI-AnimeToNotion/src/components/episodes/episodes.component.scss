@@ -1,4 +1,11 @@
 
+.loader{
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    margin-top: 50px;
+}
+
 .episodes {
 
   @at-root &__item-wrapper {
