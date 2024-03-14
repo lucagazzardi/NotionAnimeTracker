@@ -577,3 +577,10 @@ $cover-height-small: $cover-width-small * 1.5;
     }
   }
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  margin-top: 50px;
+}

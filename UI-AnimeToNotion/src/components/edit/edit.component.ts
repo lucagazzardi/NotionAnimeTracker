@@ -39,6 +39,7 @@ export class EditComponent implements OnInit {
 
   //TABS DATA
   synopsis: string = '';
+  loadingSynopsis: boolean = false;
   loadedEpisodes: boolean = false;
 
   //STATUS
@@ -331,19 +332,22 @@ export class EditComponent implements OnInit {
     }
   }
 
+  /// Loads the synopsis for this anime
   loadSynopsis() {
     if (this.isCallInProgress())
       return;
 
     this.setCallInProgress();
+    this.loadingSynopsis = true;
     this.malService.getSynopsis(this.item!.malId)
       .subscribe(
         {
           next: (data: any) => {
             this.synopsis = data.synopsis;
             this.releaseCallInProgress();
+            this.loadingSynopsis = false;
           },
-          error: () => { this.toasterService.notifyError("Could not retrieve synopsis"); this.releaseCallInProgress(); }
+          error: () => { this.toasterService.notifyError("Could not retrieve synopsis"); this.releaseCallInProgress(); this.loadingSynopsis = false; }
         });
   }
 

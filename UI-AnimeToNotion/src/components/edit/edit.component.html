@@ -142,7 +142,13 @@
 
           <!--SECOND TAB-->
           <mat-tab label="Overview">
-            <div class="overview">
+
+
+            <div *ngIf="loadingSynopsis" class="loader">
+              <img src="../../assets/images/loading.gif">
+            </div>
+
+            <div *ngIf="!loadingSynopsis" class="overview">
               {{synopsis}}
             </div>
           </mat-tab>
