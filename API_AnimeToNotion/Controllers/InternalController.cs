@@ -63,7 +63,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("get/edit/{id}")]
-        public async Task<IActionResult> GetAnimeForEdit(Guid id)
+        public async Task<IActionResult> GetAnimeForEdit(int id)
         {
             var anime = await _main.GetAnimeForEdit(id);
             if (anime != null)
@@ -91,7 +91,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="favorite"></param>
         /// <returns></returns>
         [HttpPut("set/favorite/{id}/{favorite}")]
-        public async Task<IActionResult> SetAnimeFavorite(Guid id, bool favorite)
+        public async Task<IActionResult> SetAnimeFavorite(int id, bool favorite)
         {
             return Ok(await _main.SetAnimeFavorite(id, favorite));
         }
@@ -103,7 +103,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="plantowatch"></param>
         /// <returns></returns>
         [HttpPut("set/plantowatch/{id}/{plantowatch}")]
-        public async Task<IActionResult> SetPlanToWatch(Guid id, bool plantowatch)
+        public async Task<IActionResult> SetPlanToWatch(int id, bool plantowatch)
         {
             return Ok(await _main.SetAnimePlanToWatch(id, plantowatch));
         }
@@ -114,7 +114,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> RemoveAnimeShow(Guid id)
+        public async Task<IActionResult> RemoveAnimeShow(int id)
         {
             await _main.RemoveAnime(id);
             return Ok();
@@ -137,7 +137,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="animeShowId"></param>
         /// <returns></returns>
         [HttpGet("get/episode/{animeShowId}")]
-        public async Task<IActionResult> GetAnimeEpisodes(Guid animeShowId)
+        public async Task<IActionResult> GetAnimeEpisodes(int animeShowId)
         {
             return Ok(await _main.GetAnimeEpisodes(animeShowId));
         }
@@ -160,14 +160,14 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("delete/episode/{id}")]
-        public async Task<IActionResult> DeleteAnimeEpisode(Guid id)
+        public async Task<IActionResult> DeleteAnimeEpisode(int id)
         {
             await _main.DeleteAnimeEpisode(id);
             return Ok();
         }
 
         [HttpGet("anime/{malId}/episode/record/{animeShowId}")]
-        public async Task<IActionResult> GetAnimeEpisodesRecord(Guid animeShowId, int malId)
+        public async Task<IActionResult> GetAnimeEpisodesRecord(int animeShowId, int malId)
         {
             return Ok(await _main.GetAnimeEpisodesRecord(animeShowId, malId));
         }

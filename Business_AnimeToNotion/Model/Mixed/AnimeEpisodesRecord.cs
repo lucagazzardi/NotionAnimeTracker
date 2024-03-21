@@ -8,7 +8,7 @@ namespace Business_AnimeToNotion.Model.Mixed
 {
     public class AnimeEpisodesRecord
     {
-        public Guid AnimeShowId { get; set; }
+        public int AnimeShowId { get; set; }
         public List<AnimeSingleEpisode> Episodes { get; set; }
     }
 
@@ -17,7 +17,7 @@ namespace Business_AnimeToNotion.Model.Mixed
         public string TitleEnglish { get; set; }
         public string TitleJapanese { get; set; }
         public int EpisodeNumber { get; set; }
-        public Guid? EpisodeId { get; set; }
+        public int? EpisodeId { get; set; }
         public DateTime? WatchedOn { get; set; } 
     }
 }

@@ -24,12 +24,14 @@ namespace Data_AnimeToNotion.Migrations
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.AnimeEpisode", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("AnimeShowId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnimeShowId")
+                        .HasColumnType("int");
 
                     b.Property<int>("EpisodeNumber")
                         .HasColumnType("int");
@@ -39,17 +41,20 @@ namespace Data_AnimeToNotion.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnimeShowId", "EpisodeNumber")
-                        .IsUnique();
+                    b.HasIndex("AnimeShowId");
+
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("AnimeShowId"), new[] { "EpisodeNumber", "WatchedOn" });
 
                     b.ToTable("AnimeEpisode", (string)null);
                 });
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.AnimeShow", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cover")
                         .HasColumnType("nvarchar(max)");
@@ -87,26 +92,23 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MalId")
-                        .IsUnique();
-
-                    b.HasIndex("Status");
 
                     b.ToTable("AnimeShow", (string)null);
                 });
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.AnimeShowProgress", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("AnimeShowId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnimeShowId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("CompletedYear")
                         .HasColumnType("int");
@@ -146,12 +148,14 @@ namespace Data_AnimeToNotion.Migrations
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.GenreOnAnimeShow", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("AnimeShowId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnimeShowId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -161,10 +165,11 @@ namespace Data_AnimeToNotion.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("AnimeShowId");
 
-                    b.HasIndex("AnimeShowId", "GenreId")
-                        .IsUnique();
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("AnimeShowId"), new[] { "GenreId", "Description" });
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("GenreOnAnimeShow", (string)null);
                 });
@@ -180,8 +185,8 @@ namespace Data_AnimeToNotion.Migrations
                     b.Property<string>("Action")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("AnimeShowId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("AnimeShowId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Error")
                         .HasColumnType("nvarchar(max)");
@@ -192,8 +197,6 @@ namespace Data_AnimeToNotion.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AnimeShowId");
-
-                    b.HasIndex("MalId");
 
                     b.ToTable("MalSyncError", (string)null);
                 });
@@ -209,8 +212,8 @@ namespace Data_AnimeToNotion.Migrations
                     b.Property<string>("Action")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("AnimeShowId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("AnimeShowId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Error")
                         .HasColumnType("nvarchar(max)");
@@ -222,7 +225,7 @@ namespace Data_AnimeToNotion.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("NotionPageId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ToSync")
                         .HasColumnType("bit");
@@ -232,8 +235,6 @@ namespace Data_AnimeToNotion.Migrations
                     b.HasIndex("AnimeShowId")
                         .IsUnique()
                         .HasFilter("[AnimeShowId] IS NOT NULL");
-
-                    b.HasIndex("NotionPageId");
 
                     b.ToTable("NotionSync", (string)null);
                 });
@@ -253,12 +254,14 @@ namespace Data_AnimeToNotion.Migrations
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.StudioOnAnimeShow", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("AnimeShowId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnimeShowId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -268,29 +271,30 @@ namespace Data_AnimeToNotion.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudioId");
+                    b.HasIndex("AnimeShowId");
 
-                    b.HasIndex("AnimeShowId", "StudioId")
-                        .IsUnique();
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("AnimeShowId"), new[] { "StudioId", "Description" });
+
+                    b.HasIndex("StudioId");
 
                     b.ToTable("StudioOnAnimeShow", (string)null);
                 });
 
             modelBuilder.Entity("Data_AnimeToNotion.DataModel.Year", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("NotionPageId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YearValue")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NotionPageId");
 
                     b.ToTable("Year", (string)null);
                 });

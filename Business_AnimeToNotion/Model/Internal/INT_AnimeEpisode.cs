@@ -2,8 +2,8 @@
 {
     public class INT_AnimeEpisode
     {
-        public Guid? Id { get; set; }
-        public Guid AnimeShowId { get; set; }
+        public int? Id { get; set; }
+        public int AnimeShowId { get; set; }
         public int EpisodeNumber { get; set; }
         public DateTime WatchedOn { get; set; }
     }

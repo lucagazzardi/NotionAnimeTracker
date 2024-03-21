@@ -61,6 +61,25 @@ namespace Data_AnimeToNotion.Context
                 .HasOne(e => e.NotionSync)
                 .WithOne(e => e.AnimeShow)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            #region Indexes
+
+            modelBuilder.Entity<StudioOnAnimeShow>()
+                .HasIndex(e => e.AnimeShowId)
+                .IncludeProperties(
+                    e => new { e.StudioId, e.Description });
+
+            modelBuilder.Entity<GenreOnAnimeShow>()
+                .HasIndex(e => e.AnimeShowId)
+                .IncludeProperties(
+                    e => new { e.GenreId, e.Description });
+
+            modelBuilder.Entity<AnimeEpisode>()
+                .HasIndex(e => e.AnimeShowId)
+                .IncludeProperties(
+                    e => new { e.EpisodeNumber, e.WatchedOn });
+
+            #endregion
         }
     }
 }

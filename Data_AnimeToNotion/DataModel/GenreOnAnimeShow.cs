@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_AnimeToNotion.DataModel
-{
-    [Index(nameof(AnimeShowId), nameof(GenreId), IsUnique = true)]
+{    
     public class GenreOnAnimeShow
-    {        
-        public Guid Id { get; set; }
-        public Guid AnimeShowId { get; set; }
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public int AnimeShowId { get; set; }
         public int GenreId { get; set; }
         public string Description { get; set; }
 

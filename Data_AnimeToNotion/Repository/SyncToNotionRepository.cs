@@ -72,7 +72,7 @@ namespace Data_AnimeToNotion.Repository
         /// <returns></returns>
         public async Task CreateNotionSyncs()
         {
-            List<Guid> animeIds = await _animeShowContext.AnimeShows.Include(x => x.NotionSync).Where(x => x.NotionSync == null).Select(x => x.Id).ToListAsync();
+            List<int> animeIds = await _animeShowContext.AnimeShows.Include(x => x.NotionSync).Where(x => x.NotionSync == null).Select(x => x.Id).ToListAsync();
 
             List<NotionSync> syncs = new List<NotionSync>();
             foreach(var id in animeIds)
@@ -129,7 +129,7 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="animeId"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public async Task SetToSyncNotion(Guid animeId, string action, bool malListToSync = true)
+        public async Task SetToSyncNotion(int animeId, string action, bool malListToSync = true)
         {
             await _animeShowContext.NotionSyncs.Where(x => x.AnimeShowId == animeId).ExecuteUpdateAsync(x => x
                 .SetProperty(a => a.ToSync, a => true)

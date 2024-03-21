@@ -9,7 +9,7 @@ namespace Data_AnimeToNotion.Repository
         Task AddNotionSync(AnimeShow anime);
         Task CreateNotionSyncs();
         Task CreateNotionSync(AnimeShow anime, string notionPageId);
-        Task SetToSyncNotion(Guid animeId, string action, bool malListToSync = true);
+        Task SetToSyncNotion(int animeId, string action, bool malListToSync = true);
         Task SetAdded(List<NotionSync> added, Dictionary<int, string> notionPages);
         Task SetEdited(List<NotionSync> edited);
         Task SetDeleted(List<NotionSync> deleted);

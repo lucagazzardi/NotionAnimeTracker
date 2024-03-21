@@ -107,7 +107,7 @@ export class EditComponent implements OnInit {
   }
 
   /// Load the edit properties if the item is present
-  loadItemForEdit(id: string) {
+  loadItemForEdit(id: number) {
     this.internalService.getAnimeForEdit(id)
       .subscribe(
         {

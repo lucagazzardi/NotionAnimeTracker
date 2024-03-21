@@ -26,7 +26,7 @@ export class InternalService {
     return this.httpService.post(this.internalController + "add/full", show);
   }
 
-  remove(id: string) {
+  remove(id: number) {
     return this.httpService.delete(this.internalController + "delete/" + id);
   }
 
@@ -34,7 +34,7 @@ export class InternalService {
     return this.httpService.get(this.internalController + "get/full/" + malId);
   }
 
-  getAnimeForEdit(id: string): Observable<any> {
+  getAnimeForEdit(id: number): Observable<any> {
     return this.httpService.get(this.internalController + "get/edit/" + id);
   }
 
@@ -42,11 +42,11 @@ export class InternalService {
     return this.httpService.post(this.internalController + "edit", animeEdit);
   }  
 
-  setFavorite(id: string, favorite: boolean): Observable<any> {
+  setFavorite(id: number, favorite: boolean): Observable<any> {
     return this.httpService.put(this.internalController + "set/favorite/" + id + "/" + favorite, null);
   }
 
-  setPlanToWatch(id: string, planttowatch: boolean): Observable<any> {
+  setPlanToWatch(id: number, planttowatch: boolean): Observable<any> {
     return this.httpService.put(this.internalController + "set/plantowatch/" + id + "/" + planttowatch, null);
   }
 
@@ -70,7 +70,7 @@ export class InternalService {
     return this.httpService.get(this.internalController + "get/history/count/" + year);
   }
 
-  getAnimeEpisodes(id: string, malId: number): Observable<any> {
+  getAnimeEpisodes(id: number, malId: number): Observable<any> {
     return this.httpService.get(this.internalController + 'anime/' + malId + '/episode/record/' + id, false);
   }
 
@@ -82,7 +82,7 @@ export class InternalService {
     return this.httpService.put(this.internalController + 'edit/episode', animeEpisode);
   }
 
-  deleteAnimeEpisode(id: string) {
+  deleteAnimeEpisode(id: number) {
     return this.httpService.delete(this.internalController + 'delete/episode/' + id);
   }
 }

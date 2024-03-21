@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_AnimeToNotion.DataModel
 {
-    [Index(nameof(MalId), IsUnique = true)]
-    [Index(nameof(Status))]
     public class AnimeShow
     {
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public int MalId { get; set; }
         public string NameDefault { get; set; }
         public string NameEnglish { get; set; }

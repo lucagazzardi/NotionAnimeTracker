@@ -24,7 +24,7 @@ namespace Business_AnimeToNotion.QueryLogic.FilterLogic
         {
             _filterLauncher = new FilterLauncher();
 
-            if (filters.Search != null)
+            if (!string.IsNullOrEmpty(filters.Search))
                 _filterLauncher.AddFilter(new SearchFilter() { Term = filters.Search });
 
             if (filters.Status != null)

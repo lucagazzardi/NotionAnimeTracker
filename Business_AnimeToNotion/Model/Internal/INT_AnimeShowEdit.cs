@@ -2,7 +2,7 @@
 {
     public class INT_AnimeShowEdit
     {
-        public Guid? Id { get; set; }
+        public int? Id { get; set; }
         public string? Status { get; set; }
         public int? PersonalScore { get; set; }
         public DateTime? StartedOn { get; set; }

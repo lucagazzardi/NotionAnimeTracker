@@ -73,7 +73,7 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<AnimeShow> GetFull(Guid Id)
+        public async Task<AnimeShow> GetFullByMalId(int Id)
         {
             return await _animeShowContext.AnimeShows
                 .Include(x => x.AnimeShowProgress)
@@ -88,7 +88,7 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<AnimeShow> GetForEdit(Guid Id)
+        public async Task<AnimeShow> GetForEdit(int Id)
         {
             return await _animeShowContext.AnimeShows
                 .Include(x => x.AnimeShowProgress)
@@ -132,7 +132,7 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task RemoveInternalAnimeShow(Guid id)
+        public async Task RemoveInternalAnimeShow(int id)
         {
             using var transaction = _animeShowContext.Database.BeginTransaction();
 
@@ -150,7 +150,7 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task SetAnimeFavorite(Guid id, bool isFavorite)
+        public async Task SetAnimeFavorite(int id, bool isFavorite)
         {
             await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.Favorite, a => isFavorite));
         }
@@ -160,7 +160,7 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task SetPlanToWatch(Guid id)
+        public async Task SetPlanToWatch(int id)
         {
             await _animeShowContext.AnimeShows.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.PlanToWatch, a => !a.PlanToWatch));
         }        
@@ -182,11 +182,11 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="episodeNumber"></param>
         /// <param name="watchedOn"></param>
         /// <returns></returns>
-        public async Task<Guid> AddEpisode(Guid animeId, int episodeNumber, DateTime watchedOn)
+        public async Task<int> AddEpisode(int animeId, int episodeNumber, DateTime watchedOn)
         {
             var added = await _animeShowContext.AnimeEpisodes.AddAsync(new AnimeEpisode() 
             { 
-                Id = Guid.NewGuid(), AnimeShowId = animeId, EpisodeNumber = episodeNumber, WatchedOn = watchedOn 
+                AnimeShowId = animeId, EpisodeNumber = episodeNumber, WatchedOn = watchedOn 
             });
             await _animeShowContext.SaveChangesAsync();
             return added.Entity.Id;
@@ -199,7 +199,7 @@ namespace Data_AnimeToNotion.Repository
         /// <param name="episodeNumber"></param>
         /// <param name="watchedOn"></param>
         /// <returns></returns>
-        public async Task EditEpisode(Guid id, DateTime watchedOn)
+        public async Task EditEpisode(int id, DateTime watchedOn)
         {
             await _animeShowContext.AnimeEpisodes.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.WatchedOn, a => watchedOn));
         }
@@ -209,7 +209,7 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="animeId"></param>
         /// <returns></returns>
-        public async Task<List<AnimeEpisode>> GetAnimeEpisodes(Guid animeId)
+        public async Task<List<AnimeEpisode>> GetAnimeEpisodes(int animeId)
         {
             return await _animeShowContext.AnimeEpisodes.Where(x => x.AnimeShowId == animeId).AsNoTracking().ToListAsync();
         }
@@ -219,7 +219,7 @@ namespace Data_AnimeToNotion.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task DeleteAnimeEpisodes(Guid id)
+        public async Task DeleteAnimeEpisodes(int id)
         {
             await _animeShowContext.AnimeEpisodes.Where(x => x.Id == id).ExecuteDeleteAsync();
         }
@@ -285,15 +285,28 @@ namespace Data_AnimeToNotion.Repository
             var syncedStudios = await FillMissingStudios(studios);
 
             List<StudioOnAnimeShow> studioOnAnime = new List<StudioOnAnimeShow>();
-            foreach (var studio in syncedStudios)
+            foreach(var studio in syncedStudios)
             {
-                studioOnAnime.Add(new StudioOnAnimeShow() { Id = Guid.NewGuid(), Description = studio.Description, AnimeShowId = show.Id, StudioId = studio.Id });
+                studioOnAnime.Add(new StudioOnAnimeShow() { Description = studio.Description, AnimeShow = show, StudioId = studio.Id });
             }
-
-            // Bug with the function SyncMalData because deletes genres already present and adds delta only, so everytime the studios are different
-            // Decomment if something wrong comes up
-            //await _animeShowContext.StudioOnAnimeShows.Where(x => x.AnimeShowId == show.Id).ExecuteDeleteAsync();
             await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
+            
+            //if(show.Id > 0)
+            //{
+            //    foreach (var studio in syncedStudios)
+            //    {
+            //        studioOnAnime.Add(new StudioOnAnimeShow() { Description = studio.Description, AnimeShowId = show.Id, StudioId = studio.Id });
+            //    }
+            //    await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
+            //}
+            //else
+            //{
+            //    foreach (var studio in syncedStudios)
+            //    {
+            //        studioOnAnime.Add(new StudioOnAnimeShow() { Description = studio.Description, StudioId = studio.Id });
+            //    }
+            //    show.StudioOnAnimeShows = studioOnAnime;
+            //}
         }
 
         private async Task HandleGenres(List<Genre> genres, AnimeShow show)
@@ -301,15 +314,29 @@ namespace Data_AnimeToNotion.Repository
             var syncedGenres = await FillMissingGenres(genres);
 
             List<GenreOnAnimeShow> genreOnAnime = new List<GenreOnAnimeShow>();
+
             foreach (var genre in syncedGenres)
             {
-                genreOnAnime.Add(new GenreOnAnimeShow() { Id = Guid.NewGuid(), Description = genre.Description, AnimeShowId = show.Id, GenreId = genre.Id });
+                genreOnAnime.Add(new GenreOnAnimeShow() { Description = genre.Description, AnimeShow = show, GenreId = genre.Id });
             }
-
-            // Bug with the function SyncMalData because deletes genres already present and adds delta only, so everytime the genres are different
-            // Decomment if something wrong comes up
-            //await _animeShowContext.GenreOnAnimeShows.Where(x => x.AnimeShowId == show.Id).ExecuteDeleteAsync();
             await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
+
+            //if (show.Id > 0)
+            //{
+            //    foreach (var genre in syncedGenres)
+            //    {
+            //        genreOnAnime.Add(new GenreOnAnimeShow() { Description = genre.Description, AnimeShowId = show.Id, GenreId = genre.Id });
+            //    }
+            //    await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
+            //}
+            //else
+            //{
+            //    foreach (var genre in syncedGenres)
+            //    {
+            //        genreOnAnime.Add(new GenreOnAnimeShow() { Description = genre.Description, GenreId = genre.Id });
+            //    }
+            //    show.GenreOnAnimeShows = genreOnAnime;
+            //}
         }
 
         #endregion

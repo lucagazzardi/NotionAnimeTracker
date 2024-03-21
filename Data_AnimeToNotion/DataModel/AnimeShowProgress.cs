@@ -1,9 +1,12 @@
-﻿namespace Data_AnimeToNotion.DataModel
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Data_AnimeToNotion.DataModel
 {
     public class AnimeShowProgress
     {
-        public Guid Id { get; set; }
-        public Guid AnimeShowId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public int AnimeShowId { get; set; }
         public int? PersonalScore { get; set; }
         public DateTime? StartedOn { get; set; }
         public DateTime? FinishedOn { get; set; }

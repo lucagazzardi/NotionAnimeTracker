@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Data_AnimeToNotion.DataModel
+﻿namespace Data_AnimeToNotion.DataModel
 {
-    [Index(nameof(AnimeShowId), nameof(StudioId), IsUnique = true)]
     public class StudioOnAnimeShow
     {
-        public Guid Id { get; set; }
-        public Guid AnimeShowId { get; set; }
+        public int Id { get; set; }
+        public int AnimeShowId { get; set; }
         public int StudioId { get; set; }
         public string Description { get; set; }
 

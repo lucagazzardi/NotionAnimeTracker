@@ -19,16 +19,16 @@ namespace Business_AnimeToNotion.Integrations.Internal
         Task<INT_AnimeShowPersonal> AddNewAnimeBase(INT_AnimeShowBase animeAdd);
         Task<INT_AnimeShowPersonal> AddNewAnimeFull(INT_AnimeShowFull animeAdd);
         Task<INT_AnimeShowFull> GetAnimeFull(int MalId);
-        Task<INT_AnimeShowFull> GetAnimeForEdit(Guid Id);
+        Task<INT_AnimeShowFull> GetAnimeForEdit(int Id);
         Task EditAnime(INT_AnimeShowEdit animeEdit, bool skipSync = false);
-        Task<bool> SetAnimeFavorite(Guid id, bool favorite);
-        Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch);
-        Task RemoveAnime(Guid id);
-        Task<Guid> AddAnimeEpisode(INT_AnimeEpisode animeEpisode);
-        Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(Guid animeShowId);
+        Task<bool> SetAnimeFavorite(int id, bool favorite);
+        Task<bool> SetAnimePlanToWatch(int id, bool planToWatch);
+        Task RemoveAnime(int id);
+        Task<int> AddAnimeEpisode(INT_AnimeEpisode animeEpisode);
+        Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(int animeShowId);
         Task EditAnimeEpisode(INT_AnimeEpisode animeEpisode);
-        Task DeleteAnimeEpisode(Guid id);
-        Task<AnimeEpisodesRecord> GetAnimeEpisodesRecord(Guid animeShowId, int malId);
+        Task DeleteAnimeEpisode(int id);
+        Task<AnimeEpisodesRecord> GetAnimeEpisodesRecord(int animeShowId, int malId);
 
         #endregion
 

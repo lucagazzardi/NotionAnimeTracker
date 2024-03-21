@@ -17,10 +17,10 @@ export class EpisodesComponent implements OnInit {
   episodesList$!: Observable<IAnimeEpisodesRecord>;
 
   datesFormControls: FormControl[] = [];
-  @Input() id: string = '';
+  @Input() id: number = 0;
   @Input() malId: number = 0;
 
-  animeShowId: string = '';
+  animeShowId: number = 0;
 
   loading: boolean = false;
 

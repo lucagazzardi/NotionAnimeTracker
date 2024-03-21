@@ -1,4 +1,4 @@
 export interface IAnimePersonal {
-  id: string;
+  id: number;
   status: string;
 }

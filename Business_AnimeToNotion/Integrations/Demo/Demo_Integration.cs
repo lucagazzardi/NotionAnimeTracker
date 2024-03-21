@@ -155,6 +155,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
                 return;
 
             var anime = await _jikan.GetAnimeAsync(animeId);
+            await Task.Delay(1000);
 
             var added = await _animeShowRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(Mapping.Mapper.Map<INT_AnimeShowFull>(anime.Data)),

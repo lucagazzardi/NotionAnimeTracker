@@ -1,5 +1,5 @@
 export interface IAnimeEdit {
-  id: string | null;
+  id: number | null;
   status: string | null;
   personalScore: number | null;
   startedOn: Date | null;

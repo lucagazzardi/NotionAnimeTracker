@@ -95,7 +95,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowFull> GetAnimeForEdit(Guid id)
+        public async Task<INT_AnimeShowFull> GetAnimeForEdit(int id)
         {
             return Mapping.Mapper.Map<INT_AnimeShowFull>(await _animeRepository.GetFull(id));
         }
@@ -129,7 +129,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// <param name="id"></param>
         /// <param name="favorite"></param>
         /// <returns></returns>
-        public async Task<bool> SetAnimeFavorite(Guid id, bool favorite)
+        public async Task<bool> SetAnimeFavorite(int id, bool favorite)
         {
             await _animeRepository.SetAnimeFavorite(id, favorite);
 
@@ -143,7 +143,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// <param name="id"></param>
         /// <param name="favorite"></param>
         /// <returns></returns>
-        public async Task<bool> SetAnimePlanToWatch(Guid id, bool planToWatch)
+        public async Task<bool> SetAnimePlanToWatch(int id, bool planToWatch)
         {
             await _animeRepository.SetPlanToWatch(id);
             return planToWatch;
@@ -154,7 +154,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task RemoveAnime(Guid id)
+        public async Task RemoveAnime(int id)
         {
             await _syncToNotionRepository.SetToSyncNotion(id, "Delete");
 
@@ -166,7 +166,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeEpisode"></param>
         /// <returns></returns>
-        public async Task<Guid> AddAnimeEpisode(INT_AnimeEpisode animeEpisode)
+        public async Task<int> AddAnimeEpisode(INT_AnimeEpisode animeEpisode)
         {
             return await _animeRepository.AddEpisode(animeEpisode.AnimeShowId, animeEpisode.EpisodeNumber, animeEpisode.WatchedOn);
         }
@@ -186,7 +186,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeShowId"></param>
         /// <returns></returns>
-        public async Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(Guid animeShowId)
+        public async Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(int animeShowId)
         {
             return (await _animeRepository.GetAnimeEpisodes(animeShowId)).Select(x => new INT_AnimeEpisode()
             {
@@ -202,12 +202,12 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task DeleteAnimeEpisode(Guid id)
+        public async Task DeleteAnimeEpisode(int id)
         {
             await _animeRepository.DeleteAnimeEpisodes(id);
         }
 
-        public async Task<AnimeEpisodesRecord> GetAnimeEpisodesRecord(Guid animeShowId, int malId)
+        public async Task<AnimeEpisodesRecord> GetAnimeEpisodesRecord(int animeShowId, int malId)
         {
             // Collect watched episodes
             var watchedEpisodes = (await _animeRepository.GetAnimeEpisodes(animeShowId)).ToDictionary(x => x.EpisodeNumber, x => x);
