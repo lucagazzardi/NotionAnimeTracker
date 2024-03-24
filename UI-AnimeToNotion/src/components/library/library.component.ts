@@ -12,7 +12,6 @@ import { IFilter, IPage, Sort } from '../../model/IQuery';
 import { ILibrary, IPageInfo } from '../../model/ILibrary';
 import { IAnimeFull } from '../../model/IAnimeFull';
 import { ToasterService } from 'gazza-toaster';
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
 
 export interface DialogData {
@@ -108,6 +107,8 @@ export class LibraryComponent implements OnInit {
 
   loading: boolean = false;
 
+  fromPopState: boolean = false;
+
   private _routerSub = Subscription.EMPTY;
 
   constructor(
@@ -115,7 +116,8 @@ export class LibraryComponent implements OnInit {
     private editService: EditService,
     private toasterService: ToasterService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -129,19 +131,33 @@ export class LibraryComponent implements OnInit {
   /// Defines if page is loading from a back navigation with a searched term or not
   loadInitialData() {    
 
-    /// Gets all the NavigationStart events and if they are from a popstate trigger (back and forward buttons) reloads library
+    this.searchTerm = this.getSearchParam();
+
+    /// Handles Navigation events
     this._routerSub = this.router.events
-      .pipe(
+      .pipe(        
         filter(
           event => {
-            return (event instanceof NavigationStart);
+            return (event instanceof NavigationStart || event instanceof NavigationEnd);
           }
         )
       )
-      .subscribe((x: any) => {
-        if (x.navigationTrigger == 'popstate') {
+      .subscribe((x: any) => {        
+
+        // NavigationStart: if popstate (back and forth buttons), track the event, update the search term (empty string otherwise) and reloads library
+        if (x instanceof NavigationStart && x.navigationTrigger == 'popstate') {
+          this.fromPopState = true;
+          this.searchTerm = this.getSearchParam();
           this.libraryQuery();
         }
+
+        // NavigationEnd: if from popstate, detect changes (sends to child searchbar the input text update) and reset popstate 
+        if (x instanceof NavigationEnd && this.fromPopState) {
+          this.cd.detectChanges();
+          this.searchTerm = this.getSearchParam();
+          this.fromPopState = false;
+        }
+
       });
 
     /// Updates filters everytime query parameters change
@@ -149,9 +165,8 @@ export class LibraryComponent implements OnInit {
 
       let search = x.get('search') ?? '';
       this.setFilter('search', search, false);
-      this.searchTerm = search;
-
-    });    
+      
+    });
 
     /// At reinitialize of this component, if from popstate event, this is called both in the subscribe above and here, but for some reason it doesn't make two calls so it's ok
     this.libraryQuery();
@@ -170,13 +185,13 @@ export class LibraryComponent implements OnInit {
   debouncingPipe() {
     this.libraryList$ = this.searchTerm$
       .pipe(
-        debounceTime(200),
+        debounceTime(300),
         distinctUntilChanged(),
         switchMap(searchTerm =>
           concat(
             // Starts with
             of({ data: [], pageInfo: {} as IPageInfo }).pipe(tap(value => {
-              this.loading = true;              
+              this.loading = true;
               searchTerm === '' ? this.updateQueryParams() : this.updateQueryParams('search', searchTerm);
             })),
             // API call
@@ -376,6 +391,11 @@ export class LibraryComponent implements OnInit {
       return 'show-visualization__additionalinfo--score-meh';
     else
       return 'show-visualization__additionalinfo--score-bad';
+  }
+
+  /// Get search term from queryparams
+  getSearchParam() {
+    return this.activatedRoute.snapshot.queryParamMap.get('search') ?? '';
   }
 
   /// Set sort for query
