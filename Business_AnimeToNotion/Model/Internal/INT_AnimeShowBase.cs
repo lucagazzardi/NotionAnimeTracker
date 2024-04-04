@@ -17,6 +17,7 @@ namespace Business_AnimeToNotion.Model.Internal
         public bool PlanToWatch { get; set; }
         public INT_KeyValue[] Studios { get; set; }
         public INT_KeyValue[] Genres { get; set; }
+        public DateTime AddedOn { get; set; }
         public INT_AnimeShowPersonal? Info { get; set; }
     }
 

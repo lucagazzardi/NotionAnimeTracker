@@ -50,6 +50,8 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
 @import "assets/scss/_menu-ang-material.scss";
 @import "assets/scss/_progress-bar.scss";
 @import "assets/scss/_edit-tab.scss";
+@import "assets/scss/_autocomplete-ang-material.scss";
+
 
 @import "assets/scss/_show-visualization.scss";
 
@@ -78,6 +80,8 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
   --form-background-color: 255, 255, 255;
   --form-background-active: 0, 0, 0, 0.08;
   --form-checkbox-border: 201, 215, 227;
+  --chip-background-color: 211, 228, 245;
+  --select-background-color: 0, 0, 0, 0.07;
 }
 
 .dark-theme {
@@ -97,6 +101,8 @@ $UI-AnimeToNotion-theme: mat.define-light-theme((
   --form-background-color: 14, 19, 31;
   --form-background-active: 20, 30, 45, 0.5;
   --form-checkbox-border: 116, 123, 130;
+  --chip-background-color: 38, 48, 70;
+  --select-background-color: 0, 0, 0, 0.2;
 }
 
 html {

@@ -1,0 +1,54 @@
+.autocomplete .mat-form-field {
+  height: 100%;
+}
+
+.autocomplete .mat-form-field-infix {
+  border-top: 0;
+  width: 100%;
+}
+
+.autocomplete .mat-form-field-wrapper {
+  padding: 0;
+}
+
+.autocomplete .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: inherit;
+}
+
+.autocomplete .mat-form-field-flex {
+  align-items: center;
+}
+
+.autocomplete .mat-chip {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.autocomplete input.mat-chip-input {
+  width: 100%;
+}
+
+.autocomplete .mat-chip-list-wrapper {
+  flex-wrap: nowrap;
+  user-select: none;
+}
+
+.autocomplete .mat-standard-chip {
+  border-radius: 6px;
+  padding: 5px 6px;
+  min-height: 26px;
+}
+
+.autocomplete .mat-chip {
+  white-space: nowrap;
+}
+
+.autocomplete .mat-chip.mat-standard-chip {
+  background-color: rgb(var(--chip-background-color));
+  color: rgb(var(--color-text-normal));
+  cursor: pointer;
+}
+
+.autocomplete .mat-chip.mat-standard-chip::after {
+  background: transparent;
+}

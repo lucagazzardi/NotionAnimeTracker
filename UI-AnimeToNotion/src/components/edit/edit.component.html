@@ -85,7 +85,7 @@
                   Status
                 </div>
 
-                <app-select [values]="showStatuses" [initialValue]="initialStatus" (valueChanged)="setStatus($event)"></app-select>
+                <app-select [values]="showStatuses" [initialValue]="initialStatus" [isFilter]="false" (valueChanged)="setStatus($event)"></app-select>
               </div>
 
               <!--PERSONAL SCORE-->
@@ -148,13 +148,13 @@
               <img src="../../assets/images/loading.gif">
             </div>
 
-            <div *ngIf="!loadingSynopsis" class="overview">
+            <div *ngIf="!loadingSynopsis" class="overview" @opacityOnEnter>
               {{synopsis}}
             </div>
           </mat-tab>
 
           <!--THIRD TAB-->
-          <mat-tab label="Episodes" *ngIf="item?.startedAiring != null">
+          <mat-tab label="Episodes">
             <ng-container *ngIf="loadedEpisodes">
               <app-episodes [id]="item?.info?.id!" [malId]="item?.malId!"></app-episodes>
             </ng-container>

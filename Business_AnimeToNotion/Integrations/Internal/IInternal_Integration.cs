@@ -45,5 +45,11 @@ namespace Business_AnimeToNotion.Integrations.Internal
         Task<INT_YearCount> GetHistoryCount(int year);
 
         #endregion
+
+        #region Forms
+
+        Task<List<INT_KeyValue>> GetGenres();
+
+        #endregion
     }
 }

@@ -18,3 +18,107 @@
 .foreground {
   background: rgb(var(--color-foreground));
 }
+
+/*COMMON MATERIAL STYLE*/
+
+.mat-form-field-wrapper {
+  height: 100%;
+}
+
+.mat-form-field-flex {
+  padding: 0 !important;
+  height: 100%;
+}
+
+.mat-input-element {
+  height: 100%;
+  caret-color: rgb(var(--color-text-normal), .7);
+}
+
+.mat-form-field-underline {
+  display: none;
+}
+
+.ps__rail-y {
+  background-color: transparent !important;
+  opacity: .6;
+}
+
+/*SELECT & CDK OVERLAY*/
+
+.mat-option {
+  font-size: 14px !important;
+  font-weight: 500;
+  font-family: var(--font-family-secondary);
+  letter-spacing: 0 !important;
+  color: rgb(var(--color-text-normal));
+}
+
+.mat-option.mat-active {
+  color: rgb(var(--color-text-normal));
+}
+
+.mat-option:hover:not(.mat-option-disabled) {
+  background: rgba(var(--select-background-color));
+  color: rgb(var(--background-active-item));
+  transition: .15s;
+}
+
+.mat-option:focus:not(.mat-option-disabled) {
+  color: rgb(var(--color-text-normal));
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: rgb(var(--background-active-item));
+}
+
+.mat-select-panel {
+  background: rgb(var(--form-background-color));
+  border-radius: 6px;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.mat-override-cdk {
+  margin-top: 40px;
+  padding: 0 1px;
+  border-radius: 6px;
+}
+
+.mat-select-panel:not([class*=mat-elevation-z]) {
+  box-shadow: var(--box-shadow);
+}
+
+.mat-select-style {
+  font-size: 14px !important;
+  font-weight: 500;
+  font-family: var(--font-family-secondary);
+}
+
+.mat-autocomplete-panel:not([class*=mat-elevation-z]) {
+  box-shadow: var(--box-shadow);
+}
+
+.mat-autocomplete-visible {
+  margin-top: 10px;
+  border-radius: 4px;
+  background: rgb(var(--color-foreground)) !important;
+}
+
+.mat-autocomplete-panel {
+  max-height: 500px!important;
+}
+
+.mat-autocomplete-panel .mat-option.mat-selected:not(.mat-active):not(:hover) {
+  background: transparent;
+}
+
+.mat-autocomplete-panel .mat-option.mat-selected:not(.mat-active):not(:hover):not(.mat-option-disabled) {
+  color: rgb(var(--color-text-normal));
+}
+
+.filter-panel {
+  background: rgb(var(--color-foreground));
+}

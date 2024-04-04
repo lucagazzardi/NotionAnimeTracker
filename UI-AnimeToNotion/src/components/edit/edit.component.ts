@@ -93,6 +93,8 @@ export class EditComponent implements OnInit {
     else
       this.setInitialValues(this.item!);
 
+    
+
   }
 
   /// Load the item from server if the item is not present
@@ -100,7 +102,7 @@ export class EditComponent implements OnInit {
     this.internalService.getAnimeFull(id)
       .subscribe(
         {
-          next: (data: IAnimeFull) => { this.item = data },
+          next: (data: IAnimeFull) => { this.item = data; },
           error: () => { this.toasterService.notifyError("The item could not be retrieved") },
           complete: () => { this.setInitialValues(this.item!) }
         });

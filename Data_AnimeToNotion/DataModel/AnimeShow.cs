@@ -19,6 +19,7 @@ namespace Data_AnimeToNotion.DataModel
         public DateTime? StartedAiring { get; set; }            
         public string Cover { get; set; }
         public int? Score { get; set; }
+        public DateTime AddedOn { get; set; }
 
         public AnimeShowProgress AnimeShowProgress { get; set; }
         public ICollection<AnimeEpisode> AnimeEpisodes { get; set; }

@@ -44,6 +44,10 @@ namespace Data_AnimeToNotion.Context
                 .Property(t => t.PlanToWatch)
                 .HasDefaultValue(false);
 
+            modelBuilder.Entity<AnimeShow>()
+                .Property(t => t.AddedOn)
+                .HasDefaultValueSql("getdate()");
+
             modelBuilder
                 .Entity<GenreOnAnimeShow>()
                 .HasOne(e => e.Genre)

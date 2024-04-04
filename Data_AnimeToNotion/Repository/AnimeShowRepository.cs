@@ -224,6 +224,11 @@ namespace Data_AnimeToNotion.Repository
             await _animeShowContext.AnimeEpisodes.Where(x => x.Id == id).ExecuteDeleteAsync();
         }
 
+        public async Task<List<Genre>> GetGenres()
+        {
+            return await _animeShowContext.Genres.AsNoTracking().ToListAsync();
+        }
+
         #region Sync MAL
 
         /// <summary>
@@ -290,23 +295,6 @@ namespace Data_AnimeToNotion.Repository
                 studioOnAnime.Add(new StudioOnAnimeShow() { Description = studio.Description, AnimeShow = show, StudioId = studio.Id });
             }
             await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
-            
-            //if(show.Id > 0)
-            //{
-            //    foreach (var studio in syncedStudios)
-            //    {
-            //        studioOnAnime.Add(new StudioOnAnimeShow() { Description = studio.Description, AnimeShowId = show.Id, StudioId = studio.Id });
-            //    }
-            //    await _animeShowContext.StudioOnAnimeShows.AddRangeAsync(studioOnAnime);
-            //}
-            //else
-            //{
-            //    foreach (var studio in syncedStudios)
-            //    {
-            //        studioOnAnime.Add(new StudioOnAnimeShow() { Description = studio.Description, StudioId = studio.Id });
-            //    }
-            //    show.StudioOnAnimeShows = studioOnAnime;
-            //}
         }
 
         private async Task HandleGenres(List<Genre> genres, AnimeShow show)
@@ -320,23 +308,6 @@ namespace Data_AnimeToNotion.Repository
                 genreOnAnime.Add(new GenreOnAnimeShow() { Description = genre.Description, AnimeShow = show, GenreId = genre.Id });
             }
             await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
-
-            //if (show.Id > 0)
-            //{
-            //    foreach (var genre in syncedGenres)
-            //    {
-            //        genreOnAnime.Add(new GenreOnAnimeShow() { Description = genre.Description, AnimeShowId = show.Id, GenreId = genre.Id });
-            //    }
-            //    await _animeShowContext.GenreOnAnimeShows.AddRangeAsync(genreOnAnime);
-            //}
-            //else
-            //{
-            //    foreach (var genre in syncedGenres)
-            //    {
-            //        genreOnAnime.Add(new GenreOnAnimeShow() { Description = genre.Description, GenreId = genre.Id });
-            //    }
-            //    show.GenreOnAnimeShows = genreOnAnime;
-            //}
         }
 
         #endregion

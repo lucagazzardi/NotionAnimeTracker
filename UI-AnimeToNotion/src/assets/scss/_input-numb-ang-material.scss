@@ -18,6 +18,21 @@ input[type=number] {
   font-family: var(--font-family-secondary);
 }
 
-.mat-input-element {
-  caret-color: rgb(var(--color-text-normal), .7);
+.ranking .mat-form-field {
+  width: 100%;
+  height: 100%
+}
+
+.ranking .mat-form-field-infix {
+  border-top: 0;
+}
+
+.ranking .mat-form-field-appearance-legacy {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.ranking .mat-form-field-flex {
+  align-items: center !important;
 }

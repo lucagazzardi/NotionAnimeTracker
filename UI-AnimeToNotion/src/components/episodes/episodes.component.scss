@@ -219,4 +219,9 @@
   @at-root &__icon {
     width: .8rem;
   }
+
+  @at-root &__no-episodes{
+    text-align: center;
+    padding: 40px 90px;
+  }
 }

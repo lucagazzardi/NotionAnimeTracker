@@ -85,5 +85,9 @@ export class InternalService {
   deleteAnimeEpisode(id: number) {
     return this.httpService.delete(this.internalController + 'delete/episode/' + id);
   }
+
+  getGenres() {
+    return this.httpService.get(this.internalController + 'genres', false);
+  }
 }
 

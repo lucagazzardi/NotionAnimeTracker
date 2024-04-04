@@ -21,6 +21,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NgxScrollPositionRestorationModule } from 'ngx-scroll-position-restoration';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 //APP COMPONENTS
 import { AppComponent } from './app.component';
@@ -39,6 +41,8 @@ import { HistoryComponent } from '../components/history/history.component';
 import { HistoryElementComponent } from '../components/history-element/history-element.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { EpisodesComponent } from '../components/episodes/episodes.component';
+import { AutocompleteComponent } from '../components/form-components/autocomplete/autocomplete.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 //APP SERVICES
 import { ThemeService } from '../services/theme/theme.service';
@@ -49,7 +53,6 @@ import { EditService } from '../services/edit/edit.service';
 import { MalService } from '../services/mal/mal.service';
 import { HistoryService } from '../services/history/history.service';
 import { BaseService } from '../services/base/base.service';
-
 
 @NgModule({
   declarations: [
@@ -68,7 +71,8 @@ import { BaseService } from '../services/base/base.service';
     HistoryComponent,
     HistoryElementComponent,
     FooterComponent,
-    EpisodesComponent
+    EpisodesComponent,
+    AutocompleteComponent
   ],
   imports: [
     AppRoutingModule,
@@ -92,7 +96,10 @@ import { BaseService } from '../services/base/base.service';
     MatProgressBarModule,
     NgxWebstorageModule.forRoot({ prefix: '', separator: '' }),
     NgxScrollPositionRestorationModule.forRoot(),
-    MatTabsModule
+    MatTabsModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    PerfectScrollbarModule
   ],
   providers: [
     ThemeService,

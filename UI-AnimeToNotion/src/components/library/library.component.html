@@ -13,6 +13,13 @@
 
       <div class="filter__item">
         <div class="filter__name">
+          Genre
+        </div>
+        <div class="filter__field"><app-autocomplete [values]="genres" [background]="filterBackground" (valueChanged)="setFilter('genre',$event)"></app-autocomplete></div>
+      </div>
+
+      <div class="filter__item">
+        <div class="filter__name">
           Year
         </div>
         <div class="filter__field"><app-select [initialValue]="initialValue" [values]="selectYear" [background]="filterBackground" (valueChanged)="setFilter('year',$event)"></app-select></div>
@@ -42,8 +49,17 @@
 
   </div>
 
-  <!--!FILTERSMOBILE-->
+  <!--!FILTERSMOBILE-->  
+
   <div *ngIf="showAdditionalFilters" class="filter-mobile" @YMovement_Opacity>
+
+    <div class="filter-mobile__item">
+      <div class="filter-mobile__name">
+        Genre
+      </div>
+      <div class="filter-mobile__field"><app-autocomplete [values]="genres" [background]="filterBackground" (valueChanged)="setFilter('genre',$event)"></app-autocomplete></div>
+    </div>
+
     <div class="filter-mobile__item">
       <div class="filter-mobile__name">
         Year
@@ -85,7 +101,7 @@
   <app-sort (valueChanged)="setSort($event)" (valueChangedFavorites)="setFilter('favoritesOnly', $event)" (valueChangedPlanToWatch)="setFilter('plannedOnly', $event)"></app-sort>
 
   <!--!SHOWS-->
-  <ng-container *ngIf="!searching">
+  <ng-container>
 
     <div class="show-visualization" *ngIf="noResults === false; else noResultsCont">
       <div class="show-visualization__container">

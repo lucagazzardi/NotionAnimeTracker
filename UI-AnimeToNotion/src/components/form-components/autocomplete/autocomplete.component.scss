@@ -1,9 +1,35 @@
-.select {
+::placeholder {
+  color: rgb(var(--color-text-normal), .4);
+}
+
+.autocomplete {
+  padding: 0 10px;
   display: flex;
   align-items: center;
-  padding: 0 15px;
   cursor: pointer;
   position: relative;
+
+  @at-root &__input {
+    width: 100%;
+  }
+
+  @at-root &__selected {
+    color: rgb(var(--background-active-item)) !important;
+  }
+
+  @at-root &__hide {
+    display: none;
+  }
+
+  @at-root &__option {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @at-root &__selected-svg {
+    color: rgb(var(--background-active-item)) !important;
+    width: 1rem;
+  }
 
   @at-root &__icon {
     color: rgb(var(--color-text-normal), .7);
@@ -26,8 +52,3 @@
     }
   }
 }
-
-.hide-option{
-    display: none;
-}
-

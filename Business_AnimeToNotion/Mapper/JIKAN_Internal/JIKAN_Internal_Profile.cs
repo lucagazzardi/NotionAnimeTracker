@@ -28,6 +28,7 @@ namespace Business_AnimeToNotion.Mapper.FromMal
                 .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.Studios.Select(x => new INT_KeyValue((int)x.MalId, x.Name))))
                 .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new INT_KeyValue((int)x.MalId, x.Name))));
 
+
             CreateMap<Anime, INT_AnimeShowFull>()
                 .ForMember(dto => dto.NameEnglish, map => map.MapFrom(source =>
                     source.Titles.SingleOrDefault(x => x.Type == "English") != null ?

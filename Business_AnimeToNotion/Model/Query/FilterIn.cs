@@ -3,6 +3,7 @@
     public class FilterIn
     {
         public string? Search { get; set; }
+        public List<int>? Genre { get; set; }
         public string? Status { get; set; }
         public string? Format { get; set; }
         public int? Year { get; set; }

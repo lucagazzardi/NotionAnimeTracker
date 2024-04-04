@@ -308,6 +308,15 @@ namespace Business_AnimeToNotion.Integrations.Internal
         }
 
         #endregion
-        
+
+        #region Forms
+
+        public async Task<List<INT_KeyValue>> GetGenres()
+        {
+            return (await _animeRepository.GetGenres()).Select(x => new INT_KeyValue(x.Id, x.Description)).ToList();
+        }
+
+        #endregion
+
     }
 }

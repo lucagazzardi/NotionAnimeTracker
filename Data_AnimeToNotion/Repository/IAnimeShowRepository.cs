@@ -20,6 +20,7 @@ namespace Data_AnimeToNotion.Repository
         Task<List<AnimeEpisode>> GetAnimeEpisodes(int animeId);
         Task EditEpisode(int id, DateTime watchedOn);
         Task DeleteAnimeEpisodes(int id);
+        Task<List<Genre>> GetGenres();
 
         #region Sync MAL
         Task SyncFromMal(AnimeShow animeShow, List<Studio> studios, List<Genre> genres);

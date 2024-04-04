@@ -6,6 +6,7 @@ export interface IQuery {
 
 export interface IFilter {
   search: string | null;
+  genre: number[] | null;
   status: string | null;
   format: string | null;
   year: string | null;
@@ -26,7 +27,8 @@ export enum Sort {
   PersonalScore = 'PersonalScore',
   Upcoming = 'Upcoming',
   StartDate = 'StartDate',
-  FinishDate = 'FinishDate'
+  FinishDate = 'FinishDate',
+  AddedDate = 'AddedDate'
 }
 
 export interface IPage {

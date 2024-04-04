@@ -170,7 +170,7 @@ namespace API_AnimeToNotion.Controllers
         public async Task<IActionResult> GetAnimeEpisodesRecord(int animeShowId, int malId)
         {
             return Ok(await _main.GetAnimeEpisodesRecord(animeShowId, malId));
-        }
+        }        
 
         #endregion
 
@@ -222,6 +222,16 @@ namespace API_AnimeToNotion.Controllers
         public async Task<IActionResult> GetHistoryCount(int year)
         {
             return Ok(await _main.GetHistoryCount(year));
+        }
+
+        #endregion
+
+        #region Forms
+
+        [HttpGet("genres")]
+        public async Task<IActionResult> GetGenres()
+        {
+            return Ok(await _main.GetGenres());
         }
 
         #endregion

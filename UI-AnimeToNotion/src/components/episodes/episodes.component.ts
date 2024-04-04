@@ -1,16 +1,29 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { ToasterService } from 'gazza-toaster';
 import { Observable, tap } from 'rxjs';
 import { AnimeEpisode, IAnimeEpisodesRecord, IAnimeSingleEpisode } from '../../model/IAnimeEpisode';
 import { InternalService } from '../../services/internal/internal.service';
 import * as _moment from 'moment';
+import { opacityOnEnter, scaleUpOnEnter } from '../../assets/animations/animations';
+import { transition, trigger, useAnimation } from '@angular/animations';
 
 @Component({
   selector: 'app-episodes',
   templateUrl: './episodes.component.html',
-  styleUrls: ['./episodes.component.scss']
+  styleUrls: ['./episodes.component.scss'],
+  animations: [
+    trigger('opacityOnEnter', [
+      transition(':enter', [
+        useAnimation(opacityOnEnter)
+      ])
+    ]),
+    trigger('scaleUpOnEnter', [
+      transition(':enter', [
+        useAnimation(scaleUpOnEnter)
+      ])
+    ]),
+  ]
 })
 export class EpisodesComponent implements OnInit {
 

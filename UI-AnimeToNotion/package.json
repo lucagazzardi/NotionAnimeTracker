@@ -28,6 +28,7 @@
     "mdb-angular-ui-kit": "^2.3.0",
     "ngx-cookie-service": "^13.2.1",
     "ngx-infinite-scroll": "^13.0.0",
+    "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-scroll-position-restoration": "^0.1.5",
     "ngx-skeleton-loader": "^6.0.0",
     "ngx-webstorage": "^9.0.0",

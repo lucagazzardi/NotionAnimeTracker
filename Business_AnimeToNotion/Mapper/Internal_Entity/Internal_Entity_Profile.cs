@@ -10,7 +10,7 @@ namespace Business_AnimeToNotion.Mapper.Internal_Entity
         {
             CreateMap<INT_AnimeShowBase, AnimeShow>()
                 .ForMember(dto => dto.Status, map => map.MapFrom(source => "To Watch"))
-                .ForMember(dto => dto.AnimeShowProgress, map => map.MapFrom(source => new AnimeShowProgress()));
+                .ForMember(dto => dto.AnimeShowProgress, map => map.MapFrom(source => new AnimeShowProgress()));                
 
             CreateMap<INT_AnimeShowFull, AnimeShow>()
                 .ForMember(dto => dto.Status, map => map.MapFrom(source => source.Edit != null && source.Edit.Status != null ? source.Edit.Status : "To Watch"))

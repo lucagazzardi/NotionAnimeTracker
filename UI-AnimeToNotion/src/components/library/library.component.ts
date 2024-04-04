@@ -7,7 +7,7 @@ import { SelectYear } from '../../model/form-model/SelectYear';
 import { SelectFormat } from '../../model/form-model/SelectFormat';
 import { EditService } from '../../services/edit/edit.service';
 import { InternalService } from '../../services/internal/internal.service';
-import { IAnimeBase } from '../../model/IAnimeBase';
+import { IAnimeBase, IKeyValue } from '../../model/IAnimeBase';
 import { IFilter, IPage, Sort } from '../../model/IQuery';
 import { ILibrary, IPageInfo } from '../../model/ILibrary';
 import { IAnimeFull } from '../../model/IAnimeFull';
@@ -66,6 +66,7 @@ export class LibraryComponent implements OnInit {
   showStatuses = SelectShowStatus;
   selectYear = SelectYear;
   selectFormat = SelectFormat;
+  genres: IKeyValue[];
 
   //! CARDS FIELDS
   loadingSkeleton = Array(20).fill(0);
@@ -87,16 +88,6 @@ export class LibraryComponent implements OnInit {
   private searchTerm$ = new BehaviorSubject<string>('');
   searching: boolean = false;
   noResults: boolean = false;
-
-  //! SELECTED FILTERS
-  selectedYear: string | null = null;
-  selectedStatus: string | null = null;
-  selectedFormat: string | null = null;
-  selectedFavoritesOnly: boolean | null = null;
-  selectedMalScoreGreater: number | null = null;
-  selectedMalScoreLesser: number | null = null;
-  selectedPersonalScoreGreater: number | null = null;
-  selectedPersonalScoreLesser: number | null = null;
 
   //! QUERY
   filters: IFilter = {} as IFilter;
@@ -122,6 +113,7 @@ export class LibraryComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadInitialData();
+    this.loadGenres();
   }
 
   ngOnDestroy() {
@@ -129,7 +121,7 @@ export class LibraryComponent implements OnInit {
   }
 
   /// Defines if page is loading from a back navigation with a searched term or not
-  loadInitialData() {    
+  loadInitialData() {
 
     this.searchTerm = this.getSearchParam();
 
@@ -150,12 +142,16 @@ export class LibraryComponent implements OnInit {
           this.searchTerm = this.getSearchParam();
           this.libraryQuery();
         }
-
         // NavigationEnd: if from popstate, detect changes (sends to child searchbar the input text update) and reset popstate 
         if (x instanceof NavigationEnd && this.fromPopState) {
           this.cd.detectChanges();
           this.searchTerm = this.getSearchParam();
           this.fromPopState = false;
+        }
+        else if (x instanceof NavigationEnd) {
+          this.searchTerm = this.getSearchParam();
+          if (!this.searchTerm)
+            this.libraryQuery();
         }
 
       });
@@ -173,12 +169,18 @@ export class LibraryComponent implements OnInit {
 
   }
 
+  loadGenres() {
+    this.internalService.getGenres().subscribe({
+      next: (data: IKeyValue[]) => { this.genres = data },
+      error: () => { this.toasterService.notifyError("Could not retrieve Genres") }
+    });     
+  }
+
   /// Triggered when something is typed in the search bar
   search(searchTerm: string) {    
     this.resetPage();
     this.searchTerm$.next(searchTerm);
     this.debouncingPipe();
-    this.noResults = false;
   }
 
   /// Debouncing for the search function
@@ -270,6 +272,10 @@ export class LibraryComponent implements OnInit {
         this.filters.search = value;
         break;
 
+      case "genre":
+        this.filters.genre = value;
+        break;
+
       case "status":
         this.filters.status = value?.value ?? null;
         break;
@@ -335,8 +341,7 @@ export class LibraryComponent implements OnInit {
 
   /// Retrieve animes from library based on filter and sort
   libraryQuery() {
-    this.noResults = false;
-    this.libraryListStatic = [];
+    this.resetPage();
     this.libraryList$ = this.internalService.libraryQuery({ filters: this.filters, sort: this.sort, page: this.page })
       .pipe(tap(value => {
         this.noResults = value.data.length == 0;
@@ -376,7 +381,9 @@ export class LibraryComponent implements OnInit {
   /// Reset pages after change of filters/sort
   resetPage() {
     this.libraryListStatic = [];
+    this.libraryList$ = of({ data: [], pageInfo: {} as IPageInfo });
     this.page.currentPage = 1;
+    this.noResults = false;
   }
 
   /// Change score color based on value

@@ -7,6 +7,7 @@ namespace Business_AnimeToNotion.QueryLogic.FilterLogic
     public enum FilterType
     {
         Search,
+        Genre,
         Status,
         Format,
         Year,
@@ -26,6 +27,9 @@ namespace Business_AnimeToNotion.QueryLogic.FilterLogic
 
             if (!string.IsNullOrEmpty(filters.Search))
                 _filterLauncher.AddFilter(new SearchFilter() { Term = filters.Search });
+
+            if (filters.Genre != null)
+                _filterLauncher.AddFilter(new GenreFilter() { Term = filters.Genre });
 
             if (filters.Status != null)
                 _filterLauncher.AddFilter(new StatusFilter() { Term = filters.Status });
