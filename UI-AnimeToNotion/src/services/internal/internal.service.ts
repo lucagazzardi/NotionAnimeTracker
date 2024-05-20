@@ -7,7 +7,6 @@ import { IAnimeEdit } from "../../model/IAnimeEdit";
 import { IAnimeFull } from "../../model/IAnimeFull";
 import { IQuery } from "../../model/IQuery";
 import { BaseService } from "../base/base.service";
-import { AnimeEpisode } from "../../model/IAnimeEpisode";
 
 
 @Injectable()
@@ -70,20 +69,8 @@ export class InternalService {
     return this.httpService.get(this.internalController + "get/history/count/" + year);
   }
 
-  getAnimeEpisodes(id: number, malId: number): Observable<any> {
-    return this.httpService.get(this.internalController + 'anime/' + malId + '/episode/record/' + id, false);
-  }
-
-  addAnimeEpisode(animeEpisode: AnimeEpisode) {
-    return this.httpService.post(this.internalController + 'add/episode', animeEpisode);
-  }
-
-  editAnimeEpisode(animeEpisode: AnimeEpisode) {
-    return this.httpService.put(this.internalController + 'edit/episode', animeEpisode);
-  }
-
-  deleteAnimeEpisode(id: number) {
-    return this.httpService.delete(this.internalController + 'delete/episode/' + id);
+  getAnimeEpisodes(malId: number): Observable<any> {
+    return this.httpService.get(this.internalController + 'episodes/' + malId, false);
   }
 
   getGenres() {

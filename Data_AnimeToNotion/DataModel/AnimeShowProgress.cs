@@ -7,6 +7,7 @@ namespace Data_AnimeToNotion.DataModel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int AnimeShowId { get; set; }
+        public int? EpisodesProgress { get; set; }
         public int? PersonalScore { get; set; }
         public DateTime? StartedOn { get; set; }
         public DateTime? FinishedOn { get; set; }

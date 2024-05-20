@@ -3,7 +3,6 @@ using Business_AnimeToNotion.Mapper.Config;
 using Business_AnimeToNotion.Model.Entities;
 using Business_AnimeToNotion.Model.History;
 using Business_AnimeToNotion.Model.Internal;
-using Business_AnimeToNotion.Model.Mixed;
 using Business_AnimeToNotion.Model.Pagination;
 using Business_AnimeToNotion.Model.Query;
 using Business_AnimeToNotion.QueryLogic.FilterLogic;
@@ -13,7 +12,6 @@ using Data_AnimeToNotion.DataModel;
 using Data_AnimeToNotion.Repository;
 using JikanDotNet;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace Business_AnimeToNotion.Integrations.Internal
 {
@@ -41,7 +39,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeAdd"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowPersonal> AddNewAnimeBase(INT_AnimeShowBase animeAdd)
+        public async Task<AnimeShowPersonal> AddNewAnimeBase(AnimeShowBase animeAdd)
         {
             if (animeAdd.Info != null)
                 return null;
@@ -54,7 +52,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
             await _syncToNotionRepository.AddNotionSync(added);
 
-            return new INT_AnimeShowPersonal() { Id = added.Id, Status = added.Status };
+            return new AnimeShowPersonal() { Id = added.Id, Status = added.Status };
         }
 
         /// <summary>
@@ -62,7 +60,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeAdd"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowPersonal> AddNewAnimeFull(INT_AnimeShowFull animeAdd)
+        public async Task<AnimeShowPersonal> AddNewAnimeFull(AnimeShowFull animeAdd)
         {
             var added = await _animeRepository.AddInternalAnimeShow(
                 Mapping.Mapper.Map<AnimeShow>(animeAdd),
@@ -72,7 +70,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
 
             await _syncToNotionRepository.AddNotionSync(added);
 
-            return new INT_AnimeShowPersonal() { Id = added.Id, Status = added.Status };
+            return new AnimeShowPersonal() { Id = added.Id, Status = added.Status };
         }
 
         /// <summary>
@@ -80,14 +78,14 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowFull> GetAnimeFull(int malId)
+        public async Task<AnimeShowFull> GetAnimeFull(int malId)
         {
             var animeInt = await _animeRepository.GetFull(malId);
 
             if (animeInt == null)
-                return Mapping.Mapper.Map<INT_AnimeShowFull>(await _mal.GetAnimeById(malId));
+                return Mapping.Mapper.Map<AnimeShowFull>(await _mal.GetAnimeById(malId));
 
-            return Mapping.Mapper.Map<INT_AnimeShowFull>(animeInt);
+            return Mapping.Mapper.Map<AnimeShowFull>(animeInt);
         }
 
         /// <summary>
@@ -95,9 +93,9 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowFull> GetAnimeForEdit(int id)
+        public async Task<AnimeShowFull> GetAnimeForEdit(int id)
         {
-            return Mapping.Mapper.Map<INT_AnimeShowFull>(await _animeRepository.GetFull(id));
+            return Mapping.Mapper.Map<AnimeShowFull>(await _animeRepository.GetFull(id));
         }
 
         /// <summary>
@@ -105,13 +103,14 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="animeEdit"></param>
         /// <returns></returns>
-        public async Task EditAnime(INT_AnimeShowEdit animeEdit, bool skipSync = false)
+        public async Task EditAnime(AnimeShowEdit animeEdit, bool skipSync = false)
         {
             var anime = await _animeRepository.GetForEdit(animeEdit.Id.Value);
 
             anime.Status = animeEdit.Status;
 
             anime.AnimeShowProgress.PersonalScore = animeEdit.PersonalScore;
+            anime.AnimeShowProgress.EpisodesProgress = animeEdit.EpisodesProgress;
             anime.AnimeShowProgress.StartedOn = animeEdit.StartedOn;
             anime.AnimeShowProgress.FinishedOn = animeEdit.FinishedOn;
             anime.AnimeShowProgress.Notes = animeEdit.Notes;
@@ -159,77 +158,19 @@ namespace Business_AnimeToNotion.Integrations.Internal
             await _syncToNotionRepository.SetToSyncNotion(id, "Delete");
 
             await _animeRepository.RemoveInternalAnimeShow(id);            
-        }
+        }        
 
-        /// <summary>
-        /// Adds new anime episode record
-        /// </summary>
-        /// <param name="animeEpisode"></param>
-        /// <returns></returns>
-        public async Task<int> AddAnimeEpisode(INT_AnimeEpisode animeEpisode)
+        public async Task<List<Model.Internal.AnimeEpisode>> GetAnimeEpisodes(int malId)
         {
-            return await _animeRepository.AddEpisode(animeEpisode.AnimeShowId, animeEpisode.EpisodeNumber, animeEpisode.WatchedOn);
-        }
-
-        /// <summary>
-        /// Edits an episode already watched
-        /// </summary>
-        /// <param name="animeEpisode"></param>
-        /// <returns></returns>
-        public async Task EditAnimeEpisode(INT_AnimeEpisode animeEpisode)
-        {
-            await _animeRepository.EditEpisode(animeEpisode.Id.Value, animeEpisode.WatchedOn);
-        }
-
-        /// <summary>
-        /// Retrieves every watched episode for an anime
-        /// </summary>
-        /// <param name="animeShowId"></param>
-        /// <returns></returns>
-        public async Task<List<INT_AnimeEpisode>> GetAnimeEpisodes(int animeShowId)
-        {
-            return (await _animeRepository.GetAnimeEpisodes(animeShowId)).Select(x => new INT_AnimeEpisode()
-            {
-                Id = x.Id,
-                AnimeShowId = x.AnimeShowId,
-                EpisodeNumber = x.EpisodeNumber,
-                WatchedOn = x.WatchedOn
-            }).ToList();
-        }
-
-        /// <summary>
-        /// Deletes an anime episode
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task DeleteAnimeEpisode(int id)
-        {
-            await _animeRepository.DeleteAnimeEpisodes(id);
-        }
-
-        public async Task<AnimeEpisodesRecord> GetAnimeEpisodesRecord(int animeShowId, int malId)
-        {
-            // Collect watched episodes
-            var watchedEpisodes = (await _animeRepository.GetAnimeEpisodes(animeShowId)).ToDictionary(x => x.EpisodeNumber, x => x);
-
-            // Collect all the episodes of the anime
+            // Collect all the episodes of the anime from Jikan
             var episodes = (await _jikan.GetAnimeEpisodesAsync(malId)).Data;
 
-
-            var result = new AnimeEpisodesRecord()
+            return episodes.Select(x => new Model.Internal.AnimeEpisode()
             {
-                AnimeShowId = animeShowId,
-                Episodes = episodes.Select(x => new AnimeSingleEpisode()
-                {
-                    TitleEnglish = x.Title,
-                    TitleJapanese = x.TitleJapanese,
-                    EpisodeNumber = (int)x.MalId,
-                    EpisodeId = watchedEpisodes.TryGetValue((int)x.MalId, out var watched) ? watched.Id : null,
-                    WatchedOn = watched?.WatchedOn
-                }).ToList()
-            };
-
-            return result;
+                TitleEnglish = x.Title,
+                TitleJapanese = x.TitleJapanese,
+                EpisodeNumber = (int)x.MalId,
+            }).ToList();
         }
 
         #endregion
@@ -243,7 +184,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// <param name="sort"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public async Task<PaginatedResponse<INT_AnimeShowFull>> LibraryQuery(FilterIn filters, SortIn? sort, PageIn page)
+        public async Task<PaginatedResponse<AnimeShowFull>> LibraryQuery(FilterIn filters, SortIn? sort, PageIn page)
         {
             IQueryable<AnimeShow> data = _animeRepository.GetAsQueryable();
 
@@ -256,7 +197,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
             PageManager pageManager = new PageManager();
             data = await pageManager.ApplyPaging(data, page);
 
-            return pageManager.GeneratePaginatedResponse(await Mapping.Mapper.ProjectTo<INT_AnimeShowFull>(data).ToListAsync(), page);
+            return pageManager.GeneratePaginatedResponse(await Mapping.Mapper.ProjectTo<AnimeShowFull>(data).ToListAsync(), page);
         }
 
         #endregion
@@ -288,7 +229,7 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// <param name="year"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public async Task<PaginatedResponse<INT_AnimeShowFull>> GetHistoryYear(int year, int page)
+        public async Task<PaginatedResponse<AnimeShowFull>> GetHistoryYear(int year, int page)
         {
             return await LibraryQuery(new FilterIn() { Year = year }, SortIn.FinishDate, new PageIn() { CurrentPage = page, PerPage = 20 });
         }
@@ -298,22 +239,22 @@ namespace Business_AnimeToNotion.Integrations.Internal
         /// </summary>
         /// <param name="year"></param>
         /// <returns></returns>
-        public async Task<INT_YearCount> GetHistoryCount(int year)
+        public async Task<YearCount> GetHistoryCount(int year)
         {
             var data = _animeRepository.GetAsQueryable()
                 .Where(x => x.AnimeShowProgress.CompletedYear == year)
                 .Select(x => x.Favorite);
 
-            return new INT_YearCount() { Year = year, Completed = await data.CountAsync(), Favorite = await data.Where(x => x).CountAsync() };
+            return new YearCount() { Year = year, Completed = await data.CountAsync(), Favorite = await data.Where(x => x).CountAsync() };
         }
 
         #endregion
 
         #region Forms
 
-        public async Task<List<INT_KeyValue>> GetGenres()
+        public async Task<List<KeyValue>> GetGenres()
         {
-            return (await _animeRepository.GetGenres()).Select(x => new INT_KeyValue(x.Id, x.Description)).ToList();
+            return (await _animeRepository.GetGenres()).Select(x => new KeyValue(x.Id, x.Description)).ToList();
         }
 
         #endregion

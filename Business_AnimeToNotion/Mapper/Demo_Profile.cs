@@ -8,15 +8,23 @@ namespace Business_AnimeToNotion.Mapper
     {
         public Demo_Profile()
         {
-            CreateMap<Page, INT_AnimeShowEdit>().ConvertUsing((src, dest) =>
+            CreateMap<Page, AnimeShowEdit>().ConvertUsing((src, dest) =>
             {
-                INT_AnimeShowEdit edit = new INT_AnimeShowEdit();                
+                AnimeShowEdit edit = new AnimeShowEdit();                
                 foreach (var prop in src.Properties)
                 {
                     switch (prop.Key)
                     {   
                         case "Status":
                             edit.Status = ((SelectPropertyValue)prop.Value).Select?.Name;
+                            break;
+
+                        case "Episodes Progress":
+                            double? episodeProgress = ((NumberPropertyValue)prop.Value).Number;
+                            if (episodeProgress != null)
+                            {
+                                edit.EpisodesProgress = Convert.ToInt32(Math.Round(episodeProgress.Value));
+                            }
                             break;
 
                         case "Personal Score":

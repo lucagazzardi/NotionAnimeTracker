@@ -16,10 +16,6 @@ namespace Data_AnimeToNotion.Repository
         Task SetAnimeFavorite(int id, bool isFavorite);
         Task SetPlanToWatch(int id);
         Task<bool> Exists(int malId);
-        Task<int> AddEpisode(int animeId, int episodeNumber, DateTime watchedOn);
-        Task<List<AnimeEpisode>> GetAnimeEpisodes(int animeId);
-        Task EditEpisode(int id, DateTime watchedOn);
-        Task DeleteAnimeEpisodes(int id);
         Task<List<Genre>> GetGenres();
 
         #region Sync MAL

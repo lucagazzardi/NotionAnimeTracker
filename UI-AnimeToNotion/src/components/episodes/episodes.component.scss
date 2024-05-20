@@ -28,7 +28,7 @@
 
   @at-root &__item {
     display: grid;
-    grid-template-columns: 42px 42px auto min-content;
+    grid-template-columns: 42px auto min-content;
 
     @media screen and (max-width: 760px) {
       & {
@@ -131,11 +131,11 @@
       font-size: 12px;
       color: rgb(var(--color-text-normal));
 
-      @media screen and (max-width: 760px) {
+      /*@media screen and (max-width: 760px) {
         & {
           display: none;
         }
-      }
+      }*/
     }
 
     &--watched-on-mobile {
@@ -223,5 +223,6 @@
   @at-root &__no-episodes{
     text-align: center;
     padding: 40px 90px;
+    font-size: 14px;
   }
 }

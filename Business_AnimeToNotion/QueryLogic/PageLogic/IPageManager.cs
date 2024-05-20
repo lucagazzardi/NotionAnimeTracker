@@ -13,6 +13,6 @@ namespace Business_AnimeToNotion.QueryLogic.PageLogic
     public interface IPageManager
     {
         Task<IQueryable<AnimeShow>> ApplyPaging(IQueryable<AnimeShow> data, PageIn page);
-        PaginatedResponse<INT_AnimeShowFull> GeneratePaginatedResponse(List<INT_AnimeShowFull> data, PageIn page);
+        PaginatedResponse<AnimeShowFull> GeneratePaginatedResponse(List<AnimeShowFull> data, PageIn page);
     }
 }

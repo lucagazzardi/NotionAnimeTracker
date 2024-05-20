@@ -26,7 +26,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="animeBase"></param>
         /// <returns></returns>
         [HttpPost("add/base")]
-        public async Task<IActionResult> AddAnimeBase([FromBody] INT_AnimeShowBase animeBase)
+        public async Task<IActionResult> AddAnimeBase([FromBody] AnimeShowBase animeBase)
         {
             return Ok(await _main.AddNewAnimeBase(animeBase));
         }
@@ -37,7 +37,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="animeBase"></param>
         /// <returns></returns>
         [HttpPost("add/full")]
-        public async Task<IActionResult> AddAnimeFull([FromBody] INT_AnimeShowFull animeBase)
+        public async Task<IActionResult> AddAnimeFull([FromBody] AnimeShowFull animeBase)
         {
             return Ok(await _main.AddNewAnimeFull(animeBase));
         }
@@ -78,7 +78,7 @@ namespace API_AnimeToNotion.Controllers
         /// <param name="animeEdit"></param>
         /// <returns></returns>
         [HttpPost("edit")]
-        public async Task<IActionResult> EditAnime([FromBody] INT_AnimeShowEdit animeEdit)
+        public async Task<IActionResult> EditAnime([FromBody] AnimeShowEdit animeEdit)
         {
             await _main.EditAnime(animeEdit);
             return Ok();
@@ -121,56 +121,16 @@ namespace API_AnimeToNotion.Controllers
         }
 
         /// <summary>
-        /// Adds new anime episode record
-        /// </summary>
-        /// <param name="malId"></param>
-        /// <returns></returns>
-        [HttpPost("add/episode")]
-        public async Task<IActionResult> GetAnimeRelations([FromBody] INT_AnimeEpisode animeEpisode)
-        {
-            return Ok(await _main.AddAnimeEpisode(animeEpisode));
-        }
-
-        /// <summary>
-        /// Retrieves every watched episode for an anime
+        /// Get available episodes from Jikan
         /// </summary>
         /// <param name="animeShowId"></param>
+        /// <param name="malId"></param>
         /// <returns></returns>
-        [HttpGet("get/episode/{animeShowId}")]
-        public async Task<IActionResult> GetAnimeEpisodes(int animeShowId)
+        [HttpGet("episodes/{malId}")]
+        public async Task<IActionResult> GetAnimeEpisodesRecord(int malId)
         {
-            return Ok(await _main.GetAnimeEpisodes(animeShowId));
+            return Ok(await _main.GetAnimeEpisodes(malId));
         }
-
-        /// <summary>
-        /// Edits an episode already watched
-        /// </summary>
-        /// <param name="animeEpisode"></param>
-        /// <returns></returns>
-        [HttpPut("edit/episode")]
-        public async Task<IActionResult> EditAnimeEpisode([FromBody] INT_AnimeEpisode animeEpisode)
-        {
-            await _main.EditAnimeEpisode(animeEpisode);
-            return Ok();
-        }
-
-        /// <summary>
-        /// Deletes an anime episode
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("delete/episode/{id}")]
-        public async Task<IActionResult> DeleteAnimeEpisode(int id)
-        {
-            await _main.DeleteAnimeEpisode(id);
-            return Ok();
-        }
-
-        [HttpGet("anime/{malId}/episode/record/{animeShowId}")]
-        public async Task<IActionResult> GetAnimeEpisodesRecord(int animeShowId, int malId)
-        {
-            return Ok(await _main.GetAnimeEpisodesRecord(animeShowId, malId));
-        }        
 
         #endregion
 

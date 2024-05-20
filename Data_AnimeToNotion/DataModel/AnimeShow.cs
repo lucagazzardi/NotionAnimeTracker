@@ -22,7 +22,6 @@ namespace Data_AnimeToNotion.DataModel
         public DateTime AddedOn { get; set; }
 
         public AnimeShowProgress AnimeShowProgress { get; set; }
-        public ICollection<AnimeEpisode> AnimeEpisodes { get; set; }
         public ICollection<GenreOnAnimeShow> GenreOnAnimeShows { get; set; }
         public ICollection<StudioOnAnimeShow> StudioOnAnimeShows { get; set; }
         public NotionSync NotionSync { get; set; }

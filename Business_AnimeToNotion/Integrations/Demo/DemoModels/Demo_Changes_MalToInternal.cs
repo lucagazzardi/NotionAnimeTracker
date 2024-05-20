@@ -10,6 +10,6 @@ namespace Business_AnimeToNotion.Integrations.Demo.DemoModels
     public class Demo_Changes_MalToInternal
     {
         public List<string> Changes { get; set; }
-        public INT_AnimeShowFull ChangedAnime { get; set; }
+        public AnimeShowFull ChangedAnime { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-.ranking {
+.counter {
   display: grid;
   grid-template-columns: 30px auto 30px;
   padding: 5px 8px;
@@ -17,6 +17,11 @@
 
     @at-root &--bad {
       color: rgb(var(--background-danger-item));
+    }
+
+    @at-root &--play {
+      width: .8rem;
+      margin-left: 3px;
     }
   }
 

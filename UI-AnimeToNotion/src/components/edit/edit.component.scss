@@ -280,7 +280,7 @@ $cover-height-small: $cover-width-small * 1.5;
   @at-root &__buttons {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 15px;
+    grid-gap: 15px;    
 
     @at-root &--single-row {
       grid-template-columns: 1fr;
@@ -299,50 +299,9 @@ $cover-height-small: $cover-width-small * 1.5;
     padding: 5px 0;
     justify-content: center;
     align-items: center;
-    max-height: 42px;
-
-    @at-root &--id {
-      text-decoration: none;
-      color: rgb(var(--color-text-highlight));
-      user-select: none;
-      font-family: var(--font-family-tertiary);
-      font-weight: 800;
-
-      &:hover {
-        cursor: pointer;
-        color: rgb(var(--background-active-item));
-        transition: .25s;
-      }
-    }
-  }
-
-  @at-root &__button-icon {
-    width: 1rem;
-    cursor: pointer;
-
-    &:hover {
-      color: rgb(var(--color-text-normal));
-      transition: .2s;
-    }
-
-    @at-root &--selected {
-      color: rgb(var(--background-danger-item), .9);
-
-      &:hover {
-        color: rgb(var(--background-danger-item));
-        transition: .2s;
-      }
-    }
-
-    @at-root &--plan-selected {
-      color: rgb(var(--background-active-item), .9);
-
-      &:hover {
-        color: rgb(var(--background-active-item));
-        transition: .2s;
-      }
-    }
-  }
+    height: 42px;
+    max-height: 42px;    
+  }  
 
   @at-root &__list {
     background: rgb(var(--color-foreground));
@@ -447,7 +406,7 @@ $cover-height-small: $cover-width-small * 1.5;
   }
 }
 
-.edit  {
+.edit {
   background: rgb(var(--color-foreground));
   border-radius: 5px;
   display: grid;
@@ -501,6 +460,18 @@ $cover-height-small: $cover-width-small * 1.5;
     }
   }
 
+  @at-root &__fast-actions {
+    display: flex;
+    justify-content: space-between;
+    grid-column: span 2;
+
+    @media screen and (max-width: 1040px) {
+      & {
+        margin-bottom: 30px;
+      }
+    }
+  }
+
   @at-root &__name {
     color: rgb(var(--color-text-highlight));
     font-family: var(--font-family-secondary);
@@ -510,9 +481,10 @@ $cover-height-small: $cover-width-small * 1.5;
     user-select: none;
   }
 
-  @at-root &__buttons {
+  @at-root &__buttons-row {
     display: grid;
-    grid-template-columns: auto 100px 100px;
+    grid-template-columns: 42px 42px 42px;
+    grid-column-gap: 15px;
   }
 
   @at-root &__button {
@@ -521,7 +493,6 @@ $cover-height-small: $cover-width-small * 1.5;
     border-radius: 6px;
     display: flex;
     padding: 5px 10px;
-    margin-left: 15px;
     font-family: var(--font-family-secondary);
     font-size: 13px;
     font-weight: 700;
@@ -530,13 +501,16 @@ $cover-height-small: $cover-width-small * 1.5;
     color: rgb(var(--color-text-highlight));
     cursor: pointer;
     user-select: none;
+    width: 42px;
 
     &:hover {
-      color: rgb(220, 237, 250);
+      color: rgb(var(--color-text-normal));
+      transition: .2s;
     }
 
     @at-root &--delete {
-      grid-column-start: 2;
+      margin-left: auto;
+      width: 100px;
 
       &:hover {
         transition: .25s;
@@ -545,13 +519,51 @@ $cover-height-small: $cover-width-small * 1.5;
     }
 
     @at-root &--save {
-      grid-column-start: 3;
+      width: 100px;
 
       &:hover {
         transition: .25s;
         background: rgb(var(--background-active-item));
       }
     }
+
+    @at-root &--id {
+      text-decoration: none;
+      color: rgb(var(--color-text-highlight));
+      user-select: none;
+      font-family: var(--font-family-tertiary);
+      font-weight: 800;
+      font-size: 11px;
+
+      &:hover {
+        cursor: pointer;
+        color: rgb(var(--background-active-item));
+        transition: .25s;
+      }
+    }
+
+    @at-root &--selected {
+      color: rgb(var(--background-danger-item), .9);
+
+      &:hover {
+        color: rgb(var(--background-danger-item));
+        transition: .2s;
+      }
+    }
+
+    @at-root &--plan-selected {
+      color: rgb(var(--background-active-item), .9);
+
+      &:hover {
+        color: rgb(var(--background-active-item));
+        transition: .2s;
+      }
+    }
+  }
+
+  @at-root &__button-icon {
+    width: 1rem;
+    cursor: pointer;
   }
 }
 

@@ -4,6 +4,7 @@ using Data_AnimeToNotion.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_AnimeToNotion.Migrations
 {
     [DbContext(typeof(AnimeShowContext))]
-    partial class AnimeShowContextModelSnapshot : ModelSnapshot
+    [Migration("20240520142930_AddedColumn_AnimeProgress_EpisodesProgress")]
+    partial class AddedColumn_AnimeProgress_EpisodesProgress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

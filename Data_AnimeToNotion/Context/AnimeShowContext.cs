@@ -17,7 +17,6 @@ namespace Data_AnimeToNotion.Context
         public DbSet<Studio> Studios { get; set; }
         public DbSet<StudioOnAnimeShow> StudioOnAnimeShows { get; set; }
         public DbSet<Year> Years { get; set; }
-        public DbSet<AnimeEpisode> AnimeEpisodes { get; set; }
 
         #region SyncToNotion
 
@@ -37,7 +36,6 @@ namespace Data_AnimeToNotion.Context
             modelBuilder.Entity<Year>().ToTable("Year");
             modelBuilder.Entity<NotionSync>().ToTable("NotionSync");
             modelBuilder.Entity<MalSyncError>().ToTable("MalSyncError");
-            modelBuilder.Entity<AnimeEpisode>().ToTable("AnimeEpisode");
 
 
             modelBuilder.Entity<AnimeShow>()
@@ -77,11 +75,6 @@ namespace Data_AnimeToNotion.Context
                 .HasIndex(e => e.AnimeShowId)
                 .IncludeProperties(
                     e => new { e.GenreId, e.Description });
-
-            modelBuilder.Entity<AnimeEpisode>()
-                .HasIndex(e => e.AnimeShowId)
-                .IncludeProperties(
-                    e => new { e.EpisodeNumber, e.WatchedOn });
 
             #endregion
         }

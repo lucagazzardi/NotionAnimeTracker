@@ -29,7 +29,7 @@ import { AppComponent } from './app.component';
 import { SearchAnimeComponent } from '../components/search-anime/search-anime.component';
 import { EditComponent } from '../components/edit/edit.component';
 import { SelectComponent } from '../components/form-components/select/select.component';
-import { RankingComponent } from '../components/form-components/ranking/ranking.component';
+import { CounterComponent } from '../components/form-components/counter/counter.component';
 import { DatepickerComponent } from '../components/form-components/datepicker/datepicker.component';
 import { TextInputComponent } from '../components/form-components/text-input/text-input.component';
 import { LibraryComponent } from '../components/library/library.component';
@@ -60,7 +60,7 @@ import { BaseService } from '../services/base/base.service';
     SearchAnimeComponent,
     EditComponent,
     SelectComponent,
-    RankingComponent,
+    CounterComponent,
     DatepickerComponent,
     TextInputComponent,
     LibraryComponent,

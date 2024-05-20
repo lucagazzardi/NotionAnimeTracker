@@ -1,6 +1,6 @@
 ﻿namespace Business_AnimeToNotion.Model.MAL
 {
-    public class MAL_AnimeUpdateStatus
+    public class AnimeUpdateStatus
     {
         public int anime_id { get; set; }
         public string status { get; set; }

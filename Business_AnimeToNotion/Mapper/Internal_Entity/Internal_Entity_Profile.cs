@@ -8,11 +8,11 @@ namespace Business_AnimeToNotion.Mapper.Internal_Entity
     {
         public Internal_Entity_Profile()
         {
-            CreateMap<INT_AnimeShowBase, AnimeShow>()
+            CreateMap<AnimeShowBase, AnimeShow>()
                 .ForMember(dto => dto.Status, map => map.MapFrom(source => "To Watch"))
                 .ForMember(dto => dto.AnimeShowProgress, map => map.MapFrom(source => new AnimeShowProgress()));                
 
-            CreateMap<INT_AnimeShowFull, AnimeShow>()
+            CreateMap<AnimeShowFull, AnimeShow>()
                 .ForMember(dto => dto.Status, map => map.MapFrom(source => source.Edit != null && source.Edit.Status != null ? source.Edit.Status : "To Watch"))
                 .ForMember(dto => dto.AnimeShowProgress, map => map.MapFrom(source => source.Edit == null ? new AnimeShowProgress()
                 : new AnimeShowProgress()
@@ -20,14 +20,15 @@ namespace Business_AnimeToNotion.Mapper.Internal_Entity
                     StartedOn = source.Edit.StartedOn,
                     FinishedOn = source.Edit.FinishedOn,
                     CompletedYear = source.Edit.CompletedYear,
+                    EpisodesProgress = source.Edit.EpisodesProgress,
                     PersonalScore = source.Edit.PersonalScore,
                     Notes = source.Edit.Notes
                 }));
 
-            CreateMap<INT_KeyValue, Studio>()
+            CreateMap<KeyValue, Studio>()
                 .ForMember(dto => dto.Description, map => map.MapFrom(source => source.Value));
 
-            CreateMap<INT_KeyValue, Genre>()
+            CreateMap<KeyValue, Genre>()
                 .ForMember(dto => dto.Description, map => map.MapFrom(source => source.Value));
 
         }

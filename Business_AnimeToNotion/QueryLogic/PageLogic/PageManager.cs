@@ -17,11 +17,11 @@ namespace Business_AnimeToNotion.QueryLogic.PageLogic
             return data.Skip((page.CurrentPage - 1) * page.PerPage).Take(page.PerPage);
         }
 
-        public PaginatedResponse<INT_AnimeShowFull> GeneratePaginatedResponse(List<INT_AnimeShowFull> data, PageIn page)
+        public PaginatedResponse<AnimeShowFull> GeneratePaginatedResponse(List<AnimeShowFull> data, PageIn page)
         {
             int lastPage = (int)Math.Ceiling(_totalCount / (double)page.PerPage);
 
-            return new PaginatedResponse<INT_AnimeShowFull>()
+            return new PaginatedResponse<AnimeShowFull>()
             {
                 PageInfo = new PageInfo()
                 {

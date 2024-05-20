@@ -1,9 +1,10 @@
 ﻿namespace Business_AnimeToNotion.Model.Internal
 {
-    public class INT_AnimeShowEdit
+    public class AnimeShowEdit
     {
         public int? Id { get; set; }
         public string? Status { get; set; }
+        public int? EpisodesProgress { get; set; }
         public int? PersonalScore { get; set; }
         public DateTime? StartedOn { get; set; }
         public DateTime? FinishedOn { get; set; }

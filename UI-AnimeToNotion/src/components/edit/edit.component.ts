@@ -12,6 +12,7 @@ import { IAnimeRelation } from '../../model/IAnimeRelation';
 import { SelectItem } from '../../model/form-model/SelectInterface';
 import { IAnimePersonal } from '../../model/IAnimePersonal';
 import { MalService } from '../../services/mal/mal.service';
+import { CounterType } from '../../model/form-model/CounterType';
 
 @Component({
   selector: 'app-edit',
@@ -52,6 +53,7 @@ export class EditComponent implements OnInit {
 
   //SELECTED PROPERTIES
   selectedStatus: string | null = null;
+  selectedEpisodesProgress: number | null = null;
   selectedRank: number | null = null;
   selectedStartDate: Date | null = null;
   selectedFinishDate: Date | null = null;
@@ -59,10 +61,13 @@ export class EditComponent implements OnInit {
 
   //INITIAL VALUES
   initialStatus: string | null = null;
+  initialEpisodesProgress: number | null = null;
   initialRank: number | null = null;
   initialStartDate: Date | null = null;
   initialFinishDate: Date | null = null;
   initialNotes: string | null = null;
+
+  counterTypes = CounterType;
 
   constructor(
     private route: ActivatedRoute,
@@ -135,6 +140,13 @@ export class EditComponent implements OnInit {
   setStatus(status: SelectItem | null) {
     this.selectedStatus = status != null ? status.viewValue : null;
     this.item!.edit!.status = status?.viewValue ?? "To Watch";
+  }
+
+  //EPISODES PROGRESS
+  /// Set episodes progress
+  setEpisodesProgress(progress: number | null) {
+    this.selectedEpisodesProgress = progress;
+    this.item!.edit!.episodesProgress = progress ?? null;
   }
 
   //RATING
@@ -294,6 +306,7 @@ export class EditComponent implements OnInit {
   areThereChanges(): boolean {
     return this.initialStatus != this.selectedStatus ||
       this.initialRank != this.selectedRank ||
+      this.initialEpisodesProgress != this.selectedEpisodesProgress ||
       this.initialStartDate != this.selectedStartDate ||
       this.initialFinishDate != this.selectedFinishDate ||
       this.initialNotes != this.selectedNotes
@@ -307,6 +320,7 @@ export class EditComponent implements OnInit {
 
     this.initialStatus = item.edit.status ?? null;
     this.initialRank = item.edit?.personalScore ?? null;
+    this.initialEpisodesProgress = item.edit?.episodesProgress ?? null;
     this.initialStartDate = item.edit?.startedOn ?? null;
     this.initialFinishDate = item.edit?.finishedOn ?? null;
     this.initialNotes = item.edit?.notes ?? null;
@@ -316,6 +330,7 @@ export class EditComponent implements OnInit {
   updateInitialValues() {
     this.initialStatus = this.selectedStatus;
     this.initialRank = this.selectedRank;
+    this.initialEpisodesProgress = this.selectedEpisodesProgress;
     this.initialStartDate = this.selectedStartDate;
     this.initialFinishDate = this.selectedFinishDate;
     this.initialNotes = this.selectedNotes;

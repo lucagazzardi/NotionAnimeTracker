@@ -55,10 +55,10 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <param name="year"></param>
         /// <param name="season"></param>
         /// <returns></returns>
-        public async Task<List<INT_AnimeShowBase>> GetCurrentSeasonAnimeShow()
+        public async Task<List<AnimeShowBase>> GetCurrentSeasonAnimeShow()
         {
             // Gets seasonal from Jikan and takes 12 items
-            List<INT_AnimeShowBase> seasonEntries = Mapping.Mapper.ProjectTo<INT_AnimeShowBase>(
+            List<AnimeShowBase> seasonEntries = Mapping.Mapper.ProjectTo<AnimeShowBase>(
                     (await _jikan.GetCurrentSeasonAsync()).Data.AsQueryable().Take(12)
                 )
                 .ToList();
@@ -74,13 +74,13 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <param name="year"></param>
         /// <param name="season"></param>
         /// <returns></returns>
-        public async Task<List<INT_AnimeShowBase>> GetUpcomingSeasonAnimeShow()
+        public async Task<List<AnimeShowBase>> GetUpcomingSeasonAnimeShow()
         {
             // Calculate upcoming season
             Season season = Common_Utilities.RetrieveUpcomingSeason();
 
             // Gets seasonal from Jikan and takes 12 items
-            List<INT_AnimeShowBase> seasonEntries = Mapping.Mapper.ProjectTo<INT_AnimeShowBase>(
+            List<AnimeShowBase> seasonEntries = Mapping.Mapper.ProjectTo<AnimeShowBase>(
                     (await _jikan.GetSeasonAsync(season == Season.Winter ? DateTime.Now.Year + 1 : DateTime.Now.Year, season)).Data.AsQueryable().Take(12)
                 )
                 .ToList();
@@ -95,7 +95,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// </summary>
         /// <param name="searchTerm"></param>
         /// <returns></returns>
-        public async Task<List<INT_AnimeShowBase>> SearchAnimeByName(string searchTerm)
+        public async Task<List<AnimeShowBase>> SearchAnimeByName(string searchTerm)
         {
             AnimeSearchConfig config = new AnimeSearchConfig()
             {
@@ -105,7 +105,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
 
             try
             {
-                List<INT_AnimeShowBase> foundEntries = Mapping.Mapper.ProjectTo<INT_AnimeShowBase>(
+                List<AnimeShowBase> foundEntries = Mapping.Mapper.ProjectTo<AnimeShowBase>(
                         (await _jikan.SearchAnimeAsync(config)).Data.AsQueryable()
                     )
                     .ToList();
@@ -116,7 +116,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
             }
             catch
             {
-                return new List<INT_AnimeShowBase>();
+                return new List<AnimeShowBase>();
             }            
         }
 
@@ -125,9 +125,9 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// </summary>
         /// <param name="malId"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowFull> GetAnimeById(int malId)
+        public async Task<AnimeShowFull> GetAnimeById(int malId)
         {
-            INT_AnimeShowFull found = Mapping.Mapper.Map<INT_AnimeShowFull>(await _jikan.GetAnimeAsync(malId));
+            AnimeShowFull found = Mapping.Mapper.Map<AnimeShowFull>(await _jikan.GetAnimeAsync(malId));
 
             await CheckSavedAnimeShow(found);
 
@@ -141,10 +141,10 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <param name="key"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<INT_AnimeShowFull> GetAnimeById(string header, string key, string url)
+        public async Task<AnimeShowFull> GetAnimeById(string header, string key, string url)
         {
             var malOb = await GetAnimeFromMal(header, key, url);
-            return Mapping.Mapper.Map<INT_AnimeShowFull>(malOb);
+            return Mapping.Mapper.Map<AnimeShowFull>(malOb);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// <param name="key"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<MAL_AnimeUpdateStatus> UpdateListStatus(string token, string url, MAL_AnimeUpdateStatus item)
+        public async Task<AnimeUpdateStatus> UpdateListStatus(string token, string url, AnimeUpdateStatus item)
         {
             Dictionary<string, string> reqData = new Dictionary<string, string>
             {
@@ -176,7 +176,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
 
             var result = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<MAL_AnimeUpdateStatus>(result);
+            return JsonConvert.DeserializeObject<AnimeUpdateStatus>(result);
         }
 
         /// <summary>
@@ -197,10 +197,10 @@ namespace Business_AnimeToNotion.Integrations.MAL
         /// </summary>
         /// <param name="malId"></param>
         /// <returns></returns>
-        public async Task<MAL_AnimeSynopsis> GetSynopsisById(int malId)
+        public async Task<AnimeSynopsis> GetSynopsisById(int malId)
         {
             var anime = await _jikan.GetAnimeAsync(malId);
-            return new MAL_AnimeSynopsis()
+            return new AnimeSynopsis()
             {
                 MalId = (int)anime.Data.MalId.Value,
                 Synopsis = anime.Data.Synopsis
@@ -209,7 +209,7 @@ namespace Business_AnimeToNotion.Integrations.MAL
 
         #region Private
 
-        private List<INT_AnimeShowBase> CheckSavedAnimeShow(List<INT_AnimeShowBase> animeShows)
+        private List<AnimeShowBase> CheckSavedAnimeShow(List<AnimeShowBase> animeShows)
         {
             // Retrieves only the items existing in the DB
             var animeShowPartial = _animeRepository.GetAllByIds(animeShows.Select(x => x.MalId).ToList()).Select(x => new { x.Id, x.MalId, x.Status });
@@ -217,13 +217,13 @@ namespace Business_AnimeToNotion.Integrations.MAL
             // Sets the basic DB info 
             foreach (var anime in animeShowPartial)
             {
-                animeShows.Single(x => x.MalId == anime.MalId).Info = new INT_AnimeShowPersonal() { Id = anime.Id, Status = anime.Status };
+                animeShows.Single(x => x.MalId == anime.MalId).Info = new AnimeShowPersonal() { Id = anime.Id, Status = anime.Status };
             }
 
             return animeShows;
         }
 
-        private async Task<INT_AnimeShowFull> CheckSavedAnimeShow(INT_AnimeShowFull animeShow)
+        private async Task<AnimeShowFull> CheckSavedAnimeShow(AnimeShowFull animeShow)
         {
             // Retrieves only the items existing in the DB
             var anime = await _animeRepository.GetByMalId(animeShow.MalId);
@@ -231,16 +231,16 @@ namespace Business_AnimeToNotion.Integrations.MAL
             if (anime == null)
                 return null;
 
-            animeShow.Info = new INT_AnimeShowPersonal() { Id = anime.Id, Status = anime.Status };
+            animeShow.Info = new AnimeShowPersonal() { Id = anime.Id, Status = anime.Status };
 
             return animeShow;
         }
 
-        private async Task<MAL_AnimeShowRaw> GetAnimeFromMal(string header, string key, string url)
+        private async Task<AnimeShowRaw> GetAnimeFromMal(string header, string key, string url)
         {
             SetHttpHeader(header, key);
             var response = await _malHttpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<MAL_AnimeShowRaw>(response);
+            return JsonConvert.DeserializeObject<AnimeShowRaw>(response);
         }
 
         private void SetHttpHeader(string header, string key)

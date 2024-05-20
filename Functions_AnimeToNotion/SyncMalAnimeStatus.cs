@@ -91,7 +91,7 @@ namespace Functions_AnimeToNotion
             {
                 try
                 {
-                    MAL_AnimeUpdateStatus malUpdate = Mapping.Mapper.Map<MAL_AnimeUpdateStatus>(item.AnimeShow);
+                    AnimeUpdateStatus malUpdate = Mapping.Mapper.Map<AnimeUpdateStatus>(item.AnimeShow);
                     var updated = await _malIntegration.UpdateListStatus(tokens.access_token, BuildUrl(malUpdate.anime_id), malUpdate);
                     await _syncToNotionRepository.SetMalListSynced(item.Id);
 
@@ -114,7 +114,7 @@ namespace Functions_AnimeToNotion
             {
                 try
                 {
-                    MAL_AnimeUpdateStatus malUpdate = Mapping.Mapper.Map<MAL_AnimeUpdateStatus>(item.AnimeShow);
+                    AnimeUpdateStatus malUpdate = Mapping.Mapper.Map<AnimeUpdateStatus>(item.AnimeShow);
 
                     if(item.Action == "Delete")
                         await _malIntegration.DeleteListStatus(tokens.access_token, BuildUrl(item.MalId));

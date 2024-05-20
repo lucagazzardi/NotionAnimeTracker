@@ -148,10 +148,10 @@ export class LibraryComponent implements OnInit {
           this.searchTerm = this.getSearchParam();
           this.fromPopState = false;
         }
+        // Monitoring . . . If some problem arises reintroduce this section
         else if (x instanceof NavigationEnd) {
-          this.searchTerm = this.getSearchParam();
-          if (!this.searchTerm)
-            this.libraryQuery();
+          //if (!this.getSearchParam())
+          //  this.libraryQuery();
         }
 
       });

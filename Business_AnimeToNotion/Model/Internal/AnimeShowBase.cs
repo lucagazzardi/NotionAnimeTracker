@@ -2,7 +2,7 @@
 
 namespace Business_AnimeToNotion.Model.Internal
 {
-    public class INT_AnimeShowBase
+    public class AnimeShowBase
     {
         public int MalId { get; set; }
         public string NameDefault { get; set; }
@@ -15,15 +15,16 @@ namespace Business_AnimeToNotion.Model.Internal
         public int? Episodes { get; set; }
         public bool Favorite { get; set; }
         public bool PlanToWatch { get; set; }
-        public INT_KeyValue[] Studios { get; set; }
-        public INT_KeyValue[] Genres { get; set; }
+        public KeyValue[] Studios { get; set; }
+        public KeyValue[] Genres { get; set; }
         public DateTime AddedOn { get; set; }
-        public INT_AnimeShowPersonal? Info { get; set; }
+        public AnimeShowPersonal? Info { get; set; }
     }
 
-    public class INT_KeyValue
+    public class KeyValue
+
     {
-        public INT_KeyValue(int id, string value)
+        public KeyValue(int id, string value)
         {
             Id = id; Value = value;
         }

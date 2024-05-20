@@ -66,7 +66,6 @@ export class SearchAnimeComponent implements OnInit {
   nextSeasonTracker!: boolean[];
   nextSeasonImages!: boolean[];
 
-
   //! ==SEARCH==
   searchTerm: string = "";
   popStateNavigation: boolean = false;

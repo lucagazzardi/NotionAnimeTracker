@@ -5,71 +5,26 @@
   </div>
 </ng-template>
 
-<div class="episodes" *ngIf="(episodesList$ | async)?.episodes! as episodes; else loading">
+<div class="episodes" *ngIf="(episodesList$ | async) as episodes; else loading">
   <ng-container *ngIf="episodes.length > 0; else noepisodes">
     <div class="episodes__item-wrapper" *ngFor="let episode of episodes; let i = index" @opacityOnEnter>
 
       <div class="episodes__item">
 
         <!--FIRST GRID COLUMN-->
-        <div class="episodes__status-wrapper">
-          <div class="episodes__status"
-               [ngClass]="episode.watchedOn != null ? 'episodes__status--watched' : 'episodes__status--not-watched'"></div>
-        </div>
-
-        <!--SECOND GRID COLUMN-->
         <div class="episodes__number">
           <span>{{episode.episodeNumber}}</span>
         </div>
 
-        <!--THIRD GRID COLUMN-->
-        <div class="episodes__title-wrapper" [class.episodes__title-mapper-margin]="episode.watchedOn != null">
+        <!--SECOND GRID COLUMN-->
+        <div class="episodes__title-wrapper">
           <div class="episodes__title episodes__title--main">
             {{episode.titleEnglish}}
           </div>
           <div class="episodes__title episodes__title--secondary">
             {{episode.titleJapanese}}
-          </div>
-          <div class="episodes__title episodes__title--watched-on-mobile" *ngIf="episode.watchedOn != null">
-            <span>
-              <svg class="episodes__watched-on-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                <path fill="currentColor" d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
-              </svg>
-            </span>
-            {{episode.watchedOn | date: 'longDate'}}
-          </div>
-        </div>
-
-        <!--FOURTH GRID COLUMN-->
-        <div class="episodes__buttons-wrapper">
-          <div class="episodes__watched-on" *ngIf="episode.watchedOn != null">
-            <span>
-              <svg class="episodes__watched-on-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                <path fill="currentColor" d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
-              </svg>
-            </span>
-            {{episode.watchedOn | date: 'longDate'}}
-          </div>
-          <div class="episodes__button episodes__button--save global-edit__calendar" mat-raised-button (click)="picker.open()">
-            <mat-form-field>
-              <input style="display:none" matInput [matDatepicker]="picker" [formControl]="datesFormControls[i]">
-              <mat-datepicker #picker></mat-datepicker>
-              <svg class="episodes__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M152 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H64C28.7 64 0 92.7 0 128v16 48V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192 144 128c0-35.3-28.7-64-64-64H344V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H152V24zM48 192H400V448c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192z" />
-              </svg>
-            </mat-form-field>
-          </div>
-          <div class="episodes__button episodes__button--delete" (click)="deleteEpisode(episode, i)">
-            <svg class="episodes__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-              <path fill="currentColor" d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" />
-            </svg>
-          </div>
-          <div class="episodes__button episodes__button--save" (click)="addOrUpdateEpisode(episode, i)">
-            <svg class="episodes__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-              <path fill="currentColor" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-            </svg>
-          </div>
-        </div>
+          </div>          
+        </div>     
 
       </div>
 

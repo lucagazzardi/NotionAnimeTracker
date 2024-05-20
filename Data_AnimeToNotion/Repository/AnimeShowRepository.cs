@@ -173,56 +173,7 @@ namespace Data_AnimeToNotion.Repository
         public async Task<bool> Exists(int malId)
         {
             return await _animeShowContext.AnimeShows.AsNoTracking().AnyAsync(x => x.MalId == malId);
-        }
-
-        /// <summary>
-        /// Adds new anime episode record
-        /// </summary>
-        /// <param name="animeId"></param>
-        /// <param name="episodeNumber"></param>
-        /// <param name="watchedOn"></param>
-        /// <returns></returns>
-        public async Task<int> AddEpisode(int animeId, int episodeNumber, DateTime watchedOn)
-        {
-            var added = await _animeShowContext.AnimeEpisodes.AddAsync(new AnimeEpisode() 
-            { 
-                AnimeShowId = animeId, EpisodeNumber = episodeNumber, WatchedOn = watchedOn 
-            });
-            await _animeShowContext.SaveChangesAsync();
-            return added.Entity.Id;
-        }
-
-        /// <summary>
-        /// Edits an episode already watched
-        /// </summary>
-        /// <param name="animeId"></param>
-        /// <param name="episodeNumber"></param>
-        /// <param name="watchedOn"></param>
-        /// <returns></returns>
-        public async Task EditEpisode(int id, DateTime watchedOn)
-        {
-            await _animeShowContext.AnimeEpisodes.Where(x => x.Id == id).ExecuteUpdateAsync(x => x.SetProperty(a => a.WatchedOn, a => watchedOn));
-        }
-
-        /// <summary>
-        /// Retrieves every watched episode for an anime
-        /// </summary>
-        /// <param name="animeId"></param>
-        /// <returns></returns>
-        public async Task<List<AnimeEpisode>> GetAnimeEpisodes(int animeId)
-        {
-            return await _animeShowContext.AnimeEpisodes.Where(x => x.AnimeShowId == animeId).AsNoTracking().ToListAsync();
-        }
-
-        /// <summary>
-        /// Deletes an anime episode
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task DeleteAnimeEpisodes(int id)
-        {
-            await _animeShowContext.AnimeEpisodes.Where(x => x.Id == id).ExecuteDeleteAsync();
-        }
+        }       
 
         public async Task<List<Genre>> GetGenres()
         {

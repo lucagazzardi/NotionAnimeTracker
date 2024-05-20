@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business_AnimeToNotion.Model.Internal
 {
-    public class INT_YearCount
+    public class YearCount
     {
         public int Year { get; set; }
         public int Completed { get; set; }

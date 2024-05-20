@@ -6,7 +6,7 @@ namespace Functions_AnimeToNotion.Utility
 {
     public static class Utility
     {
-        public static Changes_MalToInternal CheckDifferences(INT_AnimeShowFull malShow, INT_AnimeShowFull internalShow)
+        public static Changes_MalToInternal CheckDifferences(AnimeShowFull malShow, AnimeShowFull internalShow)
         {
             Changes_MalToInternal result = new Changes_MalToInternal();
 
@@ -15,7 +15,7 @@ namespace Functions_AnimeToNotion.Utility
             return result;
         }
 
-        public static AnimeShow SetBasicChanges(AnimeShow show, INT_AnimeShowFull source, List<string> changes)
+        public static AnimeShow SetBasicChanges(AnimeShow show, AnimeShowFull source, List<string> changes)
         {
             foreach(var change in changes) {
                 switch (change)
@@ -39,7 +39,7 @@ namespace Functions_AnimeToNotion.Utility
             return show;
         }
 
-        private static List<string> EvaluateChanges(INT_AnimeShowFull mappedMalShow, INT_AnimeShowFull internalShow)
+        private static List<string> EvaluateChanges(AnimeShowFull mappedMalShow, AnimeShowFull internalShow)
         {
             List<string> result = new List<string>();            
 

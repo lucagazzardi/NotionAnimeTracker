@@ -87,10 +87,10 @@ namespace Business_AnimeToNotion.Integrations.Demo
         {
             foreach(var id in MalIds)
             {
-                var dbEntry = Mapping.Mapper.Map<INT_AnimeShowFull>(await _animeShowRepository.GetFull(id));
+                var dbEntry = Mapping.Mapper.Map<AnimeShowFull>(await _animeShowRepository.GetFull(id));
 
                 // Retrieve MAL anime record by Id
-                INT_AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"], $"{_configuration["MAL_ApiConfig:MAL_BaseURL"]}anime/{id}?{_configuration["MAL_ApiConfig:MAL_NotionNeededFields"]}");
+                AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(_configuration["MAL_ApiConfig:MAL_Header"], _configuration["MAL-ApiKey"], $"{_configuration["MAL_ApiConfig:MAL_BaseURL"]}anime/{id}?{_configuration["MAL_ApiConfig:MAL_NotionNeededFields"]}");
 
                 // Check if there are differences
                 var changes = CheckDifferences(MalEntry, dbEntry);
@@ -158,14 +158,14 @@ namespace Business_AnimeToNotion.Integrations.Demo
             await Task.Delay(1000);
 
             var added = await _animeShowRepository.AddInternalAnimeShow(
-                Mapping.Mapper.Map<AnimeShow>(Mapping.Mapper.Map<INT_AnimeShowFull>(anime.Data)),
-                Mapping.Mapper.ProjectTo<Studio>(Mapping.Mapper.Map<INT_AnimeShowFull>(anime.Data).Studios.AsQueryable()).ToList(),
-                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(Mapping.Mapper.Map<INT_AnimeShowFull>(anime.Data).Genres.AsQueryable()).ToList()
+                Mapping.Mapper.Map<AnimeShow>(Mapping.Mapper.Map<AnimeShowFull>(anime.Data)),
+                Mapping.Mapper.ProjectTo<Studio>(Mapping.Mapper.Map<AnimeShowFull>(anime.Data).Studios.AsQueryable()).ToList(),
+                Mapping.Mapper.ProjectTo<Data_AnimeToNotion.DataModel.Genre>(Mapping.Mapper.Map<AnimeShowFull>(anime.Data).Genres.AsQueryable()).ToList()
             );
 
             await _syncToNotionRepository.CreateNotionSync(added, page.Id);
 
-            var edit = Mapping.Mapper.Map<INT_AnimeShowEdit>(page);
+            var edit = Mapping.Mapper.Map<AnimeShowEdit>(page);
             edit.Id = added.Id;
             await _internalIntegration.EditAnime(edit, skipSync: true);
         }
@@ -174,7 +174,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
 
         #region Private Update From Mal
 
-        private Demo_Changes_MalToInternal CheckDifferences(INT_AnimeShowFull malShow, INT_AnimeShowFull internalShow)
+        private Demo_Changes_MalToInternal CheckDifferences(AnimeShowFull malShow, AnimeShowFull internalShow)
         {
             Demo_Changes_MalToInternal result = new Demo_Changes_MalToInternal();
 
@@ -183,7 +183,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
             return result;
         }
 
-        private AnimeShow SetBasicChanges(AnimeShow show, INT_AnimeShowFull source, List<string> changes)
+        private AnimeShow SetBasicChanges(AnimeShow show, AnimeShowFull source, List<string> changes)
         {
             foreach (var change in changes)
             {
@@ -208,7 +208,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
             return show;
         }
 
-        private List<string> EvaluateChanges(INT_AnimeShowFull mappedMalShow, INT_AnimeShowFull internalShow)
+        private List<string> EvaluateChanges(AnimeShowFull mappedMalShow, AnimeShowFull internalShow)
         {
             List<string> result = new List<string>();
 
@@ -245,7 +245,7 @@ namespace Business_AnimeToNotion.Integrations.Demo
             return result;
         }
 
-        private async Task UpdateItem(Demo_Changes_MalToInternal changes, INT_AnimeShowFull dbEntry)
+        private async Task UpdateItem(Demo_Changes_MalToInternal changes, AnimeShowFull dbEntry)
         {
             if (changes.Changes.Count == 0)
                 return;

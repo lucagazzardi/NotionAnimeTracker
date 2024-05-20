@@ -68,7 +68,7 @@ namespace Functions_AnimeToNotion
                 try
                 {
                     // Retrieve MAL anime record by Id
-                    INT_AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(MAL_Header, MAL_ApiKey, BuildMALUrl_SearchById(dbEntry.MalId));
+                    AnimeShowFull MalEntry = await _malIntegration.GetAnimeById(MAL_Header, MAL_ApiKey, BuildMALUrl_SearchById(dbEntry.MalId));
 
                     // Check if there are differences
                     var changes = Utility.Utility.CheckDifferences(MalEntry, dbEntry);
@@ -94,7 +94,7 @@ namespace Functions_AnimeToNotion
 
         #region Private & Mapping
 
-        private async Task<PaginatedResponse<INT_AnimeShowFull>> GetFromDB()
+        private async Task<PaginatedResponse<AnimeShowFull>> GetFromDB()
         {
             return (await _internalIntegration
                 .LibraryQuery(new FilterIn(), SortIn.StartedAiring, new PageIn() { PerPage = PageSize, CurrentPage = currentPage }));
@@ -105,7 +105,7 @@ namespace Functions_AnimeToNotion
             return $"{MAL_BaseURL}anime/{id}?{MAL_NotionNeededFields}";
         }
 
-        private async Task UpdateItem(Changes_MalToInternal changes, INT_AnimeShowFull dbEntry)
+        private async Task UpdateItem(Changes_MalToInternal changes, AnimeShowFull dbEntry)
         {
             if (changes.Changes.Count == 0)
                 return;

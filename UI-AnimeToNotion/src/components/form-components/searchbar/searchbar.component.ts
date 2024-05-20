@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-searchbar',

@@ -9,7 +9,7 @@ namespace Business_AnimeToNotion.Mapper.FromMal
     {
         public JIKAN_Internal_Profile()
         {
-            CreateMap<Anime, INT_AnimeShowBase>()
+            CreateMap<Anime, AnimeShowBase>()
                 .ForMember(dto => dto.NameEnglish, map => map.MapFrom(source =>
                     source.Titles.SingleOrDefault(x => x.Type == "English") != null ?
                     source.Titles.Single(x => x.Type == "English").Title :
@@ -25,11 +25,11 @@ namespace Business_AnimeToNotion.Mapper.FromMal
                 .ForMember(dto => dto.StartedAiring, map => map.MapFrom(source => source.Aired.From))
                 .ForMember(dto => dto.Format, map => map.MapFrom(source => source.Type))
                 .ForMember(dto => dto.Episodes, map => map.MapFrom(source => source.Episodes))
-                .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.Studios.Select(x => new INT_KeyValue((int)x.MalId, x.Name))))
-                .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new INT_KeyValue((int)x.MalId, x.Name))));
+                .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.Studios.Select(x => new KeyValue((int)x.MalId, x.Name))))
+                .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new KeyValue((int)x.MalId, x.Name))));
 
 
-            CreateMap<Anime, INT_AnimeShowFull>()
+            CreateMap<Anime, AnimeShowFull>()
                 .ForMember(dto => dto.NameEnglish, map => map.MapFrom(source =>
                     source.Titles.SingleOrDefault(x => x.Type == "English") != null ?
                     source.Titles.Single(x => x.Type == "English").Title :
@@ -45,8 +45,8 @@ namespace Business_AnimeToNotion.Mapper.FromMal
                 .ForMember(dto => dto.StartedAiring, map => map.MapFrom(source => source.Aired.From))
                 .ForMember(dto => dto.Format, map => map.MapFrom(source => source.Type))
                 .ForMember(dto => dto.Episodes, map => map.MapFrom(source => source.Episodes))
-                .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.Studios.Select(x => new INT_KeyValue((int)x.MalId, x.Name))))
-                .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new INT_KeyValue((int)x.MalId, x.Name))));
+                .ForMember(dto => dto.Studios, map => map.MapFrom(source => source.Studios.Select(x => new KeyValue((int)x.MalId, x.Name))))
+                .ForMember(dto => dto.Genres, map => map.MapFrom(source => source.Genres.Select(x => new KeyValue((int)x.MalId, x.Name))));
         }
     }
 }

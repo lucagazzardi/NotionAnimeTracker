@@ -32,6 +32,9 @@ namespace Business_AnimeToNotion.Mapper.Entity_Notion
                 if (source.Score != null)
                     result.Add("MAL Score", Mapping.Mapper.Map<NumberPropertyValue>(source.Score));
 
+                if (source.AnimeShowProgress.EpisodesProgress != null)
+                    result.Add("Episodes Progress", Mapping.Mapper.Map<NumberPropertyValue>(source.AnimeShowProgress.EpisodesProgress));
+
                 if (source.AnimeShowProgress.PersonalScore != null)
                     result.Add("Personal Score", Mapping.Mapper.Map<NumberPropertyValue>(source.AnimeShowProgress.PersonalScore));
 
