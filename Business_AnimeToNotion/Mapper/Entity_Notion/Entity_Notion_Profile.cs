@@ -16,7 +16,7 @@ namespace Business_AnimeToNotion.Mapper.Entity_Notion
                     { "Name English", Mapping.Mapper.Map<TitlePropertyValue>(source.NameEnglish) },
                     { "Name Original", Mapping.Mapper.Map<RichTextPropertyValue>(source.NameDefault) },
                     { "Next To Watch", Mapping.Mapper.Map<CheckboxPropertyValue>(source.PlanToWatch) },
-                    { "Format", Mapping.Mapper.Map<SelectPropertyValue>(source.Format) },
+                    { "Format", Mapping.Mapper.Map<SelectPropertyValue>(source.Format ?? "TV") },
                     { "Status", Mapping.Mapper.Map<SelectPropertyValue>(source.Status) },
                     { "Cover", Mapping.Mapper.Map<FilesPropertyValue>(source.Cover) },
                     { "Favorite", Mapping.Mapper.Map<CheckboxPropertyValue>(source.Favorite) },
