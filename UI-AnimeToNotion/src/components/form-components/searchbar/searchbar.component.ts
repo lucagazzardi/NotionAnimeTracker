@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-searchbar',
@@ -10,6 +10,8 @@ export class SearchbarComponent implements OnInit {
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
   @Input() initialValue: string = "";
 
+  @ViewChild('input') input: ElementRef
+
   constructor() { }
 
   ngOnInit(): void {
@@ -17,11 +19,14 @@ export class SearchbarComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    
   }
 
-  onChange(valuex: any) {
-    this.valueChanged.emit(valuex.target.value);
+  onChange(value: any) {
+    this.valueChanged.emit(value.target.value);
+  }
+
+  resetValue() {
+    this.input.nativeElement.value = '';
   }
 
 }

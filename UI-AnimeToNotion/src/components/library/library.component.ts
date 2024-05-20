@@ -1,5 +1,5 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import { BehaviorSubject, concat, debounceTime, delay, distinctUntilChanged, filter, last, map, Observable, of, Subscription, switchMap, take, tap } from 'rxjs';
 import { opacityOnEnter, scaleUpOnEnter, totalScaleDown_OpacityOnLeave, totalScaleUp_OpacityOnEnter, totalScaleUp_Opacity_MarginOnEnter, totalScaleUp_Opacity_MarginOnLeave, YMovement_Opacity, YMovement_Opacity_Leave } from '../../assets/animations/animations';
 import { SelectShowStatus } from '../../model/form-model/SelectShowStatus';
@@ -13,6 +13,7 @@ import { ILibrary, IPageInfo } from '../../model/ILibrary';
 import { IAnimeFull } from '../../model/IAnimeFull';
 import { ToasterService } from 'gazza-toaster';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
+import { SearchbarComponent } from '../form-components/searchbar/searchbar.component';
 
 export interface DialogData {
   animal: string;
@@ -102,6 +103,8 @@ export class LibraryComponent implements OnInit {
 
   private _routerSub = Subscription.EMPTY;
 
+  @ViewChild(SearchbarComponent) searchBar: SearchbarComponent;
+
   constructor(
     private internalService: InternalService,
     private editService: EditService,
@@ -148,10 +151,12 @@ export class LibraryComponent implements OnInit {
           this.searchTerm = this.getSearchParam();
           this.fromPopState = false;
         }
-        // Monitoring . . . If some problem arises reintroduce this section
-        else if (x instanceof NavigationEnd) {
-          //if (!this.getSearchParam())
-          //  this.libraryQuery();
+        // Needed to reset search bar input value when Library button is pressed while been already on the library page
+        else if (x instanceof NavigationEnd) {                    
+          if (this.getSearchParam() === '') {
+            this.searchBar.resetValue();
+            this.libraryQuery();
+          }
         }
 
       });
